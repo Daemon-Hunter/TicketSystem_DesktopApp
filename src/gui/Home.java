@@ -6,11 +6,16 @@
 package gui;
 
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
@@ -26,9 +31,9 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
-        this.setTitle("The Function Junction - ADMIN");
         initSidebar();
-        initBackground();
+        initContent();
+        
     }
 
     /**
@@ -42,135 +47,57 @@ public class Home extends javax.swing.JFrame {
 
         pnlBackground = new javax.swing.JPanel();
         pnlSidebar = new javax.swing.JPanel();
-        btnHome = new javax.swing.JButton();
-        btnUsers = new javax.swing.JButton();
-        btnVenues = new javax.swing.JButton();
-        btnArtists = new javax.swing.JButton();
-        btnEvents = new javax.swing.JButton();
-        btnHelp = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        jSeparator4 = new javax.swing.JSeparator();
-        jSeparator5 = new javax.swing.JSeparator();
+        pnlContent = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("The Function Junction - ADMIN");
         setBackground(new java.awt.Color(1, 3, 14));
 
         pnlBackground.setBackground(new java.awt.Color(51, 51, 51));
 
-        javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
-        pnlBackground.setLayout(pnlBackgroundLayout);
-        pnlBackgroundLayout.setHorizontalGroup(
-            pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 780, Short.MAX_VALUE)
-        );
-        pnlBackgroundLayout.setVerticalGroup(
-            pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        btnHome.setText("HOME");
-        btnHome.setBorder(null);
-        btnHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnHome.setMaximumSize(new java.awt.Dimension(85, 29));
-        btnHome.setMinimumSize(new java.awt.Dimension(85, 29));
-        btnHome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHomeActionPerformed(evt);
-            }
-        });
-
-        btnUsers.setText("USERS");
-        btnUsers.setBorder(null);
-        btnUsers.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUsers.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsersActionPerformed(evt);
-            }
-        });
-
-        btnVenues.setText("VENUES");
-        btnVenues.setBorder(null);
-        btnVenues.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        btnArtists.setText("ARTISTS");
-        btnArtists.setBorder(null);
-        btnArtists.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnArtists.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnArtistsActionPerformed(evt);
-            }
-        });
-
-        btnEvents.setText("EVENTS");
-        btnEvents.setBorder(null);
-        btnEvents.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        btnHelp.setText("HELP");
-        btnHelp.setBorder(null);
-        btnHelp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
-
-        jSeparator2.setForeground(new java.awt.Color(0, 0, 0));
-
-        jSeparator3.setForeground(new java.awt.Color(0, 0, 0));
-
-        jSeparator4.setForeground(new java.awt.Color(0, 0, 0));
-
-        jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
+        pnlSidebar.setBackground(new java.awt.Color(51, 51, 51));
 
         javax.swing.GroupLayout pnlSidebarLayout = new javax.swing.GroupLayout(pnlSidebar);
         pnlSidebar.setLayout(pnlSidebarLayout);
         pnlSidebarLayout.setHorizontalGroup(
             pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEvents, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnHelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlSidebarLayout.createSequentialGroup()
-                        .addGroup(pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator3)
-                            .addComponent(jSeparator1)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap())
-                    .addComponent(jSeparator5)
-                    .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVenues, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnArtists, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)))
+            .addGap(0, 200, Short.MAX_VALUE)
         );
         pnlSidebarLayout.setVerticalGroup(
             pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        pnlContent.setBackground(new java.awt.Color(51, 51, 51));
+
+        javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
+        pnlContent.setLayout(pnlContentLayout);
+        pnlContentLayout.setHorizontalGroup(
+            pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 863, Short.MAX_VALUE)
+        );
+        pnlContentLayout.setVerticalGroup(
+            pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
+        pnlBackground.setLayout(pnlBackgroundLayout);
+        pnlBackgroundLayout.setHorizontalGroup(
+            pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVenues, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnArtists, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnHelp, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+        pnlBackgroundLayout.setVerticalGroup(
+            pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -186,118 +113,75 @@ public class Home extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * Initializes the main side bar menu
-     */
     private void initSidebar() {
+        // Create a box layout for the sidebar panel.
+        // This is in order to set the logo to be on top of the 'sidebar'
+        BoxLayout boxLayout = new BoxLayout(pnlSidebar, BoxLayout.Y_AXIS);
+        pnlSidebar.setLayout(boxLayout);
+
+        // Create a panel
+        JPanel pnlLogo = new JPanel();                                                
+        Dimension logoSize = new Dimension(205, 95);                                  
+        pnlLogo.setPreferredSize(logoSize);                                           
+        pnlLogo.setMaximumSize(logoSize);                                             
+        pnlLogo.setBackground(new Color(51,51,51)); // <- same color as background    
+                                                                                      
+        // Create a label to put the logo onto                                        
+        JLabel lblLogo = new JLabel();                                               
+        Icon logo = new ImageIcon(getClass().getResource("/images/LogoWhite.png"));   
+        lblLogo.setIcon(logo);  
         
-        deselectSideButtons();
+        // Add the label to the panel
+        pnlLogo.add(lblLogo);              
         
-//        background.add(pnlSidebar);
-//        pnlSidebar.add(btnHome);
-//        pnlSidebar.add(btnUsers);
-//        pnlSidebar.add(btnEvents);
-//        pnlSidebar.add(btnVenues);
-//        pnlSidebar.add(btnArtists);
-//        pnlSidebar.add(btnHelp);
-        
-//        pnlSidebar.setVisible(true);
-//        
-//        btnHome.setVisible(true);
-//        btnUsers.setVisible(true);
-//        btnVenues.setVisible(true);
-//        btnArtists.setVisible(true);
-//        btnEvents.setVisible(true);
-//        btnHelp.setVisible(true);
+        // Creating a small panel to push a gap between logo and sidebar
+        JPanel seperator = new JPanel();
+        seperator.setSize(new Dimension(0, 20));
+        seperator.setBackground(new Color(51, 51, 51));
+
+        // Add both panels to the sidebar
+        pnlSidebar.add(pnlLogo);
+        pnlSidebar.add(seperator);
+        pnlSidebar.add(new PnlSidebar());
+    }
+    
+    private void initBackground() {
+        // Create a box layout for the background.
+        // This allows components to be layed out one after another
+        BoxLayout layout = new BoxLayout(pnlBackground, BoxLayout.X_AXIS);
+        pnlBackground.setLayout(layout);
     }
     
     /**
      * Initializes the background into its startup state
      */
-    private void initBackground() {
+    private void initContent() {
         
         // Allows the background panel to be swapped for other JPanel objects
-        pnlBackground.setLayout(new CardLayout());
+        pnlContent.setLayout(new CardLayout());
         
         // Add the panels to the 'container' panel, with specified indexes
-        pnlBackground.add(new PnlHome(), "HOME");
-        pnlBackground.add(new PnlUsers(), "USERS");
-        pnlBackground.add(new PnlArtists(), "ARTISTS");
+        pnlContent.add(new PnlHome(), "HOME");
+        pnlContent.add(new PnlUsers(), "USERS");
+        pnlContent.add(new PnlArtists(), "ARTISTS");
         
-        CardLayout cards = (CardLayout)(pnlBackground.getLayout());
+        CardLayout cards = (CardLayout)(pnlContent.getLayout());
         
         // Show the home panel on startup -> set border to imply 'selected'
-        cards.show(pnlBackground, "HOME");
-        btnHome.setBorder(BorderFactory.createEtchedBorder());
+        cards.show(pnlContent, "ARTISTS");
     }
     
-    /**
-     * Deselects all the buttons contained on the side bar
-     */
-    private void deselectSideButtons() {
-        btnHome.setContentAreaFilled(false);
-        btnHome.setBorder(BorderFactory.createEmptyBorder());
-        btnUsers.setContentAreaFilled(false);
-        btnUsers.setBorder(BorderFactory.createEmptyBorder());
-        btnVenues.setContentAreaFilled(false);
-        btnVenues.setBorder(BorderFactory.createEmptyBorder());
-        btnArtists.setContentAreaFilled(false);
-        btnArtists.setBorder(BorderFactory.createEmptyBorder());
-        btnEvents.setContentAreaFilled(false);
-        btnEvents.setBorder(BorderFactory.createEmptyBorder());
-        btnHelp.setContentAreaFilled(false);
-        btnHelp.setBorder(BorderFactory.createEmptyBorder());
-    }
-    
-    /**
-     * Shows the HOME panel
-     */
-    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
-      
-        CardLayout cards = (CardLayout)(pnlBackground.getLayout());
-        cards.show(pnlBackground, "HOME");
-        deselectSideButtons();
-        btnHome.setBorder(BorderFactory.createEtchedBorder());
-        
-    }//GEN-LAST:event_btnHomeActionPerformed
-
-    /**
-     * Shows the USERS panel
-     */
-    private void btnUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsersActionPerformed
-        
-        CardLayout cards = (CardLayout)(pnlBackground.getLayout());
-        cards.show(pnlBackground, "USERS");
-        deselectSideButtons();
-        btnUsers.setBorder(BorderFactory.createEtchedBorder());
-        
-    }//GEN-LAST:event_btnUsersActionPerformed
-
-    /**
-     * Shows the ARTISTS panel 
-     */
-    private void btnArtistsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArtistsActionPerformed
-        
-        CardLayout cards = (CardLayout)(pnlBackground.getLayout());
-        cards.show(pnlBackground, "ARTISTS");
-        deselectSideButtons();
-        btnArtists.setBorder(BorderFactory.createEtchedBorder());
-        
-    }//GEN-LAST:event_btnArtistsActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -334,21 +218,11 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnArtists;
-    private javax.swing.JButton btnEvents;
-    private javax.swing.JButton btnHelp;
-    private javax.swing.JButton btnHome;
-    private javax.swing.JButton btnUsers;
-    private javax.swing.JButton btnVenues;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JPanel pnlBackground;
+    private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlSidebar;
     // End of variables declaration//GEN-END:variables
 }
