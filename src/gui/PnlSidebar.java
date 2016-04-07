@@ -8,6 +8,7 @@ package gui;
 import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 /**
  *
@@ -15,11 +16,20 @@ import javax.swing.ImageIcon;
  */
 public class PnlSidebar extends javax.swing.JPanel {
 
+    private Home parent = null;
     /**
      * Creates new form PnlSidebar
      */
     public PnlSidebar() {
         initComponents();
+    }
+    
+    public void setParent(Home parent) {
+        this.parent = parent;
+    }
+    
+    private void deselectAll() {
+        
     }
 
     /**
@@ -52,6 +62,9 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/homeIcon.png"))); // NOI18N
         lblHome.setText("     HOME");
         lblHome.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHomeMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblHomeMouseExited(evt);
             }
@@ -79,6 +92,9 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblUsers.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/userIcon.png"))); // NOI18N
         lblUsers.setText("     USERS");
         lblUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblUsersMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblUsersMouseExited(evt);
             }
@@ -272,10 +288,12 @@ public class PnlSidebar extends javax.swing.JPanel {
     }//GEN-LAST:event_lblEventsMouseEntered
 
     private void lblHelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseExited
-        // Set the font and image light grey
-        lblHelp.setForeground(Color.LIGHT_GRAY);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
-        lblHelp.setIcon(icon);
+        if (parent.getPage() != Pages.HELP) {
+            // Set the font and image light grey
+            lblHelp.setForeground(Color.LIGHT_GRAY);
+            Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
+            lblHelp.setIcon(icon);
+        }
     }//GEN-LAST:event_lblHelpMouseExited
 
     private void lblHelpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseEntered
@@ -286,39 +304,61 @@ public class PnlSidebar extends javax.swing.JPanel {
     }//GEN-LAST:event_lblHelpMouseEntered
 
     private void lblEventsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEventsMouseExited
-        // Set the font and image light grey
-        lblEvents.setForeground(Color.LIGHT_GRAY);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/eventIcon.png"));
-        lblEvents.setIcon(icon);
+        if (parent.getPage() != Pages.EVENTS) {
+            // Set the font and image light grey
+            lblEvents.setForeground(Color.LIGHT_GRAY);
+            Icon icon = new ImageIcon(getClass().getResource("/images/icons/eventIcon.png"));
+            lblEvents.setIcon(icon);
+        }
     }//GEN-LAST:event_lblEventsMouseExited
 
     private void lblArtistsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblArtistsMouseExited
-        // Set the font and image light grey
-        lblArtists.setForeground(Color.LIGHT_GRAY);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/artistIcon.png"));
-        lblArtists.setIcon(icon);
+        if (parent.getPage() != Pages.ARTISTS) {
+            // Set the font and image light grey
+            lblArtists.setForeground(Color.LIGHT_GRAY);
+            Icon icon = new ImageIcon(getClass().getResource("/images/icons/artistIcon.png"));
+            lblArtists.setIcon(icon);
+        }
     }//GEN-LAST:event_lblArtistsMouseExited
 
     private void lblVenuesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVenuesMouseExited
-        // Set the font and image light grey
-        lblVenues.setForeground(Color.LIGHT_GRAY);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/venueIcon.png"));
-        lblVenues.setIcon(icon);
+        if (parent.getPage() != Pages.VENUES) {
+            // Set the font and image light grey
+            lblVenues.setForeground(Color.LIGHT_GRAY);
+            Icon icon = new ImageIcon(getClass().getResource("/images/icons/venueIcon.png"));
+            lblVenues.setIcon(icon);
+        }
     }//GEN-LAST:event_lblVenuesMouseExited
 
     private void lblUsersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUsersMouseExited
-        // Set the font and image light grey
-        lblUsers.setForeground(Color.LIGHT_GRAY);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/userIcon.png"));
-        lblUsers.setIcon(icon);
+        if (parent.getPage() != Pages.USERS) {
+            // Set the font and image light grey
+            lblUsers.setForeground(Color.LIGHT_GRAY);
+            Icon icon = new ImageIcon(getClass().getResource("/images/icons/userIcon.png"));
+            lblUsers.setIcon(icon);
+        }
     }//GEN-LAST:event_lblUsersMouseExited
 
     private void lblHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseExited
-        // Set the font and image light grey
-        lblHome.setForeground(Color.LIGHT_GRAY);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIcon.png"));
-        lblHome.setIcon(icon);
+        if (parent.getPage() != Pages.HOME) {
+            // Set the font and image light grey
+            lblHome.setForeground(Color.LIGHT_GRAY);
+            Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIcon.png"));
+            lblHome.setIcon(icon);
+        }
     }//GEN-LAST:event_lblHomeMouseExited
+
+    private void lblHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseClicked
+        if (parent.getPage() != Pages.HOME) {
+            parent.setPage(Pages.HOME);
+        }
+    }//GEN-LAST:event_lblHomeMouseClicked
+
+    private void lblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUsersMouseClicked
+        if (parent.getPage() != Pages.HOME) {
+            parent.setPage(Pages.HOME);
+        }
+    }//GEN-LAST:event_lblUsersMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -26,6 +26,8 @@ import javax.swing.JTextField;
  */
 public class Home extends javax.swing.JFrame {
     
+    private Pages page = null;
+    private CardLayout cards = null;
     /**
      * Creates new form Home
      */
@@ -33,7 +35,6 @@ public class Home extends javax.swing.JFrame {
         initComponents();
         initSidebar();
         initContent();
-        
     }
 
     /**
@@ -144,24 +145,25 @@ public class Home extends javax.swing.JFrame {
         
         // Add the label to the panel
         pnlLogo.add(lblLogo);              
-        
-        // Creating a small panel to push a gap between logo and sidebar
-        JPanel seperator = new JPanel();
-        seperator.setSize(new Dimension(0, 20));
-        seperator.setBackground(new Color(51, 51, 51));
 
-        // Add both panels to the sidebar
+        // Add logo to the sidebar
         pnlSidebar.add(pnlLogo);
-        pnlSidebar.add(seperator);
-        pnlSidebar.add(new PnlSidebar());
+        
+        // Give sidebar access to 'this' frame. Allows the sidebar to call public
+        // methods contained in this class - specifically setContent(JPanel content)
+        PnlSidebar sidebar = new PnlSidebar();
+        sidebar.setParent(this);
+        pnlSidebar.add(sidebar);
     }
     
-    private void initBackground() {
-        // Create a box layout for the background.
-        // This allows components to be layed out one after another
-        BoxLayout layout = new BoxLayout(pnlBackground, BoxLayout.X_AXIS);
-        pnlBackground.setLayout(layout);
+    public Pages getPage() {
+        return page;
     }
+    
+    public void setPage(Pages newPage) {
+        cards.show(pnlContent, newPage.toString());
+        page = newPage;
+    }   
     
     /**
      * Initializes the background into its startup state
@@ -176,10 +178,11 @@ public class Home extends javax.swing.JFrame {
         pnlContent.add(new PnlUsers(), "USERS");
         pnlContent.add(new PnlArtists(), "ARTISTS");
         
-        CardLayout cards = (CardLayout)(pnlContent.getLayout());
+        cards = (CardLayout)(pnlContent.getLayout());
         
         // Show the home panel on startup -> set border to imply 'selected'
         cards.show(pnlContent, "ARTISTS");
+        page = Pages.ARTISTS;
     }
     
     /**
