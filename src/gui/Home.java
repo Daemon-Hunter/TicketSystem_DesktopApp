@@ -5,19 +5,19 @@
  */
 package gui;
 
+import gui.contentpanel.Pages;
+import gui.contentpanel.PnlHome;
+import gui.contentpanel.PnlSidebar;
+import gui.contentpanel.PnlArtists;
+import gui.contentpanel.PnlUsers;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 
 
 /**
@@ -163,10 +163,10 @@ public class Home extends javax.swing.JFrame {
     public void setPage(Pages newPage) {
         cards.show(pnlContent, newPage.toString());
         page = newPage;
-    }   
+    }
     
     /**
-     * Initializes the background into its startup state
+     * Initialises the background into its startup state
      */
     private void initContent() {
         
@@ -174,15 +174,14 @@ public class Home extends javax.swing.JFrame {
         pnlContent.setLayout(new CardLayout());
         
         // Add the panels to the 'container' panel, with specified indexes
-        pnlContent.add(new PnlHome(), "HOME");
-        pnlContent.add(new PnlUsers(), "USERS");
-        pnlContent.add(new PnlArtists(), "ARTISTS");
+        pnlContent.add(new PnlHome(), Pages.HOME.toString());
+        pnlContent.add(new PnlUsers(), Pages.USERS.toString());
+        pnlContent.add(new PnlArtists(), Pages.ARTISTS.toString());
         
         cards = (CardLayout)(pnlContent.getLayout());
         
         // Show the home panel on startup -> set border to imply 'selected'
-        cards.show(pnlContent, "ARTISTS");
-        page = Pages.ARTISTS;
+        setPage(Pages.HOME);
     }
     
     /**

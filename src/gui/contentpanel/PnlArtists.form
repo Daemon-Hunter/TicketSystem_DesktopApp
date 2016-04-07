@@ -296,11 +296,6 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="btnDeleteArtist1">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/Users/Dominic/Downloads/Delete-48.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnEditArtist1">
           <Properties>
@@ -405,11 +400,6 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="btnDeleteArtist2">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/Users/Dominic/Downloads/Delete-48.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnEditArtist2">
           <Properties>
@@ -511,11 +501,6 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="btnDeleteArtist3">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/Users/Dominic/Downloads/Delete-48.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnEditArtist3">
           <Properties>
@@ -617,11 +602,6 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="btnDeleteArtist4">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/Users/Dominic/Downloads/Delete-48.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnEditArtist4">
           <Properties>
@@ -726,11 +706,6 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="btnDeleteArtist5">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="/Users/Dominic/Downloads/Delete-48.png"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="btnEditArtist5">
           <Properties>

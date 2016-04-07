@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.contentpanel;
 
+import gui.RoundedBorder;
+import gui.dialogNew_Artist;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -219,8 +221,6 @@ public class PnlArtists extends javax.swing.JPanel {
         txtArtistInfo1.setEnabled(false);
         jScrollPane3.setViewportView(txtArtistInfo1);
 
-        btnDeleteArtist1.setIcon(new javax.swing.ImageIcon("/Users/Dominic/Downloads/Delete-48.png")); // NOI18N
-
         btnEditArtist1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Edit-48.png"))); // NOI18N
         btnEditArtist1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -278,8 +278,6 @@ public class PnlArtists extends javax.swing.JPanel {
         txtArtistInfo2.setEnabled(false);
         jScrollPane4.setViewportView(txtArtistInfo2);
 
-        btnDeleteArtist2.setIcon(new javax.swing.ImageIcon("/Users/Dominic/Downloads/Delete-48.png")); // NOI18N
-
         btnEditArtist2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Edit-48.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlArtist2Layout = new javax.swing.GroupLayout(pnlArtist2);
@@ -332,8 +330,6 @@ public class PnlArtists extends javax.swing.JPanel {
         txtArtistInfo3.setEnabled(false);
         jScrollPane5.setViewportView(txtArtistInfo3);
 
-        btnDeleteArtist3.setIcon(new javax.swing.ImageIcon("/Users/Dominic/Downloads/Delete-48.png")); // NOI18N
-
         btnEditArtist3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Edit-48.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlArtist3Layout = new javax.swing.GroupLayout(pnlArtist3);
@@ -385,8 +381,6 @@ public class PnlArtists extends javax.swing.JPanel {
         txtArtistInfo4.setText("Artist Name is an award winning ginger icon.\nBorn before me, and hitting the charts in the coolest way\npossible.");
         txtArtistInfo4.setEnabled(false);
         jScrollPane6.setViewportView(txtArtistInfo4);
-
-        btnDeleteArtist4.setIcon(new javax.swing.ImageIcon("/Users/Dominic/Downloads/Delete-48.png")); // NOI18N
 
         btnEditArtist4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Edit-48.png"))); // NOI18N
         btnEditArtist4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -444,8 +438,6 @@ public class PnlArtists extends javax.swing.JPanel {
         txtArtistInfo5.setText("Artist Name is an award winning ginger icon.\nBorn before me, and hitting the charts in the coolest way\npossible.");
         txtArtistInfo5.setEnabled(false);
         jScrollPane7.setViewportView(txtArtistInfo5);
-
-        btnDeleteArtist5.setIcon(new javax.swing.ImageIcon("/Users/Dominic/Downloads/Delete-48.png")); // NOI18N
 
         btnEditArtist5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Edit-48.png"))); // NOI18N
 
