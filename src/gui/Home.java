@@ -5,11 +5,7 @@
  */
 package gui;
 
-import gui.contentpanel.Pages;
-import gui.contentpanel.PnlHome;
-import gui.contentpanel.PnlSidebar;
-import gui.contentpanel.PnlArtists;
-import gui.contentpanel.PnlUsers;
+import gui.contentpanel.*;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -173,10 +169,20 @@ public class Home extends javax.swing.JFrame {
         // Allows the background panel to be swapped for other JPanel objects
         pnlContent.setLayout(new CardLayout());
         
+        // Creates a new insrtance of the content panels
+        JPanel home = new PnlHome();
+        JPanel users = new PnlUsers();
+        JPanel artists = new PnlArtists();
+        
+        // Sets the size of the content panels to match the 'container' panel
+        home.setMinimumSize(pnlContent.getSize());
+        users.setMinimumSize(pnlContent.getSize());
+        artists.setMinimumSize(pnlContent.getSize());
+        
         // Add the panels to the 'container' panel, with specified indexes
-        pnlContent.add(new PnlHome(), Pages.HOME.toString());
-        pnlContent.add(new PnlUsers(), Pages.USERS.toString());
-        pnlContent.add(new PnlArtists(), Pages.ARTISTS.toString());
+        pnlContent.add(home, Pages.HOME.toString());
+        pnlContent.add(users, Pages.USERS.toString());
+        pnlContent.add(artists, Pages.ARTISTS.toString());
         
         cards = (CardLayout)(pnlContent.getLayout());
         
