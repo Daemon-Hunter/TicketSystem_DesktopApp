@@ -23,11 +23,12 @@ import javax.swing.JPanel;
 /**
  *
  * @author 10512691
+ * @author 10467841
  */
 public class Home extends javax.swing.JFrame {
     
-    private Pages page = null;
-    private CardLayout cards = null;
+    private Pages page;
+    private CardLayout cards;
     /**
      * Creates new form Home
      */
@@ -56,6 +57,12 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("The Function Junction - ADMIN");
         setBackground(new java.awt.Color(1, 3, 14));
+        setMaximumSize(new java.awt.Dimension(1080, 600));
+        setMinimumSize(new java.awt.Dimension(1080, 600));
+        setName("desktopFrame"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1080, 600));
+        setResizable(false);
+        setSize(new java.awt.Dimension(1080, 600));
 
         pnlBackground.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -78,7 +85,7 @@ public class Home extends javax.swing.JFrame {
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 863, Short.MAX_VALUE)
+            .addGap(0, 873, Short.MAX_VALUE)
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,8 +99,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

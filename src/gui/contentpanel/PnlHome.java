@@ -59,6 +59,10 @@ public class PnlHome extends javax.swing.JPanel {
         lblPopVenue2 = new javax.swing.JLabel();
         lblPopVenue3 = new javax.swing.JLabel();
 
+        setMaximumSize(new java.awt.Dimension(873, 32767));
+        setMinimumSize(new java.awt.Dimension(873, 0));
+        setPreferredSize(new java.awt.Dimension(873, 1043));
+
         pnlBackground.setBackground(new java.awt.Color(51, 51, 51));
 
         pnlTopSearchBackground.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 28, 53), 1, true));
@@ -390,7 +394,7 @@ public class PnlHome extends javax.swing.JPanel {
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlTopSearchBackground, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlPopVenuesBackground, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
