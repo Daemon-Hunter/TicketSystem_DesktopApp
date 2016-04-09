@@ -48,8 +48,16 @@ public class PnlUsers extends javax.swing.JPanel {
         txtSearchbar.setText("Search Users...");
         txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtSearchbarFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtSearchbarFocusLost(evt);
+            }
+        });
+        txtSearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtSearchbarMouseClicked(evt);
             }
         });
         txtSearchbar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -62,17 +70,17 @@ public class PnlUsers extends javax.swing.JPanel {
         pnlTopBorder.setLayout(pnlTopBorderLayout);
         pnlTopBorderLayout.setHorizontalGroup(
             pnlTopBorderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTopBorderLayout.createSequentialGroup()
-                .addGap(230, 230, 230)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTopBorderLayout.createSequentialGroup()
+                .addContainerGap(401, Short.MAX_VALUE)
                 .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addGap(59, 59, 59))
         );
         pnlTopBorderLayout.setVerticalGroup(
             pnlTopBorderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTopBorderLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
                 .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -91,15 +99,23 @@ public class PnlUsers extends javax.swing.JPanel {
 
     private void txtSearchbarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchbarKeyPressed
         
-        if (txtSearchbar.getText().contains("Search Users...")) {
-            txtSearchbar.setText("");
-        }
+        
         
     }//GEN-LAST:event_txtSearchbarKeyPressed
 
     private void txtSearchbarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchbarFocusLost
         txtSearchbar.setText("Search Users...");
     }//GEN-LAST:event_txtSearchbarFocusLost
+
+    private void txtSearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchbarMouseClicked
+        
+    }//GEN-LAST:event_txtSearchbarMouseClicked
+
+    private void txtSearchbarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchbarFocusGained
+        if (txtSearchbar.getText().contains("Search Users...")) {
+            txtSearchbar.setText("");
+        }
+    }//GEN-LAST:event_txtSearchbarFocusGained
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

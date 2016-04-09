@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 /**
  *
  * @author 10512691
+ * @author 10467841
  */
 public class PnlSidebar extends javax.swing.JPanel {
 
