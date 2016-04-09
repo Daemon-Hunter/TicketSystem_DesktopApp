@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
  * @author 10512691
  * @author 10467841
  */
-public class PnlSidebar extends javax.swing.JPanel {
+public class PnlSidebar extends PnlButton {
 
     private Home parent;
     
@@ -39,20 +39,6 @@ public class PnlSidebar extends javax.swing.JPanel {
         darkButton(lblUsers, "/images/icons/userIcon.png");
         darkButton(lblHome, "/images/icons/homeIcon.png");
         parent.setPage(page);
-    }
-    
-    private void lightButton(javax.swing.JLabel label, String file){
-        // Set the font and image white
-        label.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource(file));
-        label.setIcon(icon);
-    }
-    
-    private void darkButton(javax.swing.JLabel label, String file){
-        // Set the font and image light grey
-            label.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource(file));
-            label.setIcon(icon);
     }
 
     /**
