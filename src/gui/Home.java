@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import wrappers.DesktopWrapper;
 
 
 /**
@@ -28,6 +29,8 @@ public class Home extends javax.swing.JFrame {
     
     private Pages page = null;
     private CardLayout cards = null;
+    private final DesktopWrapper wrapper = new DesktopWrapper();
+    
     /**
      * Creates new form Home
      */
@@ -73,12 +76,14 @@ public class Home extends javax.swing.JFrame {
         );
 
         pnlContent.setBackground(new java.awt.Color(51, 51, 51));
+        pnlContent.setPreferredSize(new java.awt.Dimension(870, 578));
+        pnlContent.setSize(new java.awt.Dimension(870, 578));
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 863, Short.MAX_VALUE)
+            .addGap(0, 870, Short.MAX_VALUE)
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,8 +97,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,9 +117,7 @@ public class Home extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,6 +127,10 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public DesktopWrapper getWrapper() {
+        return wrapper;
+    }
+    
     private void initSidebar() {
         // Create a box layout for the sidebar panel.
         // This is in order to set the logo to be on top of the 'sidebar'
@@ -176,13 +182,12 @@ public class Home extends javax.swing.JFrame {
         // Add the panels to the 'container' panel, with specified indexes
         pnlContent.add(new PnlHome(), "HOME");
         pnlContent.add(new PnlUsers(), "USERS");
-        pnlContent.add(new PnlArtists(), "ARTISTS");
+        pnlContent.add(new PnlArtists(this), "ARTISTS");
         
         cards = (CardLayout)(pnlContent.getLayout());
         
-        // Show the home panel on startup -> set border to imply 'selected'
-        cards.show(pnlContent, "ARTISTS");
-        page = Pages.ARTISTS;
+        // Show the home panel on startup
+        setPage(Pages.HOME);
     }
     
     /**

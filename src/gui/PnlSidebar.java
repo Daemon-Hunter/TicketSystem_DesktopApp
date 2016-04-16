@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 public class PnlSidebar extends javax.swing.JPanel {
 
     private Home parent = null;
+    private Pages selected = null;
     /**
      * Creates new form PnlSidebar
      */
@@ -149,6 +150,9 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblArtists.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/artistIcon.png"))); // NOI18N
         lblArtists.setText("     ARTISTS");
         lblArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblArtistsMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblArtistsMouseExited(evt);
             }
@@ -360,7 +364,13 @@ public class PnlSidebar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_lblUsersMouseClicked
 
+    private void lblArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblArtistsMouseClicked
+        if (parent.getPage() != Pages.ARTISTS) {
+            parent.setPage(Pages.ARTISTS);
+        }
+    }//GEN-LAST:event_lblArtistsMouseClicked
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblArtists;
     private javax.swing.JLabel lblEvents;
