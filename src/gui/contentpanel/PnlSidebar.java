@@ -3,75 +3,42 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.contentpanel;
 
-import gui.contentpanel.Pages;
+import gui.Home;
 import java.awt.Color;
-import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 
 /**
  *
  * @author 10512691
+ * @author 10467841
  */
-public class PnlSidebar extends javax.swing.JPanel {
+public class PnlSidebar extends PnlButton {
 
-    private Home parent = null;
+    private Home parent;
+    
     /**
      * Creates new form PnlSidebar
      */
     public PnlSidebar() {
         initComponents();
-        
-        lblHome.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIconRollover.png"));
-        lblHome.setIcon(icon);
+        lightButton(lblHome, "/images/icons/homeIconRollover.png");
     }
     
     public void setParent(Home parent) {
         this.parent = parent;
     }
     
-    private void deselectPage(Pages page) {
-        switch (page) {
-            case HOME:
-                lblHome.setForeground(Color.LIGHT_GRAY);
-                Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIcon.png"));
-                lblHome.setIcon(icon);
-                break;
-                
-            case USERS:
-                lblUsers.setForeground(Color.LIGHT_GRAY);
-                icon = new ImageIcon(getClass().getResource("/images/icons/userIcon.png"));
-                lblUsers.setIcon(icon);
-                break;
-                
-            case VENUES: 
-                lblVenues.setForeground(Color.LIGHT_GRAY);
-                icon = new ImageIcon(getClass().getResource("/images/icons/venueIcon.png"));
-                lblVenues.setIcon(icon);
-                break;
-                
-            case ARTISTS:
-                lblArtists.setForeground(Color.LIGHT_GRAY);
-                icon = new ImageIcon(getClass().getResource("/images/icons/artistIcon.png"));
-                lblArtists.setIcon(icon);
-                break;
-                
-            case EVENTS:
-                lblEvents.setForeground(Color.LIGHT_GRAY);
-                icon = new ImageIcon(getClass().getResource("/images/icons/eventIcon.png"));
-                lblEvents.setIcon(icon);
-                break;
-                
-            case HELP:
-                lblHelp.setForeground(Color.LIGHT_GRAY);
-                icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
-                lblHelp.setIcon(icon);
-                break;
-        }
+    private void changePage(Pages page){        
+        darkButton(lblHelp, "/images/icons/helpIcon.png");
+        darkButton(lblEvents, "/images/icons/eventIcon.png");
+        darkButton(lblArtists, "/images/icons/artistIcon.png");
+        darkButton(lblVenues, "/images/icons/venueIcon.png");
+        darkButton(lblUsers, "/images/icons/userIcon.png");
+        darkButton(lblHome, "/images/icons/homeIcon.png");
+        parent.setPage(page);
     }
 
     /**
@@ -164,11 +131,14 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblVenues.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/venueIcon.png"))); // NOI18N
         lblVenues.setText("     VENUES");
         lblVenues.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblVenuesMouseExited(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblVenuesMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblVenuesMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblVenuesMouseExited(evt);
             }
         });
 
@@ -194,11 +164,11 @@ public class PnlSidebar extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblArtistsMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblArtistsMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblArtistsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblArtistsMouseExited(evt);
             }
         });
 
@@ -221,11 +191,14 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblEvents.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/eventIcon.png"))); // NOI18N
         lblEvents.setText("     EVENTS");
         lblEvents.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblEventsMouseExited(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblEventsMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblEventsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblEventsMouseExited(evt);
             }
         });
 
@@ -248,11 +221,14 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/helpIcon.png"))); // NOI18N
         lblHelp.setText("     HELP");
         lblHelp.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblHelpMouseExited(evt);
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblHelpMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lblHelpMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblHelpMouseExited(evt);
             }
         });
 
@@ -298,123 +274,104 @@ public class PnlSidebar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseEntered
-        // Set the font and image white
-        lblHome.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIconRollover.png"));
-        lblHome.setIcon(icon);
+        if (parent.getPage() != Pages.HOME){
+            lightButton(lblHome, "/images/icons/homeIconRollover.png");
+        }
     }//GEN-LAST:event_lblHomeMouseEntered
-
     private void lblUsersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUsersMouseEntered
-        // Set the font and image white
-        lblUsers.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/userIconRollover.png"));
-        lblUsers.setIcon(icon);
+        if (parent.getPage() != Pages.USERS){
+            lightButton(lblUsers, "/images/icons/userIconRollover.png");
+        }
     }//GEN-LAST:event_lblUsersMouseEntered
-
     private void lblVenuesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVenuesMouseEntered
-        // Set the font and image white
-        lblVenues.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/venueIconRollover.png"));
-        lblVenues.setIcon(icon);
+        if (parent.getPage() != Pages.VENUES){
+            lightButton(lblVenues, "/images/icons/venueIconRollover.png");
+        }
     }//GEN-LAST:event_lblVenuesMouseEntered
-
     private void lblArtistsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblArtistsMouseEntered
-        // Set the font and image white
-        lblArtists.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/artistIconRollover.png"));
-        lblArtists.setIcon(icon);
+        if (parent.getPage() != Pages.VENUES){
+            lightButton(lblArtists, "/images/icons/artistIconRollover.png");
+        }
     }//GEN-LAST:event_lblArtistsMouseEntered
-
     private void lblEventsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEventsMouseEntered
-        // Set the font and image white
-        lblEvents.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/eventIconRollover.png"));
-        lblEvents.setIcon(icon);
+        if (parent.getPage() != Pages.EVENTS){
+            lightButton(lblEvents, "/images/icons/eventIconRollover.png");
+        }
     }//GEN-LAST:event_lblEventsMouseEntered
-
     private void lblHelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseExited
         if (parent.getPage() != Pages.HELP) {
-            // Set the font and image light grey
-            lblHelp.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
-            lblHelp.setIcon(icon);
+            darkButton(lblHelp, "/images/icons/helpIcon.png");
         }
     }//GEN-LAST:event_lblHelpMouseExited
-
     private void lblHelpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseEntered
-        // Set the font and image white
-        lblHelp.setForeground(Color.WHITE);
-        Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIconRollover.png"));
-        lblHelp.setIcon(icon);
+        if (parent.getPage() != Pages.HELP){
+            lightButton(lblHelp, "/images/icons/helpIconRollover.png");
+        }
     }//GEN-LAST:event_lblHelpMouseEntered
-
     private void lblEventsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEventsMouseExited
         if (parent.getPage() != Pages.EVENTS) {
-            // Set the font and image light grey
-            lblEvents.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource("/images/icons/eventIcon.png"));
-            lblEvents.setIcon(icon);
+            darkButton(lblEvents, "/images/icons/eventIcon.png");
         }
     }//GEN-LAST:event_lblEventsMouseExited
-
     private void lblArtistsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblArtistsMouseExited
         if (parent.getPage() != Pages.ARTISTS) {
-            // Set the font and image light grey
-            lblArtists.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource("/images/icons/artistIcon.png"));
-            lblArtists.setIcon(icon);
+            darkButton(lblArtists, "/images/icons/artistIcon.png");
         }
     }//GEN-LAST:event_lblArtistsMouseExited
-
     private void lblVenuesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVenuesMouseExited
         if (parent.getPage() != Pages.VENUES) {
-            // Set the font and image light grey
-            lblVenues.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource("/images/icons/venueIcon.png"));
-            lblVenues.setIcon(icon);
+            darkButton(lblVenues, "/images/icons/venueIcon.png");
         }
     }//GEN-LAST:event_lblVenuesMouseExited
-
     private void lblUsersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUsersMouseExited
         if (parent.getPage() != Pages.USERS) {
-            // Set the font and image light grey
-            lblUsers.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource("/images/icons/userIcon.png"));
-            lblUsers.setIcon(icon);
+            darkButton(lblUsers, "/images/icons/userIcon.png");
         }
     }//GEN-LAST:event_lblUsersMouseExited
-
     private void lblHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseExited
         if (parent.getPage() != Pages.HOME) {
-            // Set the font and image light grey
-            lblHome.setForeground(Color.LIGHT_GRAY);
-            Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIcon.png"));
-            lblHome.setIcon(icon);
+            darkButton(lblHome, "/images/icons/homeIcon.png");
         }
     }//GEN-LAST:event_lblHomeMouseExited
 
     private void lblHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHomeMouseClicked
         if (parent.getPage() != Pages.HOME) {
-            deselectPage(parent.getPage());
-            parent.setPage(Pages.HOME);
+            changePage(Pages.HOME);
+            lightButton(lblHome, "/images/icons/homeIconRollover.png");
         }
     }//GEN-LAST:event_lblHomeMouseClicked
-
     private void lblUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUsersMouseClicked
         if (parent.getPage() != Pages.USERS) {
-            deselectPage(parent.getPage());
-            parent.setPage(Pages.USERS);
+            changePage(Pages.USERS);
+            lightButton(lblUsers, "/images/icons/userIconRollover.png");
         }
     }//GEN-LAST:event_lblUsersMouseClicked
-
     private void lblArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblArtistsMouseClicked
         if (parent.getPage() != Pages.ARTISTS) {
-            deselectPage(parent.getPage());
-            parent.setPage(Pages.ARTISTS);
+            changePage(Pages.ARTISTS);
+            lightButton(lblArtists, "/images/icons/artistIconRollover.png");
         }
     }//GEN-LAST:event_lblArtistsMouseClicked
+    private void lblVenuesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVenuesMouseClicked
+        if (parent.getPage() != Pages.VENUES) {
+            changePage(Pages.VENUES);
+            lightButton(lblVenues, "/images/icons/venueIconRollover.png");
+        }
+    }//GEN-LAST:event_lblVenuesMouseClicked
+    private void lblEventsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEventsMouseClicked
+        if (parent.getPage() != Pages.EVENTS) {
+            changePage(Pages.EVENTS);
+            lightButton(lblEvents, "/images/icons/eventIconRollover.png");
+        }
+    }//GEN-LAST:event_lblEventsMouseClicked
+    private void lblHelpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseClicked
+        if (parent.getPage() != Pages.HELP) {
+            changePage(Pages.HELP);
+            lightButton(lblHelp, "/images/icons/helpIconRollover.png");
+        }
+    }//GEN-LAST:event_lblHelpMouseClicked
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblArtists;
     private javax.swing.JLabel lblEvents;

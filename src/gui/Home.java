@@ -5,25 +5,22 @@
  */
 package gui;
 
+import gui.contentpanel.*;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import wrappers.DesktopWrapper;
 
 
 /**
  *
  * @author 10512691
+ * @author 10467841
  */
 public class Home extends javax.swing.JFrame {
     
@@ -59,6 +56,12 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("The Function Junction - ADMIN");
         setBackground(new java.awt.Color(1, 3, 14));
+        setMaximumSize(new java.awt.Dimension(1080, 600));
+        setMinimumSize(new java.awt.Dimension(1080, 600));
+        setName("desktopFrame"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1080, 600));
+        setResizable(false);
+        setSize(new java.awt.Dimension(1080, 600));
 
         pnlBackground.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -169,7 +172,7 @@ public class Home extends javax.swing.JFrame {
     public void setPage(Pages newPage) {
         cards.show(pnlContent, newPage.toString());
         page = newPage;
-    }   
+    }
     
     /**
      * Initializes the background into its startup state
@@ -179,14 +182,24 @@ public class Home extends javax.swing.JFrame {
         // Allows the background panel to be swapped for other JPanel objects
         pnlContent.setLayout(new CardLayout());
         
+        // Creates a new insrtance of the content panels
+        JPanel home = new PnlHome();
+        JPanel users = new PnlUsers();
+        JPanel artists = new PnlArtists(this);
+        
+        // Sets the size of the content panels to match the 'container' panel
+        home.setMinimumSize(pnlContent.getSize());
+        users.setMinimumSize(pnlContent.getSize());
+        artists.setMinimumSize(pnlContent.getSize());
+        
         // Add the panels to the 'container' panel, with specified indexes
-        pnlContent.add(new PnlHome(), "HOME");
-        pnlContent.add(new PnlUsers(), "USERS");
-        pnlContent.add(new PnlArtists(this), "ARTISTS");
+        pnlContent.add(home, Pages.HOME.toString());
+        pnlContent.add(users, Pages.USERS.toString());
+        pnlContent.add(artists, Pages.ARTISTS.toString());
         
         cards = (CardLayout)(pnlContent.getLayout());
         
-        // Show the home panel on startup
+        // Show the home panel on startup. Sidebar initializes with 
         setPage(Pages.HOME);
     }
     
