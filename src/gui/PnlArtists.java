@@ -61,11 +61,11 @@ public class PnlArtists extends javax.swing.JPanel {
                     currArtist = allArtists.get(i);
                     String artistTags = "";
 
-                    artistData.setValueAt(currArtist.getName(), i, 0);
+                    artistData.setValueAt(currArtist.getArtistName(), i, 0);
 
                     artistData.setValueAt(currArtist.getDescription(), i, 1);
 
-                    for (String tag : currArtist.getTags()) {
+                    for (String tag : currArtist.getArtistTags()) {
                         artistTags += tag + ", ";
                     }
                     if (artistTags.length() > 2) {
