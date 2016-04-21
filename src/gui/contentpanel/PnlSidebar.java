@@ -6,9 +6,6 @@
 package gui.contentpanel;
 
 import gui.Home;
-import java.awt.Color;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  *
