@@ -6,8 +6,12 @@
 package gui;
 
 import classes.ArtistTableModel;
+import classes.ButtonTableCellRenderer;
 import datamodel.Artist;
+import datamodel.IArtist;
+import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.table.TableModel;
 
 /**
@@ -47,25 +51,31 @@ public class PnlArtists extends javax.swing.JPanel {
         });
     }
     
-    public final void populateTable() {
+    private void populateTable() {
         if (parent.getWrapper().getArtists() != null) {
             ArrayList<Artist> allArtists = new ArrayList (parent.getWrapper().getArtists());
             
             if (allArtists.size() > 0) {
                 Artist currArtist;
                 
-                // Creates a table model with 20 rows & 4 columns.
-                TableModel artistData = new ArtistTableModel(allArtists.size(), 4);
+                // Creates a table model with 4 columns.
+                TableModel artistData = new ArtistTableModel(allArtists, allArtists.size(), 4);
+                
+                ButtonTableCellRenderer btnRender = new ButtonTableCellRenderer(tableArtists, 3);
+                
+                JButton btnMore = new JButton("More");
+                btnMore.setBackground(Color.WHITE);
+                btnMore.setForeground(Color.BLACK);
 
                 for (int i = 0; i < 20 && i < allArtists.size(); i++) {
                     currArtist = allArtists.get(i);
                     String artistTags = "";
 
-                    artistData.setValueAt(currArtist.getName(), i, 0);
-
+                    artistData.setValueAt(currArtist.getArtistName(), i, 0);
+                    System.out.println(currArtist.getDescription());
                     artistData.setValueAt(currArtist.getDescription(), i, 1);
 
-                    for (String tag : currArtist.getTags()) {
+                    for (String tag : currArtist.getArtistTags()) {
                         artistTags += tag + ", ";
                     }
                     if (artistTags.length() > 2) {
@@ -73,7 +83,7 @@ public class PnlArtists extends javax.swing.JPanel {
                     }
                     artistData.setValueAt(artistTags, i, 2);
 
-                    artistData.setValueAt("More...", i, 3);
+                    artistData.setValueAt(btnMore, i, 3);
                 }
                 
                 tableArtists.setModel(artistData);
@@ -179,15 +189,14 @@ public class PnlArtists extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,9 +205,9 @@ public class PnlArtists extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSearchbar))
-                .addGap(65, 65, 65)
+                .addGap(47, 47, 47)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -215,8 +224,6 @@ public class PnlArtists extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JTable tableArtists;
