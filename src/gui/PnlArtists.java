@@ -6,13 +6,14 @@
 package gui;
 
 import classes.ArtistTableModel;
-import classes.ButtonTableCellRenderer;
-import datamodel.Artist;
 import datamodel.IArtist;
-import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JButton;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
 import javax.swing.table.TableModel;
+import wrappers.DesktopWrapper;
 
 /**
  *
@@ -21,6 +22,9 @@ import javax.swing.table.TableModel;
 public class PnlArtists extends javax.swing.JPanel {
     
     private Home parent = null;
+    
+    private ArrayList<IArtist> allArtists;
+    private IArtist curArtist;
 
     /**
      * Creates new Artist panel
@@ -43,51 +47,33 @@ public class PnlArtists extends javax.swing.JPanel {
                 int col = tableArtists.rowAtPoint(evt.getPoint());
                 
                 if (col == 4) {
-                    if (parent.getWrapper().getArtists().get(row) != null) {
-                        System.out.println(parent.getWrapper().getArtists().get(row));
+                    try {
+                        //TODO handle exception---------------------------------------------------------------------------------------------------------------------
+                        
+                        if (DesktopWrapper.getInstance().getArtists().get(row) != null) {
+                            System.out.println(DesktopWrapper.getInstance().getArtists().get(row));
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(PnlArtists.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
         });
     }
     
-    private void populateTable() {
-        if (parent.getWrapper().getArtists() != null) {
-            ArrayList<Artist> allArtists = new ArrayList (parent.getWrapper().getArtists());
-            
+    public final void populateTable() {
+        try {
+            allArtists = new ArrayList (DesktopWrapper.getInstance().getArtists());
+
             if (allArtists.size() > 0) {
-                Artist currArtist;
-                
-                // Creates a table model with 4 columns.
-                TableModel artistData = new ArtistTableModel(allArtists, allArtists.size(), 4);
-                
-                ButtonTableCellRenderer btnRender = new ButtonTableCellRenderer(tableArtists, 3);
-                
-                JButton btnMore = new JButton("More");
-                btnMore.setBackground(Color.WHITE);
-                btnMore.setForeground(Color.BLACK);
 
-                for (int i = 0; i < 20 && i < allArtists.size(); i++) {
-                    currArtist = allArtists.get(i);
-                    String artistTags = "";
+                // Creates a table model
+                TableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
 
-                    artistData.setValueAt(currArtist.getArtistName(), i, 0);
-                    System.out.println(currArtist.getDescription());
-                    artistData.setValueAt(currArtist.getDescription(), i, 1);
-
-                    for (String tag : currArtist.getArtistTags()) {
-                        artistTags += tag + ", ";
-                    }
-                    if (artistTags.length() > 2) {
-                        artistTags = artistTags.substring(0, artistTags.length() - 2);
-                    }
-                    artistData.setValueAt(artistTags, i, 2);
-
-                    artistData.setValueAt(btnMore, i, 3);
-                }
-                
                 tableArtists.setModel(artistData);
             }
+        } catch (IOException e){
+            //Handle exception ----------------------------------------------------------------------------------------------------------------------
         }
     }
     
@@ -161,7 +147,21 @@ public class PnlArtists extends javax.swing.JPanel {
             }
         });
         tableArtists.getTableHeader().setReorderingAllowed(false);
+        tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tableArtistsFocusLost(evt);
+            }
+        });
+        tableArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableArtistsMouseClicked(evt);
+            }
+        });
         tableScrollPane.setViewportView(tableArtists);
+        if (tableArtists.getColumnModel().getColumnCount() > 0) {
+            tableArtists.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tableArtists.getColumnModel().getColumn(3).setHeaderValue("More");
+        }
 
         searchPnl.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -220,6 +220,22 @@ public class PnlArtists extends javax.swing.JPanel {
             txtSearchbar.setText("");
         }
     }//GEN-LAST:event_txtSearchbarMouseClicked
+
+    private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
+        if (curArtist == null) {
+            if (allArtists != null) {
+            curArtist = allArtists.get(tableArtists.getSelectedRow());
+            System.out.println(curArtist.getArtistName());
+            }
+        } 
+        else if (curArtist.equals(allArtists.get(tableArtists.getSelectedRow()))) {
+            System.out.println("OPEN THE EDIT DIALOG!");
+        }
+    }//GEN-LAST:event_tableArtistsMouseClicked
+
+    private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
+        curArtist = null;
+    }//GEN-LAST:event_tableArtistsFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
