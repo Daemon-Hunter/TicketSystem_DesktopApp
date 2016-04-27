@@ -52,7 +52,7 @@ public class PnlUsers extends javax.swing.JPanel {
             TableModel userData = new UserTableModel(allUsers, allUsers.size());
             tableUsers.setModel(userData);
             }
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | IOException ex) {
             Logger.getLogger(PnlUsers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

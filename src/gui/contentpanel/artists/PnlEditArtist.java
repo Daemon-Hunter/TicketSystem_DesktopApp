@@ -9,11 +9,14 @@ import classes.ImageDensity;
 import events.IArtist;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageFilter;
 import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -275,6 +278,11 @@ public class PnlEditArtist extends javax.swing.JFrame {
         lblAddImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
         lblAddImage.setText("Add Image");
         lblAddImage.setToolTipText("");
+        lblAddImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAddImageMouseClicked(evt);
+            }
+        });
 
         jLabel2.setForeground(new java.awt.Color(250, 250, 250));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -468,6 +476,12 @@ public class PnlEditArtist extends javax.swing.JFrame {
             txtDescription.setText(txtDescription.getText().substring(0, txtDescription.getText().length() - 1));
         }
     }//GEN-LAST:event_txtDescriptionKeyTyped
+
+    private void lblAddImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddImageMouseClicked
+        final JFileChooser fc = new JFileChooser();
+        fc.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png"));
+        int returnedValue = fc.showOpenDialog(this);
+    }//GEN-LAST:event_lblAddImageMouseClicked
 
     /**
      * @param args the command line arguments
