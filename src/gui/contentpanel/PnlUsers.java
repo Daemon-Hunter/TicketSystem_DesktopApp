@@ -19,9 +19,9 @@ public class PnlUsers extends javax.swing.JPanel {
     public PnlUsers() {
         initComponents();
         initPanel();
-        
+
     }
-    
+
     /**
     * Initializes the panels components
     **/
@@ -142,7 +142,6 @@ public class PnlUsers extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchbarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchbarKeyPressed
-        
         
         
     }//GEN-LAST:event_txtSearchbarKeyPressed
