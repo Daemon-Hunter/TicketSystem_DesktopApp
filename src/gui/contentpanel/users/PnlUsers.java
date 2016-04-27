@@ -192,6 +192,22 @@ public class PnlUsers extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchbarMouseClicked
 
     private void tableUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUsersMouseClicked
+        if (currUser == null) {
+            if (allUsers != null) {
+                currUser = allUsers.get(tableUsers.getSelectedRow());
+            }
+        } 
+        else if (currUser.equals(allUsers.get(tableUsers.getSelectedRow()))) {
+            PnlEditUser editPnl = new PnlEditUser();
+            editPnl.setUser(currUser);
+            editPnl.setVisible(true);
+            editPnl.setAlwaysOnTop(true);
+            currUser = null;
+        } else {
+            if (allUsers != null) {
+                currUser = allUsers.get(tableUsers.getSelectedRow());
+            }
+        }
     }//GEN-LAST:event_tableUsersMouseClicked
 
     private void tableUsersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableUsersFocusLost
