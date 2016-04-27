@@ -5,9 +5,8 @@
  */
 package classes;
 
-import datamodel.IArtist;
+import events.IArtist;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,11 +32,11 @@ public class ArtistTableModel extends DefaultTableModel {
             currArtist = artists.get(i);
             String artistTags = "";
 
-            this.setValueAt(currArtist.getArtistName(), i, 0);
+            this.setValueAt(currArtist.getName(), i, 0);
 
             this.setValueAt(currArtist.getDescription(), i, 1);
 
-            for (String tag : currArtist.getArtistTags()) {
+            for (String tag : currArtist.getTags()) {
                 artistTags += tag + ", ";
             }
             if (artistTags.length() > 2) {

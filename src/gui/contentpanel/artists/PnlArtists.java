@@ -6,14 +6,13 @@
 package gui.contentpanel.artists;
 
 import classes.ArtistTableModel;
-import datamodel.IArtist;
+import events.IArtist;
 import gui.Home;
 import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JCheckBox;
 import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
 
@@ -227,7 +226,7 @@ public class PnlArtists extends javax.swing.JPanel {
         if (curArtist == null) {
             if (allArtists != null) {
             curArtist = allArtists.get(tableArtists.getSelectedRow());
-            System.out.println(curArtist.getArtistName());
+            System.out.println(curArtist.getName());
             }
         } 
         else if (curArtist.equals(allArtists.get(tableArtists.getSelectedRow()))) {
