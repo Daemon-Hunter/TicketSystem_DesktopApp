@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.contentpanel.artists;
 
 import classes.ArtistTableModel;
 import datamodel.IArtist;
+import gui.Home;
+import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -72,7 +74,7 @@ public class PnlArtists extends javax.swing.JPanel {
 
                 tableArtists.setModel(artistData);
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             //Handle exception ----------------------------------------------------------------------------------------------------------------------
         }
     }

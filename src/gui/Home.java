@@ -5,6 +5,7 @@
  */
 package gui;
 
+import gui.contentpanel.artists.PnlArtists;
 import gui.contentpanel.*;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -79,6 +80,7 @@ public class Home extends javax.swing.JFrame {
 
         pnlContent.setBackground(new java.awt.Color(51, 51, 51));
         pnlContent.setPreferredSize(new java.awt.Dimension(870, 578));
+        pnlContent.setSize(new java.awt.Dimension(870, 578));
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
