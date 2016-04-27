@@ -230,7 +230,10 @@ public class PnlArtists extends javax.swing.JPanel {
             }
         } 
         else if (curArtist.equals(allArtists.get(tableArtists.getSelectedRow()))) {
-            System.out.println("OPEN THE EDIT DIALOG!");
+            PnlEditArtist editPnl = new PnlEditArtist();
+            editPnl.setArtist(curArtist);
+            editPnl.setVisible(true);
+            editPnl.setAlwaysOnTop(true);
             curArtist = null;
         } else {
             if (allArtists != null) {
