@@ -8,6 +8,7 @@ package gui;
 import gui.contentpanel.artists.PnlArtists;
 import gui.contentpanel.*;
 import gui.contentpanel.bookings.PnlBookings;
+import gui.contentpanel.users.PnlUsers;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -182,7 +183,7 @@ public class Home extends javax.swing.JFrame {
         // Creates a new insatance of the content panels
         JPanel home = new PnlHome();
         JPanel bookings = new PnlBookings(this);
-        JPanel users = new PnlUsers();
+        JPanel users = new PnlUsers(this);
         JPanel artists = new PnlArtists(this);
         
         // Sets the size of the content panels to match the 'container' panel
