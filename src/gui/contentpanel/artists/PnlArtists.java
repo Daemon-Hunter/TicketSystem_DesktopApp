@@ -225,12 +225,18 @@ public class PnlArtists extends javax.swing.JPanel {
     private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
         if (curArtist == null) {
             if (allArtists != null) {
-            curArtist = allArtists.get(tableArtists.getSelectedRow());
-            System.out.println(curArtist.getName());
+                curArtist = allArtists.get(tableArtists.getSelectedRow());
+                System.out.println(curArtist.getName());
             }
         } 
         else if (curArtist.equals(allArtists.get(tableArtists.getSelectedRow()))) {
             System.out.println("OPEN THE EDIT DIALOG!");
+            curArtist = null;
+        } else {
+            if (allArtists != null) {
+                curArtist = allArtists.get(tableArtists.getSelectedRow());
+                System.out.println(curArtist.getName());
+            }
         }
     }//GEN-LAST:event_tableArtistsMouseClicked
 
