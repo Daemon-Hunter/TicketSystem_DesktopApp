@@ -64,10 +64,10 @@ public class PnlSidebar extends javax.swing.JPanel {
                 lblEvents.setIcon(icon);
                 break;
                 
-            case HELP:
-                lblHelp.setForeground(Color.LIGHT_GRAY);
+            case BOOKINGS:
+                lblBookings.setForeground(Color.LIGHT_GRAY);
                 icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
-                lblHelp.setIcon(icon);
+                lblBookings.setIcon(icon);
                 break;
         }
     }
@@ -92,7 +92,7 @@ public class PnlSidebar extends javax.swing.JPanel {
         pnlEvents = new javax.swing.JPanel();
         lblEvents = new javax.swing.JLabel();
         pnlHelp = new javax.swing.JPanel();
-        lblHelp = new javax.swing.JLabel();
+        lblBookings = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
 
@@ -242,15 +242,18 @@ public class PnlSidebar extends javax.swing.JPanel {
 
         pnlHelp.setBackground(new java.awt.Color(51, 51, 51));
 
-        lblHelp.setForeground(new java.awt.Color(204, 204, 204));
-        lblHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/helpIcon.png"))); // NOI18N
-        lblHelp.setText("     HELP");
-        lblHelp.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblBookings.setForeground(new java.awt.Color(204, 204, 204));
+        lblBookings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/helpIcon.png"))); // NOI18N
+        lblBookings.setText("    BOOKINGS");
+        lblBookings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblBookingsMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblHelpMouseExited(evt);
+                lblBookingsMouseExited(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblHelpMouseEntered(evt);
+                lblBookingsMouseEntered(evt);
             }
         });
 
@@ -260,11 +263,11 @@ public class PnlSidebar extends javax.swing.JPanel {
             pnlHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlHelpLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblBookings, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnlHelpLayout.setVerticalGroup(
             pnlHelpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblHelp, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+            .addComponent(lblBookings, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -330,21 +333,22 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblEvents.setIcon(icon);
     }//GEN-LAST:event_lblEventsMouseEntered
 
-    private void lblHelpMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseExited
-        if (parent.getPage() != Pages.HELP) {
+    private void lblBookingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBookingsMouseExited
+        if (parent.getPage() != Pages.BOOKINGS) {
             // Set the font and image light grey
-            lblHelp.setForeground(Color.LIGHT_GRAY);
+            lblBookings.setForeground(Color.LIGHT_GRAY);
             Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
-            lblHelp.setIcon(icon);
+            lblBookings.setIcon(icon);
         }
-    }//GEN-LAST:event_lblHelpMouseExited
+    }//GEN-LAST:event_lblBookingsMouseExited
 
-    private void lblHelpMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHelpMouseEntered
+    private void lblBookingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBookingsMouseEntered
         // Set the font and image white
-        lblHelp.setForeground(Color.WHITE);
+        lblBookings.setForeground(Color.WHITE);
+        System.out.println("CHANGE");
         Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIconRollover.png"));
-        lblHelp.setIcon(icon);
-    }//GEN-LAST:event_lblHelpMouseEntered
+        lblBookings.setIcon(icon);
+    }//GEN-LAST:event_lblBookingsMouseEntered
 
     private void lblEventsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEventsMouseExited
         if (parent.getPage() != Pages.EVENTS) {
@@ -412,11 +416,18 @@ public class PnlSidebar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_lblArtistsMouseClicked
 
+    private void lblBookingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBookingsMouseClicked
+        if(parent.getPage() != Pages.BOOKINGS){
+            deselectPage(parent.getPage());
+            parent.setPage(Pages.BOOKINGS);
+        }
+    }//GEN-LAST:event_lblBookingsMouseClicked
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblArtists;
+    private javax.swing.JLabel lblBookings;
     private javax.swing.JLabel lblEvents;
-    private javax.swing.JLabel lblHelp;
     private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblUsers;
     private javax.swing.JLabel lblVenues;

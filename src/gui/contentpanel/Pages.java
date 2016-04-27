@@ -15,5 +15,5 @@ public enum Pages {
     VENUES,
     ARTISTS,
     EVENTS,
-    HELP;
+    BOOKINGS;
 }
