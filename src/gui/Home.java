@@ -9,6 +9,7 @@ import gui.contentpanel.artists.PnlArtists;
 import gui.contentpanel.*;
 import gui.contentpanel.bookings.PnlBookings;
 import gui.contentpanel.users.PnlUsers;
+import gui.contentpanel.venues.PnlVenues;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -185,18 +186,22 @@ public class Home extends javax.swing.JFrame {
         JPanel bookings = new PnlBookings(this);
         JPanel users = new PnlUsers(this);
         JPanel artists = new PnlArtists(this);
+        JPanel venues = new PnlVenues(this);
         
         // Sets the size of the content panels to match the 'container' panel
         home.setMinimumSize(pnlContent.getSize());
         users.setMinimumSize(pnlContent.getSize());
         artists.setMinimumSize(pnlContent.getSize());
         bookings.setMinimumSize(pnlContent.getSize());
+        venues.setMinimumSize(pnlContent.getSize());
+        
         
         // Add the panels to the 'container' panel, with specified indexes
         pnlContent.add(home, Pages.HOME.toString());
         pnlContent.add(users, Pages.USERS.toString());
         pnlContent.add(artists, Pages.ARTISTS.toString());
         pnlContent.add(bookings,Pages.BOOKINGS.toString());
+        pnlContent.add(venues,Pages.VENUES.toString());
         
         cards = (CardLayout)(pnlContent.getLayout());
         
