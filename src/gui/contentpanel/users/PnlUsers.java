@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.contentpanel.bookings;
+package gui.contentpanel.users;
 
-import gui.contentpanel.artists.*;
 import classes.ArtistTableModel;
-import events.IArtist;
+import gui.contentpanel.bookings.*;
+import gui.contentpanel.artists.*;
+import people.IUser;
 import gui.Home;
 import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
@@ -21,41 +23,40 @@ import wrappers.DesktopWrapper;
  *
  * @author 10512691
  */
-public class PnlBookings extends javax.swing.JPanel {
+public class PnlUsers extends javax.swing.JPanel {
     
     private Home parent = null;
-    
+    private List<IUser> allUsers;
+    private IUser currUser;
+
 
     /**
-     * Creates new Artist panel
+     * Creates new User panel
      * @param parent
      */
-    public PnlBookings(Home parent) {
+    public PnlUsers(Home parent) {
         
         initComponents();
         this.parent = parent;
         
         txtSearchbar.setBorder(new RoundedBorder());
-        
-//        populateTable();
-        
+        populateTable();
     }
     
-//    public final void populateTable() {
-//        try {
-//            allArtists = new ArrayList (DesktopWrapper.getInstance().getArtists());
-//
-//            if (allArtists.size() > 0) {
-//
-//                // Creates a table model
-//                TableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
-//
-//                tableArtists.setModel(artistData);
-//            }
-//        } catch (IOException e) {
-//            //Handle exception ----------------------------------------------------------------------------------------------------------------------
-//        }
-//    }
+    public final void populateTable() {
+  
+        try {
+            allUsers = DesktopWrapper.getInstance().getUsers();
+            if(allUsers.size() > 0)
+            {
+            TableModel userData = new UserTableModel(allUsers, allUsers.size());
+            tableUsers.setModel(userData);
+            }
+        } catch (IllegalArgumentException | IOException ex) {
+            Logger.getLogger(PnlUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     public void setParent(Home parent) {
         this.parent = parent;
@@ -73,7 +74,7 @@ public class PnlBookings extends javax.swing.JPanel {
         jDialog1 = new javax.swing.JDialog();
         txtSearchbar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
-        tableArtists = new javax.swing.JTable();
+        tableUsers = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
 
@@ -103,45 +104,34 @@ public class PnlBookings extends javax.swing.JPanel {
             }
         });
 
-        tableArtists.setModel(new javax.swing.table.DefaultTableModel(
+        tableUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Name", "Description", "Tags", "More"
+                "Name", "Email", "Address", "Postcode"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
         });
-        tableArtists.getTableHeader().setReorderingAllowed(false);
-        tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
+        tableUsers.getTableHeader().setReorderingAllowed(false);
+        tableUsers.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                tableArtistsFocusLost(evt);
+                tableUsersFocusLost(evt);
             }
         });
-        tableArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableUsers.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableArtistsMouseClicked(evt);
+                tableUsersMouseClicked(evt);
             }
         });
-        tableScrollPane.setViewportView(tableArtists);
-        if (tableArtists.getColumnModel().getColumnCount() > 0) {
-            tableArtists.getColumnModel().getColumn(0).setPreferredWidth(20);
-            tableArtists.getColumnModel().getColumn(3).setHeaderValue("More");
-        }
+        tableScrollPane.setViewportView(tableUsers);
 
         searchPnl.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -201,20 +191,21 @@ public class PnlBookings extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtSearchbarMouseClicked
 
-    private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
-    }//GEN-LAST:event_tableArtistsMouseClicked
+    private void tableUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUsersMouseClicked
+    }//GEN-LAST:event_tableUsersMouseClicked
 
-    private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
-    }//GEN-LAST:event_tableArtistsFocusLost
+    private void tableUsersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableUsersFocusLost
+    }//GEN-LAST:event_tableUsersFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
-    private javax.swing.JTable tableArtists;
     private javax.swing.JScrollPane tableScrollPane;
+    private javax.swing.JTable tableUsers;
     private javax.swing.JTextField txtSearchbar;
     // End of variables declaration//GEN-END:variables
 
 }
+
