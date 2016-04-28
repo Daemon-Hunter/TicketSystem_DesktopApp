@@ -6,7 +6,7 @@
 package gui.contentpanel.venues;
 
 import gui.contentpanel.users.*;
-import classes.ArtistTableModel;
+import gui.contentpanel.artists.ArtistTableModel;
 import events.IVenue;
 import gui.contentpanel.bookings.*;
 import gui.contentpanel.artists.*;

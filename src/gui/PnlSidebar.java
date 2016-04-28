@@ -351,7 +351,6 @@ public class PnlSidebar extends javax.swing.JPanel {
     private void lblBookingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblBookingsMouseEntered
         // Set the font and image white
         lblBookings.setForeground(Color.WHITE);
-        System.out.println("CHANGE");
         Icon icon = new ImageIcon(getClass().getResource("/images/icons/helpIconRollover.png"));
         lblBookings.setIcon(icon);
     }//GEN-LAST:event_lblBookingsMouseEntered

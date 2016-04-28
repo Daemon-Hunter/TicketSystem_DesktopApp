@@ -5,7 +5,7 @@
  */
 package gui.contentpanel.users;
 
-import classes.ArtistTableModel;
+import gui.contentpanel.artists.ArtistTableModel;
 import gui.contentpanel.bookings.*;
 import gui.contentpanel.artists.*;
 import people.IUser;

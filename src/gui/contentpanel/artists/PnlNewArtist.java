@@ -23,7 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author 10512691
  */
-public class PnlEditArtist extends javax.swing.JFrame {
+public class PnlNewArtist extends javax.swing.JFrame {
 
     private IArtist artist;
     private PnlArtists parent;
@@ -31,17 +31,12 @@ public class PnlEditArtist extends javax.swing.JFrame {
     /**
      * Creates new form PnlEditArtist
      */
-    public PnlEditArtist() {
+    public PnlNewArtist() {
         initComponents();
         initHelpDialog();
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
-    }
-    
-    public void setArtist(IArtist artist) {
-        this.artist = artist;
-        initPanel();
     }
     
     public void setParent(PnlArtists parent) {
@@ -57,94 +52,6 @@ public class PnlEditArtist extends javax.swing.JFrame {
         helpType.setToolTipText("Select the type of performer.");
         helpTags.setToolTipText("Define any tags that describe the performer. Seperate with commas (' , ').");
         helpLinks.setToolTipText("Enter official social media links. Must start with 'https://'.");
-    }
-    
-    private void initPanel() {
-        txtName.setText(artist.getName());
-        
-        txtDescription.setText(artist.getDescription());
-        
-        lblDescriptionRemaining.setText((descLength - artist.getDescription().length()) + " characters remaining");
-        
-        String tags = "";
-        for (String tag : artist.getTags()) {
-            tags += tag + ", ";
-        }
-        tags = tags.substring(0, tags.length() - 2);
-        txtTags.setText(tags);
-        
-        
-        switch (artist.getType()) {
-            case "Singer":
-                jComboBox1.setSelectedIndex(0);
-                break;
-            case "Comedian":
-                jComboBox1.setSelectedIndex(1);
-                break;
-            case "Sports Team":
-                jComboBox1.setSelectedIndex(2);
-                break;
-            case "Band":
-                jComboBox1.setSelectedIndex(3);
-                break;
-            case "DJ":
-                jComboBox1.setSelectedIndex(4);
-                break;
-        }
-        
-        try {
-            txtFacebook.setText(artist.getFacebook());
-        }
-        catch (NullPointerException ex) {
-            txtFacebook.setText("https://");
-        }
-        
-        try {
-            txtTwitter.setText(artist.getTwitter());
-        }
-        catch (NullPointerException ex) {
-            txtTwitter.setText("https://");
-        }
-        
-       try {
-            txtInstagram.setText("https://");
-        } 
-       catch (NullPointerException ex) {
-            txtInstagram.setText(artist.getInstagram());
-        }
-        
-        try {
-            txtSoundcloud.setText("https://");
-        } 
-        catch (NullPointerException ex) {
-            txtSoundcloud.setText(artist.getSoundcloud());
-        }
-        
-        try {
-            txtSpotify.setText("https://");
-        }
-        catch (NullPointerException ex) {
-            txtSpotify.setText(artist.getSpotify());
-        }
-        
-        try {
-            txtWebsite.setText("https://");
-        } 
-        catch (NullPointerException ex) {
-            txtWebsite.setText(artist.getWebsite());
-        }
-        
-        BufferedImage original = artist.getImage(0);
-        
-        // Remove following code after 'SAVE' functionality implemented.     //
-        // Once uploading through the desktop site - all images will be      //
-        // in the correct size through use of ImageDensity class             //
-        BufferedImage mdpi = new BufferedImage(160, 160, original.getType());//
-        Graphics2D g = mdpi.createGraphics();                                //
-        g.drawImage(original, 0, 0, 160, 160, null);                         //
-        g.dispose();
-        
-        lblImage.setIcon(new ImageIcon(mdpi));
     }
 
     /**
@@ -549,10 +456,11 @@ public class PnlEditArtist extends javax.swing.JFrame {
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addComponent(lblDetailsTitle)
                         .addGap(21, 21, 21)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblName)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(helpName))
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(helpName)
+                            .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblName)
+                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(16, 16, 16)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
@@ -668,7 +576,9 @@ public class PnlEditArtist extends javax.swing.JFrame {
                                                   // Didn't want to delete from database for
                                                   // booking history / integrity
                 dispose();
-                parent.displayText("Artist deleted");
+                if (parent != null) {
+                    parent.displayText("Artist deleted");
+                }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -691,7 +601,7 @@ public class PnlEditArtist extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PnlEditArtist().setVisible(true);
+                new PnlNewArtist().setVisible(true);
             }
         });
     }

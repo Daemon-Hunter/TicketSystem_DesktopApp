@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes;
+package gui.contentpanel.artists;
 
 import events.IArtist;
 import java.util.List;
@@ -20,7 +20,7 @@ public class ArtistTableModel extends DefaultTableModel {
     private final List<IArtist> artists;
     
     
-    // access to parent -> wrapper. therefore can get access to artist list, and then open
+    // access to parent, and therefore wrapper. Can get access to artist list, and then open
     // new JPanel that displays the artist data. Pass JPanel the artist object.
     public ArtistTableModel(List<IArtist> artists, int rows) {
         super(rows, 4);
@@ -28,6 +28,7 @@ public class ArtistTableModel extends DefaultTableModel {
         
         IArtist currArtist;
         
+        // Populate model with data
         for (int i = 0; i < 20 && i < artists.size(); i++) {
             currArtist = artists.get(i);
             String artistTags = "";

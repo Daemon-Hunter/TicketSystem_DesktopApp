@@ -6,7 +6,7 @@
 package gui.contentpanel.bookings;
 
 import gui.contentpanel.artists.*;
-import classes.ArtistTableModel;
+import gui.contentpanel.artists.ArtistTableModel;
 import events.IArtist;
 import gui.Home;
 import gui.RoundedBorder;
