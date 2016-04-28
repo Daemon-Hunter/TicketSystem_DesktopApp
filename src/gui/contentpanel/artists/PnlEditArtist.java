@@ -47,16 +47,16 @@ public class PnlEditArtist extends javax.swing.JFrame {
     public void setArtist(IArtist artist) {
         this.artist = artist;
         initPanel();
-        initHelpDialog();
+        //initHelpDialog();
         lblAddImage.setToolTipText("add");
         lblRemoveImage.setToolTipText("remove");
     }
     
-    private void initHelpDialog() {
-        pnlAddHelp.setBackground(new Color(255,255,153, 100));
-        pnlAddHelp.setBorder(new RoundedBorder());
-        pnlAddHelp.setVisible(false);
-    }
+//    private void initHelpDialog() {
+//        pnlAddHelp.setBackground(new Color(255,255,153, 100));
+//        pnlAddHelp.setBorder(new RoundedBorder());
+//        pnlAddHelp.setVisible(false);
+//    }
     
     private void initPanel() {
         txtName.setText(artist.getName());
