@@ -17,40 +17,27 @@ public class ImageDensity {
     
     public static ArrayList<BufferedImage> create5(BufferedImage original) {
         
-        if (original != null) {
             ArrayList<BufferedImage> results = new ArrayList<>(5);
             
-            BufferedImage ldpi = new BufferedImage(120, 120, original.getType());
-            Graphics2D g = ldpi.createGraphics();
-            g.drawImage(original, 0, 0, 120, 120, null);
-            g.dispose();
-            results.add(ldpi);
-            
-            BufferedImage mdpi = new BufferedImage(160, 160, original.getType());
-            g = mdpi.createGraphics();
-            g.drawImage(original, 0, 0, 160, 160, null);
-            g.dispose();
-            results.add(mdpi);
-            
-            BufferedImage hdpi = new BufferedImage(240, 240, original.getType());
-            g = hdpi.createGraphics();
-            g.drawImage(original, 0, 0, 240, 240, null);
-            g.dispose();
-            results.add(hdpi);
-            
-            BufferedImage xhdpi = new BufferedImage(320, 320, original.getType());
-            g = xhdpi.createGraphics();
-            g.drawImage(original, 0, 0, 320, 320, null);
-            g.dispose();
-            results.add(xhdpi);
-            
-            BufferedImage xxhdpi = new BufferedImage(480, 480, original.getType());
-            g = xxhdpi.createGraphics();
-            g.drawImage(original, 0, 0, 480, 480, null);
-            g.dispose();
-            results.add(xxhdpi);
+            results.add(resizeImage(120, 120, original));
+            results.add(resizeImage(160, 160, original));
+            results.add(resizeImage(240, 240, original));
+            results.add(resizeImage(320, 320, original));
+            results.add(resizeImage(480, 480, original));
             
             return results;
+    }
+    
+    private static BufferedImage resizeImage(int width, int height, BufferedImage original) {
+        if (original != null) 
+        {
+            BufferedImage newImage = new BufferedImage(width, height, original.getType());
+            Graphics2D g = newImage.createGraphics();
+            g.drawImage(original, 0, 0, width, height, null);
+            g.dispose();
+            
+            return newImage;
+            
         } else {
             throw new NullPointerException("Null original image");
         }
