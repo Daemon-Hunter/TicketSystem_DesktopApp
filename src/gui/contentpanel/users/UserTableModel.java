@@ -16,11 +16,11 @@ import people.IUser;
  */
 public class UserTableModel extends DefaultTableModel{
       
-   private final String[] headers = { "Name", "Email", "Address", "Postcode"};
+   private final String[] headers = { "Name", "Email", "Address", "Postcode","View User Details"};
    private final List<IUser> users;
 
    public UserTableModel(List<IUser> users, int size){
-       super(size,4);
+       super(size,5);
        this.users = users;
        
        for (int i = 0; i < 20 && i < users.size(); i++) {
@@ -33,6 +33,7 @@ public class UserTableModel extends DefaultTableModel{
               this.setValueAt(currUser.getEmail(),i,1);
               this.setValueAt(currUser.getAddress(),i,2);
               this.setValueAt(currUser.getPostcode(), i, 3);
+              this.setValueAt("Click Here!",i,4);
        }
 
        

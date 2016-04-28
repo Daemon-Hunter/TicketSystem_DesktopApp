@@ -162,6 +162,9 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblVenues.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/venueIcon.png"))); // NOI18N
         lblVenues.setText("     VENUES");
         lblVenues.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblVenuesMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblVenuesMouseExited(evt);
             }
@@ -219,6 +222,9 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblEvents.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/eventIcon.png"))); // NOI18N
         lblEvents.setText("     EVENTS");
         lblEvents.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblEventsMouseClicked(evt);
+            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblEventsMouseExited(evt);
             }
@@ -422,6 +428,20 @@ public class PnlSidebar extends javax.swing.JPanel {
             parent.setPage(Pages.BOOKINGS);
         }
     }//GEN-LAST:event_lblBookingsMouseClicked
+
+    private void lblEventsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEventsMouseClicked
+       if(parent.getPage() != Pages.EVENTS){
+            deselectPage(parent.getPage());
+            parent.setPage(Pages.EVENTS);
+       }
+    }//GEN-LAST:event_lblEventsMouseClicked
+
+    private void lblVenuesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVenuesMouseClicked
+       if(parent.getPage() != Pages.VENUES){
+            deselectPage(parent.getPage());
+            parent.setPage(Pages.VENUES);
+       }
+    }//GEN-LAST:event_lblVenuesMouseClicked
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

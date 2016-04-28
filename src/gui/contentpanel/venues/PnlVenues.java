@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.contentpanel.users;
+package gui.contentpanel.venues;
 
+import gui.contentpanel.users.*;
 import classes.ArtistTableModel;
+import events.IVenue;
 import gui.contentpanel.bookings.*;
 import gui.contentpanel.artists.*;
 import people.IUser;
@@ -23,18 +25,18 @@ import wrappers.DesktopWrapper;
  *
  * @author 10512691
  */
-public class PnlUsers extends javax.swing.JPanel {
+public class PnlVenues extends javax.swing.JPanel {
     
     private Home parent = null;
-    private List<IUser> allUsers;
-    private IUser currUser;
+    private List<IVenue> allVenues;
+    private IVenue currVenue;
 
 
     /**
      * Creates new User panel
      * @param parent
      */
-    public PnlUsers(Home parent) {
+    public PnlVenues(Home parent) {
         
         initComponents();
         this.parent = parent;
@@ -46,14 +48,14 @@ public class PnlUsers extends javax.swing.JPanel {
     public final void populateTable() {
   
         try {
-            allUsers = DesktopWrapper.getInstance().getUsers();
-            if(allUsers.size() > 0)
+            allVenues = DesktopWrapper.getInstance().getVenues();
+            if(allVenues.size() > 0)
             {
-            TableModel userData = new UserTableModel(allUsers, allUsers.size());
-            tableUsers.setModel(userData);
+            VenueTableModel venueData = new VenueTableModel(allVenues, allVenues.size());
+            tableVenues.setModel(venueData);
             }
         } catch (IllegalArgumentException | IOException ex) {
-            Logger.getLogger(PnlUsers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PnlVenues.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -74,7 +76,7 @@ public class PnlUsers extends javax.swing.JPanel {
         jDialog1 = new javax.swing.JDialog();
         txtSearchbar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
-        tableUsers = new javax.swing.JTable();
+        tableVenues = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
 
@@ -109,7 +111,7 @@ public class PnlUsers extends javax.swing.JPanel {
             }
         });
 
-        tableUsers.setModel(new javax.swing.table.DefaultTableModel(
+        tableVenues.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -118,10 +120,10 @@ public class PnlUsers extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, true, false
+                true, true, true, true, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -132,25 +134,20 @@ public class PnlUsers extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tableUsers.getTableHeader().setReorderingAllowed(false);
-        tableUsers.addFocusListener(new java.awt.event.FocusAdapter() {
+        tableVenues.getTableHeader().setReorderingAllowed(false);
+        tableVenues.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                tableUsersFocusLost(evt);
+                tableVenuesFocusLost(evt);
             }
         });
-        tableUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableVenues.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableUsersMouseClicked(evt);
+                tableVenuesMouseClicked(evt);
             }
         });
-        tableScrollPane.setViewportView(tableUsers);
-        if (tableUsers.getColumnModel().getColumnCount() > 0) {
-            tableUsers.getColumnModel().getColumn(0).setResizable(false);
-            tableUsers.getColumnModel().getColumn(1).setResizable(false);
-            tableUsers.getColumnModel().getColumn(3).setResizable(false);
-            tableUsers.getColumnModel().getColumn(4).setResizable(false);
-            tableUsers.getColumnModel().getColumn(5).setResizable(false);
-            tableUsers.getColumnModel().getColumn(6).setResizable(false);
+        tableScrollPane.setViewportView(tableVenues);
+        if (tableVenues.getColumnModel().getColumnCount() > 0) {
+            tableVenues.getColumnModel().getColumn(4).setResizable(false);
         }
 
         searchPnl.setBackground(new java.awt.Color(51, 51, 51));
@@ -211,27 +208,27 @@ public class PnlUsers extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtSearchbarMouseClicked
 
-    private void tableUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUsersMouseClicked
-        if (currUser == null) {
-            if (allUsers != null) {
-                currUser = allUsers.get(tableUsers.getSelectedRow());
+    private void tableVenuesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableVenuesMouseClicked
+        if (currVenue == null) {
+            if (allVenues != null) {
+                currVenue = allVenues.get(tableVenues.getSelectedRow());
             }
         } 
-        else if (currUser.equals(allUsers.get(tableUsers.getSelectedRow()))) {
-            PnlEditUser editPnl = new PnlEditUser();
-            editPnl.setUser(currUser);
-            editPnl.setVisible(true);
-            editPnl.setAlwaysOnTop(true);
-            currUser = null;
+        else if (currVenue.equals(allVenues.get(tableVenues.getSelectedRow()))) {
+       //     PnlEditVenue editPnl = new PnlEditVenue();
+       //     editPnl.setVenue(currVenue);
+       //     editPnl.setVisible(true);
+       //     editPnl.setAlwaysOnTop(true);
+            currVenue = null;
         } else {
-            if (allUsers != null) {
-                currUser = allUsers.get(tableUsers.getSelectedRow());
+            if (allVenues != null) {
+                currVenue = allVenues.get(tableVenues.getSelectedRow());
             }
         }
-    }//GEN-LAST:event_tableUsersMouseClicked
+    }//GEN-LAST:event_tableVenuesMouseClicked
 
-    private void tableUsersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableUsersFocusLost
-    }//GEN-LAST:event_tableUsersFocusLost
+    private void tableVenuesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableVenuesFocusLost
+    }//GEN-LAST:event_tableVenuesFocusLost
 
     private void txtSearchbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchbarActionPerformed
         // TODO add your handling code here:
@@ -243,7 +240,7 @@ public class PnlUsers extends javax.swing.JPanel {
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JTable tableUsers;
+    private javax.swing.JTable tableVenues;
     private javax.swing.JTextField txtSearchbar;
     // End of variables declaration//GEN-END:variables
 
