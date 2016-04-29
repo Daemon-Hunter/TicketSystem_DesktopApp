@@ -8,7 +8,9 @@ package gui.contentpanel.events;
 import events.IChildEvent;
 import events.IParentEvent;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,15 +32,25 @@ public class EventTableModel extends DefaultTableModel{
                for (int i = 0; i < 20 && i < events.size(); i++) {
               IChildEvent currEvent = events.get(i);
               String startTime, endTime;
-                      
+              DateFormat dateFormatter;
+         
 
+            try{    
+                   startTime = currEvent.getStartDateTime().toString().substring(0,10);
+                   startTime += " - " + currEvent.getStartDateTime().toString().substring(10,19);
+                   endTime = currEvent.getEndDateTime().toString().substring(0,10);
+                   endTime += " - " + currEvent.getEndDateTime().toString().substring(10,19);
+            }catch(IllegalArgumentException ex)
+            {
+                startTime = "No StartTime Found" ;
+                endTime = "No StartTime Found" ;
 
+            }
               this.setValueAt(currEvent.getName(), i, 0);
               this.setValueAt(currEvent.getDescription(),i,1);
               this.setValueAt(currEvent.getVenue().getName(),i,2);
-              this.setValueAt(currEvent.getStartDateTime().toString(), i, 3);
-              this.setValueAt(currEvent.getEndDateTime().toString(), i, 4);
-
+              this.setValueAt(startTime, i, 3);
+              this.setValueAt(endTime, i, 4);
     }
 
        

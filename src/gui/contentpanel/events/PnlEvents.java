@@ -5,20 +5,20 @@
  */
 package gui.contentpanel.events;
 
-import gui.contentpanel.bookings.*;
-import gui.contentpanel.artists.*;
-import events.IArtist;
+import events.IChildEvent;
 import events.IParentEvent;
 import gui.Home;
 import gui.RoundedBorder;
+import gui.contentpanel.artists.PnlEditArtist;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
-import javax.swing.table.TableModel;
+import javax.swing.Timer;
 import wrappers.DesktopWrapper;
 
 /**
@@ -29,20 +29,21 @@ public class PnlEvents extends javax.swing.JPanel {
     
     private Home parent = null;
     List<IParentEvent> allParentEvents;
-    DefaultListModel<String> listParentEventModel;
+    private DefaultListModel listParentEventModel;
+    IParentEvent currParentEvent;
+    IChildEvent currChildEvent;
+    List<IChildEvent> currParentEvents_ChildEvents;
 
     /**
      * Creates new Artist panel
      * @param parent
      */
     public PnlEvents(Home parent) {
-        
+        listParentEventModel = new DefaultListModel();
         initComponents();
         this.parent = parent;
         txtSearchbar.setBorder(new RoundedBorder());
-        listParentEventModel = new DefaultListModel();
-        populateParentEventsList();
-        
+        refreshParentEventsList();       
     }
     
     
@@ -62,7 +63,7 @@ public class PnlEvents extends javax.swing.JPanel {
         jDialog1 = new javax.swing.JDialog();
         txtSearchbar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
-        tableArtists = new javax.swing.JTable();
+        tableChildEvents = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -73,6 +74,8 @@ public class PnlEvents extends javax.swing.JPanel {
         txtDescription = new javax.swing.JTextArea();
         lblDescriptionRemaining = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        infoTextBox = new javax.swing.JTextArea();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -87,7 +90,7 @@ public class PnlEvents extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchbar.setText("Search Artists...");
+        txtSearchbar.setText("Search Events");
         txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -100,7 +103,7 @@ public class PnlEvents extends javax.swing.JPanel {
             }
         });
 
-        tableArtists.setModel(new javax.swing.table.DefaultTableModel(
+        tableChildEvents.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -123,25 +126,20 @@ public class PnlEvents extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tableArtists.getTableHeader().setReorderingAllowed(false);
-        tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
+        tableChildEvents.getTableHeader().setReorderingAllowed(false);
+        tableChildEvents.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                tableArtistsFocusLost(evt);
+                tableChildEventsFocusLost(evt);
             }
         });
-        tableArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableChildEvents.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableArtistsMouseClicked(evt);
+                tableChildEventsMouseClicked(evt);
             }
         });
-        tableScrollPane.setViewportView(tableArtists);
-        if (tableArtists.getColumnModel().getColumnCount() > 0) {
-            tableArtists.getColumnModel().getColumn(0).setPreferredWidth(20);
-            tableArtists.getColumnModel().getColumn(0).setHeaderValue("Name");
-            tableArtists.getColumnModel().getColumn(1).setHeaderValue("Description");
-            tableArtists.getColumnModel().getColumn(2).setHeaderValue("Venue");
-            tableArtists.getColumnModel().getColumn(3).setHeaderValue("Start Time");
-            tableArtists.getColumnModel().getColumn(4).setHeaderValue("End Time");
+        tableScrollPane.setViewportView(tableChildEvents);
+        if (tableChildEvents.getColumnModel().getColumnCount() > 0) {
+            tableChildEvents.getColumnModel().getColumn(0).setPreferredWidth(20);
         }
 
         searchPnl.setBackground(new java.awt.Color(51, 51, 51));
@@ -169,6 +167,16 @@ public class PnlEvents extends javax.swing.JPanel {
         jSeparator1.setToolTipText("");
 
         listParentEvents.setModel(listParentEventModel);
+        listParentEvents.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listParentEventsMouseClicked(evt);
+            }
+        });
+        listParentEvents.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listParentEventsValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(listParentEvents);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 15)); // NOI18N
@@ -187,6 +195,7 @@ public class PnlEvents extends javax.swing.JPanel {
         txtDescription.setWrapStyleWord(true);
         txtDescription.setCaretColor(new java.awt.Color(250, 250, 250));
         txtDescription.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtDescription.setEnabled(false);
         txtDescription.setSelectedTextColor(new java.awt.Color(250, 250, 250));
         txtDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -203,6 +212,21 @@ public class PnlEvents extends javax.swing.JPanel {
         lblDescription.setForeground(new java.awt.Color(255, 255, 255));
         lblDescription.setText("Description");
 
+        jScrollPane3.setBorder(null);
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        infoTextBox.setEditable(false);
+        infoTextBox.setBackground(new java.awt.Color(51, 51, 51));
+        infoTextBox.setColumns(20);
+        infoTextBox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        infoTextBox.setLineWrap(true);
+        infoTextBox.setRows(5);
+        infoTextBox.setWrapStyleWord(true);
+        infoTextBox.setAutoscrolls(false);
+        infoTextBox.setDragEnabled(false);
+        jScrollPane3.setViewportView(infoTextBox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,60 +236,61 @@ public class PnlEvents extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(96, 96, 96)
+                        .addComponent(lblDescription))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(lblDescriptionRemaining)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                                .addComponent(lblDescription)
-                                .addGap(158, 158, 158)))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDescriptionRemaining))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tableScrollPane)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(82, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtSearchbar))
                         .addGap(18, 18, 18)
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 25, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(112, 112, 112)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblDescription))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(161, 161, 161)
-                        .addComponent(lblDescription)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDescriptionRemaining)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblDescriptionRemaining)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -280,11 +305,33 @@ public class PnlEvents extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtSearchbarMouseClicked
 
-    private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
-    }//GEN-LAST:event_tableArtistsMouseClicked
+    private void tableChildEventsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableChildEventsMouseClicked
+           if(currChildEvent == null)
+       {
+           if(currParentEvents_ChildEvents != null)
+           {
+              currChildEvent = currParentEvents_ChildEvents.get(tableChildEvents.getSelectedRow());
+           }
+       } else if(currChildEvent.equals(currParentEvents_ChildEvents.get(tableChildEvents.getSelectedRow())));
+       {
+            PnlEditChildEvents editPnl = new PnlEditChildEvents();
+               try {
+                   editPnl.setChildEvent(currChildEvent,currChildEvent.getParentEvent());
+               } catch (IOException ex) {
+                   Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
+               }
+            editPnl.setParent(this);
+            editPnl.setVisible(true);
+            editPnl.setAlwaysOnTop(true);
+            currParentEvent = null;
 
-    private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
-    }//GEN-LAST:event_tableArtistsFocusLost
+       }
+       
+       
+    }//GEN-LAST:event_tableChildEventsMouseClicked
+
+    private void tableChildEventsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableChildEventsFocusLost
+    }//GEN-LAST:event_tableChildEventsFocusLost
 
     private void txtDescriptionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescriptionKeyTyped
         // Allow user to type if the description length is < 500
@@ -296,26 +343,110 @@ public class PnlEvents extends javax.swing.JPanel {
 //        }
     }//GEN-LAST:event_txtDescriptionKeyTyped
 
+    private void listParentEventsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listParentEventsValueChanged
+        populateChildEvents();        
+    }//GEN-LAST:event_listParentEventsValueChanged
+
+    private void listParentEventsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listParentEventsMouseClicked
+       if(currParentEvent == null)
+       {
+           if(allParentEvents != null)
+           {
+              currParentEvent = allParentEvents.get(listParentEvents.getSelectedIndex());
+           }
+       } else if(currParentEvent.equals(allParentEvents.get(listParentEvents.getSelectedIndex())))
+       {
+            PnlEditParentEvent editPnl = new PnlEditParentEvent();
+            editPnl.setParentEvent(currParentEvent);
+            editPnl.setParent(this);
+            editPnl.setVisible(true);
+            editPnl.setAlwaysOnTop(true);
+            currParentEvent = null;
+
+       }
+       
+       
+    }//GEN-LAST:event_listParentEventsMouseClicked
+    /**
+     * Displays a message that fades out after 2 seconds.
+     * Use for notifying user.
+     * @param text Must be less than 30 characters.
+     */
+    public void displayText(String text) {
+        infoTextBox.setForeground(new Color(251,251,251));
+        infoTextBox.setText(text);
+
+        Timer t = new Timer(50, null);
+
+        ActionListener fadeDown = new ActionListener() {
+
+            Color c = infoTextBox.getForeground();
+            int rgb = c.getBlue();
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rgb > 51) {
+                    rgb -= 5;
+                    infoTextBox.setForeground(new Color(rgb, rgb, rgb));
+                }
+                else {
+                    infoTextBox.setText("");
+                    t.stop();
+                }
+            }
+        };
+        t.addActionListener(fadeDown);
+        t.setInitialDelay(2000);
+        t.start();
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDescriptionRemaining;
     private javax.swing.JList<String> listParentEvents;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
-    private javax.swing.JTable tableArtists;
+    private javax.swing.JTable tableChildEvents;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JTextArea txtDescription;
     private javax.swing.JTextField txtSearchbar;
     // End of variables declaration//GEN-END:variables
 
-    private void populateParentEventsList() {
+    private void refreshParentEventsList() {
+                listParentEventModel.clear();
+        try {
+            allParentEvents = DesktopWrapper.getInstance().getParentEvents();
+            allParentEvents.addAll(DesktopWrapper.getInstance().loadMoreParentEvents());
+           for (IParentEvent currEvent : allParentEvents)
+        {
+            listParentEventModel.addElement(currEvent.getName());
     }
+    
+        } catch (IOException ex) {
+            System.out.println("No Parent Events Found");
+        }
+    }
+
+    private void populateChildEvents() {
+        IParentEvent currParentEvent = allParentEvents.get(listParentEvents.getSelectedIndex());
+        txtDescription.setText(currParentEvent.getDescription());
+        try {
+            currParentEvents_ChildEvents = currParentEvent.getChildEvents();
+            EventTableModel childEventsModel = new EventTableModel(currParentEvents_ChildEvents, currParentEvents_ChildEvents.size());
+            tableChildEvents.setModel(childEventsModel);
+        } catch (IOException ex) {
+            Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+}
     
 
 }
