@@ -7,7 +7,6 @@ package gui.contentpanel.events;
 
 import gui.contentpanel.bookings.*;
 import gui.contentpanel.artists.*;
-import classes.ArtistTableModel;
 import events.IArtist;
 import events.IParentEvent;
 import gui.Home;
