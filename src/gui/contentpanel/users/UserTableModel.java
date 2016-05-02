@@ -8,6 +8,7 @@ package gui.contentpanel.users;
 import events.IArtist;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import people.ICustomer;
 import people.IUser;
 
 /**
@@ -17,9 +18,9 @@ import people.IUser;
 public class UserTableModel extends DefaultTableModel{
       
    private final String[] headers = { "Name", "Email", "Address", "Postcode","View User Details"};
-   private final List<IUser> users;
+   private final List<ICustomer> users;
 
-   public UserTableModel(List<IUser> users, int size){
+   public UserTableModel(List<ICustomer> users, int size){
        super(size,5);
        this.users = users;
        
@@ -38,6 +39,7 @@ public class UserTableModel extends DefaultTableModel{
 
        
    }
+   
     
         @Override
     public boolean isCellEditable(int row, int column) {

@@ -26,6 +26,7 @@ import javax.swing.table.TableModel;
 import people.IUser;
 import tickets.ITicket;
 import wrappers.DesktopWrapper;
+import wrappers.UserWrapper;
 
 /**
  *
@@ -40,7 +41,7 @@ public class PnlEditUser extends javax.swing.JFrame {
      */
     public PnlEditUser() {
         initComponents();
-//        populateTable();
+        populateTable();
 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
@@ -388,21 +389,6 @@ public class PnlEditUser extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void populateTable() {
-        
-        
-        //@TODO waiting on getTicketsByCustomer method in api
-//                try {
-//            allTickets = DesktopWrapper.getInstance().getBookings(currUser);
-//            if(allUsers.size() > 0)
-//            {
-//            TableModel userData = new UserTableModel(allUsers, allUsers.size());
-//            tableUsers.setModel(userData);
-//            }
-//        } catch (IllegalArgumentException | IOException ex) {
-//            Logger.getLogger(PnlUsers.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-
-        
-        
+        //ToDO get tickets from user command
     }
 }

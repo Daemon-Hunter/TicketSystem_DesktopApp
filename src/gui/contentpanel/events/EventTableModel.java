@@ -55,6 +55,12 @@ public class EventTableModel extends DefaultTableModel{
 
        
 }
+    public EventTableModel()
+    {
+        super(0,5);
+        childEvents = null;
+        
+    }
     
         @Override
     public boolean isCellEditable(int row, int column) {

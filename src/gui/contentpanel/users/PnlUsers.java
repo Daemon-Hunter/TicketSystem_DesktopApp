@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
+import people.ICustomer;
 import wrappers.DesktopWrapper;
 
 /**
@@ -26,7 +27,7 @@ import wrappers.DesktopWrapper;
 public class PnlUsers extends javax.swing.JPanel {
     
     private Home parent = null;
-    private List<IUser> allUsers;
+    private List<ICustomer> allUsers;
     private IUser currUser;
 
 
@@ -46,7 +47,7 @@ public class PnlUsers extends javax.swing.JPanel {
     public final void populateTable() {
   
         try {
-            allUsers = DesktopWrapper.getInstance().getUsers();
+            allUsers = DesktopWrapper.getInstance().getCustomers();
             if(allUsers.size() > 0)
             {
             TableModel userData = new UserTableModel(allUsers, allUsers.size());

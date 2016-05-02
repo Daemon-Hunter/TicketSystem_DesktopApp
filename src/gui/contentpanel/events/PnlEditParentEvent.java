@@ -170,9 +170,8 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
         helpLinks = new javax.swing.JLabel();
         tableScrollPane = new javax.swing.JScrollPane();
         tableChildEvents = new javax.swing.JTable();
-        lblAddChildEvent = new javax.swing.JLabel();
-        lblRemoveChildEvent = new javax.swing.JLabel();
         lblDetailsTitle1 = new javax.swing.JLabel();
+        lblName7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 51));
@@ -374,29 +373,13 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
         });
         tableScrollPane.setViewportView(tableChildEvents);
 
-        lblAddChildEvent.setForeground(new java.awt.Color(251, 251, 251));
-        lblAddChildEvent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
-        lblAddChildEvent.setText("Add Child Event");
-        lblAddChildEvent.setToolTipText("");
-        lblAddChildEvent.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAddChildEventMouseClicked(evt);
-            }
-        });
-
-        lblRemoveChildEvent.setForeground(new java.awt.Color(250, 250, 250));
-        lblRemoveChildEvent.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        lblRemoveChildEvent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/removeIcon.png"))); // NOI18N
-        lblRemoveChildEvent.setText("Remove Child Event");
-        lblRemoveChildEvent.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblRemoveChildEventMouseClicked(evt);
-            }
-        });
-
         lblDetailsTitle1.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblDetailsTitle1.setForeground(new java.awt.Color(250, 250, 250));
         lblDetailsTitle1.setText("Child Event Details");
+
+        lblName7.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        lblName7.setForeground(new java.awt.Color(255, 255, 255));
+        lblName7.setText("To edit and add child events do so from the Events pannel");
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
@@ -407,10 +390,6 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addComponent(lblAddChildEvent)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblRemoveChildEvent))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlBackgroundLayout.createSequentialGroup()
                                 .addComponent(lblDescription)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -426,7 +405,8 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlBackgroundLayout.createSequentialGroup()
                                 .addComponent(lblName)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(lblName7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -562,15 +542,14 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)))
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancel)
                         .addComponent(btnSave)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblAddChildEvent))
-                    .addComponent(lblRemoveChildEvent))
-                .addContainerGap())
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblName7))
+                .addGap(7, 7, 7))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -687,14 +666,6 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tableChildEventsMouseClicked
 
-    private void lblAddChildEventMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddChildEventMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblAddChildEventMouseClicked
-
-    private void lblRemoveChildEventMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRemoveChildEventMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lblRemoveChildEventMouseClicked
-
     /**
      * @param args the command line arguments
      */
@@ -719,7 +690,6 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblAddChildEvent;
     private javax.swing.JLabel lblAddImage;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDescriptionRemaining;
@@ -733,7 +703,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
     private javax.swing.JLabel lblName4;
     private javax.swing.JLabel lblName5;
     private javax.swing.JLabel lblName6;
-    private javax.swing.JLabel lblRemoveChildEvent;
+    private javax.swing.JLabel lblName7;
     private javax.swing.JLabel lblRemoveImage;
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JPanel pnlImage;
