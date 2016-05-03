@@ -185,7 +185,7 @@ public class LoginPanel extends javax.swing.JFrame {
             email = txtUsername.getText();
             password = JPassword.getText();
             passloggedIn = DesktopWrapper.getInstance().loginAdmin(email, password);
-        } catch (IOException ex) {
+        } catch (IOException | IllegalArgumentException ex) {
             txtError.setText("Unable To Log In'");
         } 
         if(passloggedIn == true)

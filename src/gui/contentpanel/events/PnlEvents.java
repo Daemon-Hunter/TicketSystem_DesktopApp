@@ -450,7 +450,7 @@ public class PnlEvents extends javax.swing.JPanel {
     private javax.swing.JTextField txtSearchbar;
     // End of variables declaration//GEN-END:variables
 
-    private void refreshParentEventsList() {
+    public void refreshParentEventsList() {
                 listParentEventModel.clear();
         try {
              DesktopWrapper.getInstance().getParentEvents();

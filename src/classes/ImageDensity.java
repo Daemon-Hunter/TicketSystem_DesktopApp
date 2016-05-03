@@ -7,7 +7,11 @@ package classes;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -24,6 +28,7 @@ public class ImageDensity {
             results.add(resizeImage(240, 240, original));
             results.add(resizeImage(320, 320, original));
             results.add(resizeImage(480, 480, original));
+            results.add(resizeImage(720,720,original));
             
             return results;
     }

@@ -7,9 +7,12 @@ package gui.contentpanel.events;
 
 import gui.contentpanel.artists.*;
 import classes.ImageDensity;
+import database.DatabaseTable;
 import events.IArtist;
 import events.IChildEvent;
 import events.IParentEvent;
+import events.ParentEvent;
+import events.SocialMedia;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import wrappers.DesktopWrapper;
 
 /**
  *
@@ -34,10 +38,12 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
     private IParentEvent event;
     private PnlEvents parent;
     private final int descLength = 500;
+    List<BufferedImage> images;
     /**
      * Creates new form PnlEditArtist
      */
     public PnlNewParentEvent() {
+        images = new ArrayList<>();
         initComponents();
         initHelpDialog();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -72,6 +78,8 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
             try {
                 BufferedImage img = ImageIO.read(new File(filename));                
                 lblImage.setIcon(new ImageIcon(img));
+                 images = ImageDensity.create5(img);
+                
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
                         + " please try again.");
@@ -462,8 +470,7 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                ArrayList<BufferedImage> images = ImageDensity.create5(img);
-                event.setImages(images);
+                 images = ImageDensity.create5(img);
                 lblImage.setIcon(new ImageIcon(images.get(1)));
             }
             catch (IOException ex) {
@@ -474,13 +481,33 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
     }//GEN-LAST:event_lblAddImageMouseClicked
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
-        
+        int result = JOptionPane.showConfirmDialog(this, "Are you ready to add this parent Event? Changes will immediately become live.", "Add Event", JOptionPane.OK_CANCEL_OPTION);
+        String fb,tw,insta,sc,www,sp,name,desc;
+        fb = txtFacebook.getText();
+        tw = txtTwitter.getText();
+        insta = txtInstagram.getText();
+        sc = txtSoundcloud.getText();
+        www = txtWebsite.getText();
+        sp = txtSpotify.getText();
+        name = txtName.getText();
+        desc = txtDescription.getText();
         if (result == JOptionPane.OK_OPTION) {
-            dispose();
-            if (parent != null) {
+            SocialMedia social = new SocialMedia(0,images,fb,tw,insta,sc,www,sp);
+            IParentEvent parentEvent = new ParentEvent(0,0,name,desc);
+            parentEvent.setSocialMedia(social);
+          try{
+               DesktopWrapper.getInstance().createNewObject(parentEvent, DatabaseTable.PARENT_EVENT);
+               dispose();
+                  if (parent != null) {
                 parent.displayText("Event Added");
+                parent.refreshParentEventsList();
+                 dispose();
+
             }
+          }catch(IllegalArgumentException | IOException ex)
+          {
+              System.out.println("Error Adding Parent Event");
+          }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
