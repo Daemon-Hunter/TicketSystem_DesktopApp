@@ -506,11 +506,14 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
             }
           }catch(IllegalArgumentException | IOException ex)
           {
-              System.out.println("Error Adding Parent Event");
+                  if (parent != null) {
+                parent.displayText("Event Added");
+                parent.refreshParentEventsList();
+                 dispose();
           }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */

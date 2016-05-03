@@ -601,6 +601,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
                   if (parent != null) {
                 parent.displayText("Artist Added");
+                DesktopWrapper.getInstance().refreshArtists();
                 parent.populateTable();
                  dispose();
 
