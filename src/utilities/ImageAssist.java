@@ -28,7 +28,7 @@ public class ImageAssist {
             results.add(resizeImage(240, 240, original));
             results.add(resizeImage(320, 320, original));
             results.add(resizeImage(480, 480, original));
-            
+            results.add(resizeImage(720,720, original));
             return results;
     }
     
