@@ -33,13 +33,10 @@ public class PnlNewArtist extends javax.swing.JFrame {
     private IArtist artist;
     private PnlArtists parent;
     private final int descLength = 500;
-    ArrayList<BufferedImage> images;
     /**
      * Creates new form PnlEditArtist
      */
     public PnlNewArtist() {
-            images = new ArrayList<>();
-
         initComponents();
         initHelpDialog();
         
@@ -60,19 +57,6 @@ public class PnlNewArtist extends javax.swing.JFrame {
         helpType.setToolTipText("Select the type of performer.");
         helpTags.setToolTipText("Define any tags that describe the performer. Seperate with commas (' , ').");
         helpLinks.setToolTipText("Enter official social media links. Must start with 'https://'.");
-        
-                                Random r = new Random();
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(7) + ".gif";
-            
-            try {
-                BufferedImage img = ImageIO.read(new File(filename));                
-                lblImage.setIcon(new ImageIcon(img));
-                 images = ImageAssist.duplicate(img);
-                
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
-                        + " please try again.");
-            }
     }
 
     /**
@@ -590,7 +574,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                 tags.add(currTag);
             }
 
-            SocialMedia social = new SocialMedia(0,images,fb,tw,insta,sc,www,sp);
+            SocialMedia social = new SocialMedia(0, artist.getImages(),fb,tw,insta,sc,www,sp);
             IArtist artist = new Artist(0,name,desc,tags,social,type);
             artist.setSocialMedia(social);
                       try{
