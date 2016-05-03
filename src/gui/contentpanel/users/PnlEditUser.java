@@ -6,7 +6,7 @@
 package gui.contentpanel.users;
 
 import gui.contentpanel.artists.*;
-import classes.ImageDensity;
+import utilities.ImageAssist;
 import events.IArtist;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

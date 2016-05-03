@@ -5,7 +5,8 @@
  */
 package gui.contentpanel.artists;
 
-import classes.ImageDensity;
+import events.Artist;
+import utilities.ImageAssist;
 import events.IArtist;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -44,7 +45,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
     }
     
     private void initHelpDialog() {
-        helpImage.setToolTipText("Add or remove an image. A default image is given if none specified.");
+        helpImage.setToolTipText("Adding an image deletes the last. Default image given if not supplied.");
         lblAddImage.setToolTipText("add");
         lblRemoveImage.setToolTipText("remove");
         helpName.setToolTipText("Enter the performer / band / team name.");
@@ -93,7 +94,6 @@ public class PnlNewArtist extends javax.swing.JFrame {
         txtTags = new javax.swing.JTextArea();
         btnCancel = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         lblAddImage = new javax.swing.JLabel();
         lblRemoveImage = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -256,18 +256,6 @@ public class PnlNewArtist extends javax.swing.JFrame {
             }
         });
 
-        btnDelete.setBackground(new java.awt.Color(132, 0, 0));
-        btnDelete.setForeground(new java.awt.Color(251, 251, 251));
-        btnDelete.setText("Delete");
-        btnDelete.setMaximumSize(new java.awt.Dimension(90, 29));
-        btnDelete.setMinimumSize(new java.awt.Dimension(90, 29));
-        btnDelete.setPreferredSize(new java.awt.Dimension(90, 29));
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-
         lblAddImage.setForeground(new java.awt.Color(251, 251, 251));
         lblAddImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
         lblAddImage.setText(" Add Image");
@@ -386,8 +374,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                                 .addGap(65, 65, 65)
                                 .addComponent(helpImage))))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -450,8 +437,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                                 .addGap(41, 41, 41)))
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancel)
-                            .addComponent(btnSave)
-                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSave))
                         .addContainerGap())
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addComponent(lblDetailsTitle)
@@ -533,7 +519,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                ArrayList<BufferedImage> images = ImageDensity.create5(img);
+                ArrayList<BufferedImage> images = ImageAssist.duplicate(img);
                 artist.setImages(images);
                 lblImage.setIcon(new ImageIcon(images.get(1)));
             }
@@ -557,7 +543,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
             
             try {
                 BufferedImage img = ImageIO.read(new File(filename));
-                artist.setImages(ImageDensity.create5(img));
+                artist.setImages(ImageAssist.duplicate(img));
                 
                 lblImage.setIcon(new ImageIcon(artist.getImage(1)));
                 
@@ -568,28 +554,17 @@ public class PnlNewArtist extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lblRemoveImageMouseClicked
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this artist?\n\n"
-                + "This will stop the artist showing up in future search results.", "Delete Artist", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            // ADD CODE TO REMOVE FROM DATABASE? -> HIDE FROM RESULTS (DATABASE TAG - HIDDEN?)
-                                                  // Didn't want to delete from database for
-                                                  // booking history / integrity
-                dispose();
-                if (parent != null) {
-                    parent.displayText("Artist deleted");
-                }
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
         
         if (result == JOptionPane.OK_OPTION) {
-            dispose();
+            
+            IArtist artist = new Artist();
+            
             if (parent != null) {
                 parent.displayText("Artist saved");
             }
+            dispose();
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -608,7 +583,6 @@ public class PnlNewArtist extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel helpDescription;
     private javax.swing.JLabel helpImage;

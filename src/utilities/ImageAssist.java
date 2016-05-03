@@ -3,23 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes;
+package utilities;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.imageio.ImageIO;
-import sun.misc.BASE64Encoder;
 
 /**
  *
  * @author 10512691
  */
-public class ImageDensity {
+public class ImageAssist {
     
-    public static ArrayList<BufferedImage> create5(BufferedImage original) {
+    public static ArrayList<BufferedImage> duplicate(BufferedImage original) {
         
             ArrayList<BufferedImage> results = new ArrayList<>(5);
             
@@ -28,7 +28,6 @@ public class ImageDensity {
             results.add(resizeImage(240, 240, original));
             results.add(resizeImage(320, 320, original));
             results.add(resizeImage(480, 480, original));
-            results.add(resizeImage(720,720,original));
             
             return results;
     }
@@ -46,5 +45,14 @@ public class ImageDensity {
         } else {
             throw new NullPointerException("Null original image");
         }
+    }
+
+    public static ArrayList<BufferedImage> createDefaults() throws IOException {
+            Random r = new Random();
+        
+            String filename = "src/images/defaults/defaultImage" + r.nextInt(8) + ".gif";
+            
+            BufferedImage img = ImageIO.read(new File(filename));
+            return ImageAssist.duplicate(img);
     }
 }

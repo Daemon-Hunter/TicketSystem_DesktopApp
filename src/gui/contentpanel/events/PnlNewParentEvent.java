@@ -6,7 +6,7 @@
 package gui.contentpanel.events;
 
 import gui.contentpanel.artists.*;
-import classes.ImageDensity;
+import utilities.ImageAssist;
 import database.DatabaseTable;
 import events.IArtist;
 import events.IChildEvent;
@@ -78,7 +78,7 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
             try {
                 BufferedImage img = ImageIO.read(new File(filename));                
                 lblImage.setIcon(new ImageIcon(img));
-                 images = ImageDensity.create5(img);
+                 images = ImageAssist.duplicate(img);
                 
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
@@ -470,7 +470,7 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                 images = ImageDensity.create5(img);
+                 images = ImageAssist.duplicate(img);
                 lblImage.setIcon(new ImageIcon(images.get(1)));
             }
             catch (IOException ex) {

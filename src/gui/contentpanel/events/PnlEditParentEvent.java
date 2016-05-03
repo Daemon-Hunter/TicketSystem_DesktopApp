@@ -6,7 +6,7 @@
 package gui.contentpanel.events;
 
 import gui.contentpanel.artists.*;
-import classes.ImageDensity;
+import utilities.ImageAssist;
 import events.IArtist;
 import events.IChildEvent;
 import events.IParentEvent;
@@ -600,7 +600,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                ArrayList<BufferedImage> images = ImageDensity.create5(img);
+                ArrayList<BufferedImage> images = ImageAssist.duplicate(img);
                 event.setImages(images);
                 lblImage.setIcon(new ImageIcon(images.get(1)));
             }
@@ -624,7 +624,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
             
             try {
                 BufferedImage img = ImageIO.read(new File(filename));
-                event.setImages(ImageDensity.create5(img));
+                event.setImages(ImageAssist.duplicate(img));
                 
                 lblImage.setIcon(new ImageIcon(event.getImage(1)));
                 

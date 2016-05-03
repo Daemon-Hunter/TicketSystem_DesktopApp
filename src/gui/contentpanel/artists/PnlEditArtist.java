@@ -5,14 +5,15 @@
  */
 package gui.contentpanel.artists;
 
-import classes.ImageDensity;
+import utilities.ImageAssist;
 import events.IArtist;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -74,22 +75,27 @@ public class PnlEditArtist extends javax.swing.JFrame {
         txtTags.setText(tags);
         
         
-        switch (artist.getType()) {
-            case "Singer":
-                jComboBox1.setSelectedIndex(0);
-                break;
-            case "Comedian":
-                jComboBox1.setSelectedIndex(1);
-                break;
-            case "Sports Team":
-                jComboBox1.setSelectedIndex(2);
-                break;
-            case "Band":
-                jComboBox1.setSelectedIndex(3);
-                break;
-            case "DJ":
-                jComboBox1.setSelectedIndex(4);
-                break;
+        try {
+            switch (artist.getType()) {
+                case "Singer":
+                    jComboBox1.setSelectedIndex(0);
+                    break;
+                case "Comedian":
+                    jComboBox1.setSelectedIndex(1);
+                    break;
+                case "Sports Team":
+                    jComboBox1.setSelectedIndex(2);
+                    break;
+                case "Band":
+                    jComboBox1.setSelectedIndex(3);
+                    break;
+                case "DJ":
+                    jComboBox1.setSelectedIndex(4);
+                    break;
+            }
+        } catch (IOException ex) {
+            jComboBox1.setSelectedIndex(0);
+            JOptionPane.showMessageDialog(this, "Error getting the performers type. Please re-select before saving.");
         }
         
         try {
@@ -138,7 +144,7 @@ public class PnlEditArtist extends javax.swing.JFrame {
         
         // Remove following code after 'SAVE' functionality implemented.     //
         // Once uploading through the desktop site - all images will be      //
-        // in the correct size through use of ImageDensity class             //
+        // in the correct size through use of ImageAssist class             //
         BufferedImage mdpi = new BufferedImage(160, 160, original.getType());//
         Graphics2D g = mdpi.createGraphics();                                //
         g.drawImage(original, 0, 0, 160, 160, null);                         //
@@ -549,10 +555,11 @@ public class PnlEditArtist extends javax.swing.JFrame {
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addComponent(lblDetailsTitle)
                         .addGap(21, 21, 21)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblName)
-                            .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(helpName))
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(helpName)
+                            .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblName)
+                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(16, 16, 16)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
@@ -625,7 +632,7 @@ public class PnlEditArtist extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                ArrayList<BufferedImage> images = ImageDensity.create5(img);
+                ArrayList<BufferedImage> images = ImageAssist.duplicate(img);
                 artist.setImages(images);
                 lblImage.setIcon(new ImageIcon(images.get(1)));
             }
@@ -638,24 +645,19 @@ public class PnlEditArtist extends javax.swing.JFrame {
 
     private void lblRemoveImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRemoveImageMouseClicked
         
-        int dialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this image?", "Confirm", JOptionPane.OK_CANCEL_OPTION);
+        int dialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this image?",
+                        "Confirm", JOptionPane.OK_CANCEL_OPTION);
+        
         if (dialog == JOptionPane.OK_OPTION) {
-            for (int i = 0; i < artist.getImages().size(); i++) {
-                artist.removeImage(i);
-            }
-            
-            Random r = new Random();
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(8) + ".gif";
             
             try {
-                BufferedImage img = ImageIO.read(new File(filename));
-                artist.setImages(ImageDensity.create5(img));
+                ArrayList<BufferedImage> images = ImageAssist.createDefaults();
+                artist.setImages(images);
                 
                 lblImage.setIcon(new ImageIcon(artist.getImage(1)));
-                
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
-                        + " please try again.");
+            } 
+            catch (IOException ex) {
+                Logger.getLogger(PnlEditArtist.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_lblRemoveImageMouseClicked
@@ -664,9 +666,9 @@ public class PnlEditArtist extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this artist?\n\n"
                 + "This will stop the artist showing up in future search results.", "Delete Artist", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            // ADD CODE TO REMOVE FROM DATABASE? -> HIDE FROM RESULTS (DATABASE TAG - HIDDEN?)
-                                                  // Didn't want to delete from database for
-                                                  // booking history / integrity
+            // ADD CODE TO REMOVE FROM DATABASE?  -> AIM IS TO HIDE FROM RESULTS (DATABASE TAG - HIDDEN?)
+                                                  // Didn't want to delete from database in order 
+                                                  // to keep booking history / integrity
                 dispose();
                 parent.displayText("Artist deleted");
         }

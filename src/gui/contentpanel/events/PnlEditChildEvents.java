@@ -6,7 +6,7 @@
 package gui.contentpanel.events;
 
 import gui.contentpanel.artists.*;
-import classes.ImageDensity;
+import utilities.ImageAssist;
 import events.IArtist;
 import events.IChildEvent;
 import events.IParentEvent;
