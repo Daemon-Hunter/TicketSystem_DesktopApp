@@ -4,21 +4,14 @@
  * and open the template in the editor.
  */
 package gui.contentpanel.venues;
-
-import gui.contentpanel.users.*;
-import gui.contentpanel.artists.ArtistTableModel;
 import events.IVenue;
-import gui.contentpanel.bookings.*;
-import gui.contentpanel.artists.*;
-import people.IUser;
 import gui.Home;
 import gui.RoundedBorder;
+import java.awt.Dimension;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
 
 /**
@@ -39,6 +32,7 @@ public class PnlVenues extends javax.swing.JPanel {
     public PnlVenues(Home parent) {
         
         initComponents();
+        initButtons();
         this.parent = parent;
         
         txtSearchbar.setBorder(new RoundedBorder());
@@ -49,19 +43,25 @@ public class PnlVenues extends javax.swing.JPanel {
   
         try {
             allVenues = DesktopWrapper.getInstance().getVenues();
-            if(allVenues.size() > 0)
-            {
-            VenueTableModel venueData = new VenueTableModel(allVenues, allVenues.size());
-            tableVenues.setModel(venueData);
+            
+            if(allVenues.size() > 0) {
+                VenueTableModel venueData = new VenueTableModel(allVenues, allVenues.size());
+                tableVenues.setModel(venueData);
             }
-        } catch (IllegalArgumentException | IOException ex) {
+        } 
+        catch (IllegalArgumentException | IOException ex) {
             Logger.getLogger(PnlVenues.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    
     public void setParent(Home parent) {
         this.parent = parent;
+    }
+    
+    private void initButtons() {
+        btnNewArtist.setMaximumSize(new Dimension(75, 29));
+        btnDeleteArtist.setMaximumSize(new Dimension(75, 29));
+        btnEditArtist.setMaximumSize(new Dimension(75, 29));
     }
 
     /**
@@ -79,6 +79,9 @@ public class PnlVenues extends javax.swing.JPanel {
         tableVenues = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
+        btnNewArtist = new javax.swing.JButton();
+        btnEditArtist = new javax.swing.JButton();
+        btnDeleteArtist = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -93,7 +96,7 @@ public class PnlVenues extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchbar.setText("Search Customers...");
+        txtSearchbar.setText("Search Venues...");
         txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -171,30 +174,58 @@ public class PnlVenues extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnNewArtist.setText("New");
+        btnNewArtist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewArtistActionPerformed(evt);
+            }
+        });
+
+        btnEditArtist.setText("Edit");
+
+        btnDeleteArtist.setText("Delete");
+        btnDeleteArtist.setMaximumSize(new java.awt.Dimension(75, 29));
+        btnDeleteArtist.setMinimumSize(new java.awt.Dimension(75, 29));
+        btnDeleteArtist.setPreferredSize(new java.awt.Dimension(75, 29));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(564, Short.MAX_VALUE)
+                .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(284, 284, 284)
+                        .addComponent(btnNewArtist)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSearchbar))
-                .addGap(47, 47, 47)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSearchbar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNewArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -209,33 +240,52 @@ public class PnlVenues extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchbarMouseClicked
 
     private void tableVenuesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableVenuesMouseClicked
+        // User can double click to open 'Edit' dialog.
+        // Clicking once sets the current artist
         if (currVenue == null) {
             if (allVenues != null) {
                 currVenue = allVenues.get(tableVenues.getSelectedRow());
+                System.out.println(currVenue.getName());
             }
         } 
+        // Clicking the same artist twice opens the dialog.
         else if (currVenue.equals(allVenues.get(tableVenues.getSelectedRow()))) {
-       //     PnlEditVenue editPnl = new PnlEditVenue();
-       //     editPnl.setVenue(currVenue);
-       //     editPnl.setVisible(true);
-       //     editPnl.setAlwaysOnTop(true);
-            currVenue = null;
+//            PnlEditVenue editPnl = new PnlEditVenue();
+//            editPnl.setArtist(currVenue);
+//            editPnl.setParent(this);
+//            editPnl.setVisible(true);
+//            editPnl.setAlwaysOnTop(true);
+//            currVenue = null;
         } else {
+            // Clicking a different artist sets the current artist.
             if (allVenues != null) {
                 currVenue = allVenues.get(tableVenues.getSelectedRow());
+            } else {
+                currVenue = null;
             }
         }
     }//GEN-LAST:event_tableVenuesMouseClicked
 
     private void tableVenuesFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableVenuesFocusLost
+        currVenue = null;
     }//GEN-LAST:event_tableVenuesFocusLost
 
     private void txtSearchbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchbarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchbarActionPerformed
 
+    private void btnNewArtistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewArtistActionPerformed
+        PnlNewVenue newPnl = new PnlNewVenue();
+        newPnl.setParent(this);
+        newPnl.setVisible(true);
+        newPnl.setAlwaysOnTop(true);
+    }//GEN-LAST:event_btnNewArtistActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleteArtist;
+    private javax.swing.JButton btnEditArtist;
+    private javax.swing.JButton btnNewArtist;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;

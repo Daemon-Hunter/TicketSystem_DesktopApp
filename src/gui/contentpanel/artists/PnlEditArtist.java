@@ -140,17 +140,7 @@ public class PnlEditArtist extends javax.swing.JFrame {
             txtWebsite.setText(artist.getWebsite());
         }
         
-        BufferedImage original = artist.getImage(0);
-        
-        // Remove following code after 'SAVE' functionality implemented.     //
-        // Once uploading through the desktop site - all images will be      //
-        // in the correct size through use of ImageAssist class             //
-        BufferedImage mdpi = new BufferedImage(160, 160, original.getType());//
-        Graphics2D g = mdpi.createGraphics();                                //
-        g.drawImage(original, 0, 0, 160, 160, null);                         //
-        g.dispose();
-        
-        lblImage.setIcon(new ImageIcon(mdpi));
+        lblImage.setIcon(new ImageIcon(artist.getImage(0)));
     }
 
     /**
@@ -651,8 +641,7 @@ public class PnlEditArtist extends javax.swing.JFrame {
         if (dialog == JOptionPane.OK_OPTION) {
             
             try {
-                ArrayList<BufferedImage> images = ImageAssist.createDefaults();
-                artist.setImages(images);
+                artist.setImages(ImageAssist.createDefaults());
                 
                 lblImage.setIcon(new ImageIcon(artist.getImage(1)));
             } 

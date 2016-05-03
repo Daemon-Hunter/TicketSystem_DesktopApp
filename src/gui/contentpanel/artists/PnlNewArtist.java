@@ -519,9 +519,8 @@ public class PnlNewArtist extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                ArrayList<BufferedImage> images = ImageAssist.duplicate(img);
-                artist.setImages(images);
-                lblImage.setIcon(new ImageIcon(images.get(1)));
+                artist.setImages(ImageAssist.duplicate(img));
+                lblImage.setIcon(new ImageIcon(artist.getImage(1)));
             }
             catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem reading the file you selected,"
@@ -538,12 +537,8 @@ public class PnlNewArtist extends javax.swing.JFrame {
                 artist.removeImage(i);
             }
             
-            Random r = new Random();
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(8) + ".gif";
-            
             try {
-                BufferedImage img = ImageIO.read(new File(filename));
-                artist.setImages(ImageAssist.duplicate(img));
+                artist.setImages(ImageAssist.createDefaults());
                 
                 lblImage.setIcon(new ImageIcon(artist.getImage(1)));
                 
