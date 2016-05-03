@@ -5,20 +5,24 @@
  */
 package gui.contentpanel.artists;
 
+import database.DatabaseTable;
 import events.Artist;
 import utilities.ImageAssist;
 import events.IArtist;
+import events.SocialMedia;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import wrappers.DesktopWrapper;
 
 /**
  *
@@ -29,10 +33,13 @@ public class PnlNewArtist extends javax.swing.JFrame {
     private IArtist artist;
     private PnlArtists parent;
     private final int descLength = 500;
+    ArrayList<BufferedImage> images;
     /**
      * Creates new form PnlEditArtist
      */
     public PnlNewArtist() {
+            images = new ArrayList<>();
+
         initComponents();
         initHelpDialog();
         
@@ -53,6 +60,19 @@ public class PnlNewArtist extends javax.swing.JFrame {
         helpType.setToolTipText("Select the type of performer.");
         helpTags.setToolTipText("Define any tags that describe the performer. Seperate with commas (' , ').");
         helpLinks.setToolTipText("Enter official social media links. Must start with 'https://'.");
+        
+                                Random r = new Random();
+            String filename = "src/images/defaults/defaultImage" + r.nextInt(7) + ".gif";
+            
+            try {
+                BufferedImage img = ImageIO.read(new File(filename));                
+                lblImage.setIcon(new ImageIcon(img));
+                 images = ImageAssist.duplicate(img);
+                
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
+                        + " please try again.");
+            }
     }
 
     /**
@@ -553,13 +573,40 @@ public class PnlNewArtist extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
         
         if (result == JOptionPane.OK_OPTION) {
-            
-            IArtist artist = new Artist();
-            
-            if (parent != null) {
-                parent.displayText("Artist saved");
+        String fb,tw,insta,sc,www,sp,name,desc;
+        fb = txtFacebook.getText();
+        tw = txtTwitter.getText();
+        insta = txtInstagram.getText();
+        sc = txtSoundcloud.getText();
+        www = txtWebsite.getText();
+        sp = txtSpotify.getText();
+        name = txtName.getText();
+        desc = txtDescription.getText();
+        Integer type = jComboBox1.getSelectedIndex();
+        LinkedList<String> tags = new LinkedList<>();
+        String tagArr[] = txtTags.getText().split(",");
+        
+            for (String currTag : tagArr) {
+                tags.add(currTag);
             }
-            dispose();
+
+            SocialMedia social = new SocialMedia(0,images,fb,tw,insta,sc,www,sp);
+            IArtist artist = new Artist(0,name,desc,tags,social,type);
+            artist.setSocialMedia(social);
+                      try{
+               DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
+                  if (parent != null) {
+                parent.displayText("Artist Added");
+                DesktopWrapper.getInstance().refreshArtists();
+                parent.populateTable();
+                 dispose();
+
+            }
+          }catch(IllegalArgumentException | IOException ex)
+          {
+              System.out.println("Error Adding Artist");
+          }
+
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 

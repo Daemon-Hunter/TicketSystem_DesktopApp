@@ -49,7 +49,7 @@ public class PnlArtists extends javax.swing.JPanel {
         btnEditArtist.setMaximumSize(new Dimension(75, 29));
     }
     
-    private void populateTable() {
+    public void populateTable() {
         try {
             allArtists = new ArrayList (DesktopWrapper.getInstance().getArtists());
 
