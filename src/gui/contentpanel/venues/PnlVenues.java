@@ -42,7 +42,7 @@ public class PnlVenues extends javax.swing.JPanel {
     public final void populateTable() {
   
         try {
-            allVenues = DesktopWrapper.getInstance().getVenues();
+            allVenues = DesktopWrapper.getInstance().refreshVenues();
             
             if(allVenues.size() > 0) {
                 VenueTableModel venueData = new VenueTableModel(allVenues, allVenues.size());

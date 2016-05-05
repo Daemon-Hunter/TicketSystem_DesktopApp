@@ -579,19 +579,16 @@ public class PnlNewArtist extends javax.swing.JFrame {
                 
                 if (artist.setDescription(txtDescription.getText())) {
                     
-                    System.out.println(jComboBox1.getSelectedItem().toString());
-                    
                     if (artist.setType(jComboBox1.getSelectedItem().toString())) {
-                        
-                        String tagArr[] = txtTags.getText().split(",");
 
-                        LinkedList<String> tags = new LinkedList<>();
-                        String tagArray[] = txtTags.getText().split(",");
-            
-                        for (String currTag : tagArr) {
-                            currTag = currTag.replace (" ", "");
-                            if (!artist.addTag(currTag)) {
-                                JOptionPane.showMessageDialog(this, "Error adding a tag. Check what's been added on the 'Edit Artist' dialog.");
+                        if (!txtTags.getText().equals("")) {
+                            String tagArray[] = txtTags.getText().split(",");
+
+                            for (String currTag : tagArray) {
+                                currTag = currTag.replace (" ", "");
+                                if (!artist.addTag(currTag)) {
+                                    JOptionPane.showMessageDialog(this, "Error adding a tag. Check what's been added on the 'Edit Artist' dialog.");
+                                }
                             }
                         }
                         
@@ -656,6 +653,8 @@ public class PnlNewArtist extends javax.swing.JFrame {
                             {
                                 artist = (IArtist) DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
                                 parent.displayText("Success! " + artist.getName() + " added.");
+                                parent.populateTable();
+                                dispose();
                             } 
                             catch (IOException ex) {
                                 JOptionPane.showMessageDialog(this, "Error creating the new artist, please try again.");
@@ -676,40 +675,40 @@ public class PnlNewArtist extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
                         + "contain any blacklisted words.");
             }
-            
-            String fb, tw, insta, sc, www, sp, name, desc;
-            fb = txtFacebook.getText();
-            tw = txtTwitter.getText();
-            insta = txtInstagram.getText();
-            sc = txtSoundcloud.getText();
-            www = txtWebsite.getText();
-            sp = txtSpotify.getText();
-            name = txtName.getText();
-            desc = txtDescription.getText();
-            Integer type = jComboBox1.getSelectedIndex();
-            LinkedList<String> tags = new LinkedList<>();
-            String tagArr[] = txtTags.getText().split(",");
-
-            for (String currTag : tagArr) {
-                currTag = currTag.replace(" ", "");
-                tags.add(currTag);
-            }
-
-            SocialMedia social = new SocialMedia(0, artist.getImages(), fb, tw, insta, sc, www, sp);
-            IArtist artist = new Artist(0, name, desc, tags, social, type);
-            artist.setSocialMedia(social);
-            try {
-                DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
-                if (parent != null) {
-                    parent.displayText("Artist Added");
-                    DesktopWrapper.getInstance().refreshArtists();
-                    parent.populateTable();
-                    dispose();
-
-                }
-            } catch (IllegalArgumentException | IOException ex) {
-                System.out.println("Error Adding Artist");
-            }
+//            
+//            String fb, tw, insta, sc, www, sp, name, desc;
+//            fb = txtFacebook.getText();
+//            tw = txtTwitter.getText();
+//            insta = txtInstagram.getText();
+//            sc = txtSoundcloud.getText();
+//            www = txtWebsite.getText();
+//            sp = txtSpotify.getText();
+//            name = txtName.getText();
+//            desc = txtDescription.getText();
+//            Integer type = jComboBox1.getSelectedIndex();
+//            LinkedList<String> tags = new LinkedList<>();
+//            String tagArr[] = txtTags.getText().split(",");
+//
+//            for (String currTag : tagArr) {
+//                currTag = currTag.replace(" ", "");
+//                tags.add(currTag);
+//            }
+//
+//            SocialMedia social = new SocialMedia(0, artist.getImages(), fb, tw, insta, sc, www, sp);
+//            IArtist artist = new Artist(0, name, desc, tags, social, type);
+//            artist.setSocialMedia(social);
+//            try {
+//                DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
+//                if (parent != null) {
+//                    parent.displayText("Artist Added");
+//                    DesktopWrapper.getInstance().refreshArtists();
+//                    parent.populateTable();
+//                    dispose();
+//
+//                }
+//            } catch (IllegalArgumentException | IOException ex) {
+//                System.out.println("Error Adding Artist");
+//            }
 
         }
     }//GEN-LAST:event_btnSaveActionPerformed

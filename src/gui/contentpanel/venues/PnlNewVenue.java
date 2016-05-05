@@ -892,15 +892,8 @@ public class PnlNewVenue extends javax.swing.JFrame {
                                                                             //social = (SocialMedia) DesktopWrapper.getInstance().createNewObject(social, DatabaseTable.SOCIAL_MEDIA);
                                                                             venue.setSocialMedia(social);
                                                                             venue = (Venue) DesktopWrapper.getInstance().createNewObject(venue, DatabaseTable.VENUE);
-                                                                            System.out.println(venue.getName());
-                                                                            System.out.println(venue.getID());
-                                                                            System.out.println(venue.getEmail());
-                                                                            System.out.println(venue.getCity());
-                                                                            System.out.println(venue.getAddress());
-                                                                            System.out.println(venue.getDisabledAccess());
-                                                                            System.out.println(venue.getTwitter());
-                                                                            System.out.println(venue.getSocialId());
 
+                                                                            parent.populateTable();
                                                                             dispose();
                                                                         }
                                                                     }

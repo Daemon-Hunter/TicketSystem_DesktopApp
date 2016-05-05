@@ -51,7 +51,7 @@ public class PnlArtists extends javax.swing.JPanel {
     
     public void populateTable() {
         try {
-            allArtists = new ArrayList (DesktopWrapper.getInstance().getArtists());
+            allArtists = new ArrayList (DesktopWrapper.getInstance().refreshArtists());
 
             if (allArtists.size() > 0) {
 
