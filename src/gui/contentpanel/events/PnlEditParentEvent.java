@@ -620,7 +620,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
             }
             
             Random r = new Random();
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(8) + ".gif";
+            String filename = "src/images/defaults/defaultImage" + r.nextInt(7) + ".gif";
             
             try {
                 BufferedImage img = ImageIO.read(new File(filename));

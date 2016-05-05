@@ -80,6 +80,8 @@ public class PnlEvents extends javax.swing.JPanel {
         infoTextBox = new javax.swing.JTextArea();
         btnNewParentEvent = new javax.swing.JButton();
         btnEditEvent1 = new javax.swing.JButton();
+        lblAddImage = new javax.swing.JLabel();
+        lblAddImage1 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -245,6 +247,21 @@ public class PnlEvents extends javax.swing.JPanel {
             }
         });
 
+        lblAddImage.setForeground(new java.awt.Color(251, 251, 251));
+        lblAddImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
+        lblAddImage.setText(" Add Image");
+        lblAddImage.setToolTipText("");
+
+        lblAddImage1.setForeground(new java.awt.Color(251, 251, 251));
+        lblAddImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
+        lblAddImage1.setText("Child Event");
+        lblAddImage1.setToolTipText("");
+        lblAddImage1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAddImage1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,19 +289,26 @@ public class PnlEvents extends javax.swing.JPanel {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50))
-                    .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tableScrollPane)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(82, Short.MAX_VALUE))))
+                        .addContainerGap(82, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(lblAddImage1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50))))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(lblAddImage)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,10 +317,15 @@ public class PnlEvents extends javax.swing.JPanel {
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtSearchbar))
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtSearchbar))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblAddImage1)
+                                .addGap(10, 10, 10)))
                         .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -316,9 +345,14 @@ public class PnlEvents extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEditEvent1)
-                    .addComponent(btnNewParentEvent))
+                    .addComponent(btnNewParentEvent)
+                    .addComponent(btnEditEvent1))
                 .addGap(57, 57, 57))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(lblAddImage)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -393,8 +427,34 @@ public class PnlEvents extends javax.swing.JPanel {
     }//GEN-LAST:event_btnNewParentEventMouseClicked
 
     private void btnEditEvent1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditEvent1MouseClicked
-        // TODO add your handling code here:
+        if(currParentEvent != null)
+        {
+            PnlEditParentEvent panel = new PnlEditParentEvent();
+            panel.setParentEvent(currParentEvent);
+            panel.setParent(this);
+            panel.setVisible(true);
+            panel.setAlwaysOnTop(true);
+
+        }else{
+            JOptionPane.showMessageDialog(this, "Please select a parent event to edit");
+        }
     }//GEN-LAST:event_btnEditEvent1MouseClicked
+
+    private void lblAddImage1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddImage1MouseClicked
+        if(currParentEvent != null)
+        {
+            PnlAddChildEvent panel = new PnlAddChildEvent();
+            panel.setParentEvent(currParentEvent);
+            panel.setParent(this);
+            panel.setVisible(true);
+            panel.setAlwaysOnTop(true);
+
+        }else{
+            JOptionPane.showMessageDialog(this, "Please select a parent add a child"
+                    + "event to");
+        }
+
+    }//GEN-LAST:event_lblAddImage1MouseClicked
     /**
      * Displays a message that fades out after 2 seconds.
      * Use for notifying user.
@@ -439,6 +499,8 @@ public class PnlEvents extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblAddImage;
+    private javax.swing.JLabel lblAddImage1;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDescriptionRemaining;
     private javax.swing.JList<String> listParentEvents;
