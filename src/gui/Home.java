@@ -61,10 +61,8 @@ public class Home extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("The Function Junction - ADMIN");
         setBackground(new java.awt.Color(1, 3, 14));
-        setMaximumSize(new java.awt.Dimension(1080, 600));
         setMinimumSize(new java.awt.Dimension(1080, 600));
         setName("desktopFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(1080, 600));
         setResizable(false);
         setSize(new java.awt.Dimension(1080, 600));
 

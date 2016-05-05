@@ -74,6 +74,7 @@ public class PnlEditArtist extends javax.swing.JFrame {
         tags = tags.substring(0, tags.length() - 2);
         txtTags.setText(tags);
         
+        // jComboBox1.setSelectedIndex(artist.getTypeID);
         
         try {
             switch (artist.getType()) {
