@@ -462,9 +462,14 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         {
             throw new IllegalArgumentException("Artist allready is in the lineup");
         }
-        listModel.addElement(artist.getName());
-        lineup.add(artist);
-
+        try {
+            childEvent.newContract(artist);
+            listModel.addElement(artist.getName());
+            lineup.add(artist);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Unable to add to lineup");
+        }
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -498,7 +503,7 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
  
 
     private void populateLineup() {
-                listModel.clear();
+          listModel.clear();
         try {
              DesktopWrapper.getInstance().getParentEvents();
              lineup = childEvent.getArtistList();

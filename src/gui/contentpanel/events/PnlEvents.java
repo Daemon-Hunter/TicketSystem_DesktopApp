@@ -423,7 +423,6 @@ public class PnlEvents extends javax.swing.JPanel {
             pnl.setParent(this);
             pnl.setVisible(true);
             pnl.setAlwaysOnTop(true);
-
     }//GEN-LAST:event_btnNewParentEventMouseClicked
 
     private void btnEditEvent1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditEvent1MouseClicked
@@ -513,18 +512,40 @@ public class PnlEvents extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void refreshParentEventsList() {
-                listParentEventModel.clear();
+         listParentEventModel.clear();
+        EventTableModel childEventsModel = new EventTableModel();
+        tableChildEvents.setModel(childEventsModel);
+
         try {
-             DesktopWrapper.getInstance().getParentEvents();
-             allParentEvents = DesktopWrapper.getInstance().loadMoreParentEvents();
+             DesktopWrapper.getInstance().refreshParentEvents();
+             allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
            for (IParentEvent currEvent : allParentEvents)
         {
             listParentEventModel.addElement(currEvent.getName());
     }
     
         } catch (IOException ex) {
-            System.out.println("No Parent Events Found");
+         listParentEventModel.addElement("No Events Found");
         }
+    }
+    public void newRefreshParentEventsList()
+    {
+        listParentEventModel.clear();
+        EventTableModel childEventsModel = new EventTableModel();
+        tableChildEvents.setModel(childEventsModel);
+        
+     //  populateChildEvents();
+//        try{
+//           allParentEvents=  DesktopWrapper.getInstance().refreshParentEvents();
+//           for (IParentEvent currEvent : allParentEvents)
+//        {
+//            listParentEventModel.addElement(currEvent.getName());
+//    }
+//    
+//        } catch (IOException ex) {
+//         listParentEventModel.addElement("No Events Found");
+//        }
+
     }
 
     private void populateChildEvents() {
