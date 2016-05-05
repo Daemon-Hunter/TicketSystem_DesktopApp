@@ -675,41 +675,6 @@ public class PnlNewArtist extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
                         + "contain any blacklisted words.");
             }
-//            
-//            String fb, tw, insta, sc, www, sp, name, desc;
-//            fb = txtFacebook.getText();
-//            tw = txtTwitter.getText();
-//            insta = txtInstagram.getText();
-//            sc = txtSoundcloud.getText();
-//            www = txtWebsite.getText();
-//            sp = txtSpotify.getText();
-//            name = txtName.getText();
-//            desc = txtDescription.getText();
-//            Integer type = jComboBox1.getSelectedIndex();
-//            LinkedList<String> tags = new LinkedList<>();
-//            String tagArr[] = txtTags.getText().split(",");
-//
-//            for (String currTag : tagArr) {
-//                currTag = currTag.replace(" ", "");
-//                tags.add(currTag);
-//            }
-//
-//            SocialMedia social = new SocialMedia(0, artist.getImages(), fb, tw, insta, sc, www, sp);
-//            IArtist artist = new Artist(0, name, desc, tags, social, type);
-//            artist.setSocialMedia(social);
-//            try {
-//                DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
-//                if (parent != null) {
-//                    parent.displayText("Artist Added");
-//                    DesktopWrapper.getInstance().refreshArtists();
-//                    parent.populateTable();
-//                    dispose();
-//
-//                }
-//            } catch (IllegalArgumentException | IOException ex) {
-//                System.out.println("Error Adding Artist");
-//            }
-
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 

@@ -71,45 +71,39 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
         lblDescriptionRemaining.setText((descLength - event.getDescription().length()) + " characters remaining");
         
         
-        try {
+        if (event.getFacebook() == null) {
+            txtFacebook.setText("https://");
+        } else {
             txtFacebook.setText(event.getFacebook());
         }
-        catch (NullPointerException ex) {
-            txtFacebook.setText("https://");
-        }
         
-        try {
+        if (event.getTwitter() == null) {
+            txtTwitter.setText("https://");
+        } else {
             txtTwitter.setText(event.getTwitter());
         }
-        catch (NullPointerException ex) {
-            txtTwitter.setText("https://");
-        }
         
-       try {
+        if (event.getInstagram() == null) {
             txtInstagram.setText("https://");
-        } 
-       catch (NullPointerException ex) {
+        } else {
             txtInstagram.setText(event.getInstagram());
         }
         
-        try {
+        if (event.getSoundcloud() == null) {
             txtSoundcloud.setText("https://");
-        } 
-        catch (NullPointerException ex) {
+        } else {
             txtSoundcloud.setText(event.getSoundcloud());
         }
         
-        try {
+        if (event.getSpotify() == null) {
             txtSpotify.setText("https://");
-        }
-        catch (NullPointerException ex) {
+        } else {
             txtSpotify.setText(event.getSpotify());
         }
         
-        try {
+        if (event.getWebsite() == null) {
             txtWebsite.setText("https://");
-        } 
-        catch (NullPointerException ex) {
+        } else {
             txtWebsite.setText(event.getWebsite());
         }
         

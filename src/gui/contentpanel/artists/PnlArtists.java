@@ -176,11 +176,6 @@ public class PnlArtists extends javax.swing.JPanel {
         tableArtists.setRowHeight(24);
         tableArtists.setShowVerticalLines(false);
         tableArtists.getTableHeader().setReorderingAllowed(false);
-        tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                tableArtistsFocusLost(evt);
-            }
-        });
         tableArtists.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableArtistsMouseClicked(evt);
@@ -221,6 +216,11 @@ public class PnlArtists extends javax.swing.JPanel {
         });
 
         btnEditArtist.setText("Edit");
+        btnEditArtist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditArtistActionPerformed(evt);
+            }
+        });
 
         btnDeleteArtist.setText("Delete");
         btnDeleteArtist.setMaximumSize(new java.awt.Dimension(75, 29));
@@ -323,16 +323,26 @@ public class PnlArtists extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tableArtistsMouseClicked
 
-    private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
-        curArtist = null;
-    }//GEN-LAST:event_tableArtistsFocusLost
-
     private void btnNewArtistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewArtistActionPerformed
         PnlNewArtist newPnl = new PnlNewArtist();
         newPnl.setParent(this);
         newPnl.setVisible(true);
         newPnl.setAlwaysOnTop(true);
     }//GEN-LAST:event_btnNewArtistActionPerformed
+
+    private void btnEditArtistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditArtistActionPerformed
+        
+        if (allArtists != null) {
+            if (curArtist != null) {
+                PnlEditArtist editPnl = new PnlEditArtist();
+                editPnl.setArtist(curArtist);
+                editPnl.setParent(this);
+                editPnl.setVisible(true);
+                editPnl.setAlwaysOnTop(true);
+                curArtist = null;
+            }
+        }
+    }//GEN-LAST:event_btnEditArtistActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteArtist;

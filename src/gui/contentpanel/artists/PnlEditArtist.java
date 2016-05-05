@@ -5,8 +5,10 @@
  */
 package gui.contentpanel.artists;
 
+import database.DatabaseTable;
 import utilities.ImageAssist;
 import events.IArtist;
+import events.SocialMedia;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import wrappers.DesktopWrapper;
 
 /**
  *
@@ -74,8 +77,6 @@ public class PnlEditArtist extends javax.swing.JFrame {
         tags = tags.substring(0, tags.length() - 2);
         txtTags.setText(tags);
         
-        // jComboBox1.setSelectedIndex(artist.getTypeID);
-        
         try {
             switch (artist.getType()) {
                 case "Singer":
@@ -99,49 +100,43 @@ public class PnlEditArtist extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error getting the performers type. Please re-select before saving.");
         }
         
-        try {
+        if (artist.getFacebook() == null) {
+            txtFacebook.setText("https://");
+        } else {
             txtFacebook.setText(artist.getFacebook());
         }
-        catch (NullPointerException ex) {
-            txtFacebook.setText("https://");
-        }
         
-        try {
+        if (artist.getTwitter() == null) {
+            txtTwitter.setText("https://");
+        } else {
             txtTwitter.setText(artist.getTwitter());
         }
-        catch (NullPointerException ex) {
-            txtTwitter.setText("https://");
-        }
         
-       try {
+        if (artist.getInstagram() == null) {
             txtInstagram.setText("https://");
-        } 
-       catch (NullPointerException ex) {
+        } else {
             txtInstagram.setText(artist.getInstagram());
         }
         
-        try {
+        if (artist.getSoundcloud() == null) {
             txtSoundcloud.setText("https://");
-        } 
-        catch (NullPointerException ex) {
+        } else {
             txtSoundcloud.setText(artist.getSoundcloud());
         }
         
-        try {
+        if (artist.getSpotify() == null) {
             txtSpotify.setText("https://");
-        }
-        catch (NullPointerException ex) {
+        } else {
             txtSpotify.setText(artist.getSpotify());
         }
         
-        try {
+        if (artist.getWebsite() == null) {
             txtWebsite.setText("https://");
-        } 
-        catch (NullPointerException ex) {
+        } else {
             txtWebsite.setText(artist.getWebsite());
         }
         
-        lblImage.setIcon(new ImageIcon(artist.getImage(0)));
+        lblImage.setIcon(new ImageIcon(artist.getImage(1)));
     }
 
     /**
@@ -623,9 +618,8 @@ public class PnlEditArtist extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                ArrayList<BufferedImage> images = ImageAssist.duplicate(img);
-                artist.setImages(images);
-                lblImage.setIcon(new ImageIcon(images.get(1)));
+                artist.setImages(ImageAssist.duplicate(img));
+                lblImage.setIcon(new ImageIcon(artist.getImage(1)));
             }
             catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem reading the file you selected,"
@@ -647,7 +641,8 @@ public class PnlEditArtist extends javax.swing.JFrame {
                 lblImage.setIcon(new ImageIcon(artist.getImage(1)));
             } 
             catch (IOException ex) {
-                Logger.getLogger(PnlEditArtist.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
+                        + " please try again.");
             }
         }
     }//GEN-LAST:event_lblRemoveImageMouseClicked
@@ -668,10 +663,110 @@ public class PnlEditArtist extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
         
         if (result == JOptionPane.OK_OPTION) {
-            dispose();
-            if (parent != null) {
-                parent.displayText("Artist saved");
+            
+            if (artist == null) {
+                JOptionPane.showMessageDialog(this, "Error loading artist into dialog. Please try again.");
+                dispose();
+            } else {
+                if (artist.setName(txtName.getText())) {
+                
+                if (artist.setDescription(txtDescription.getText())) {
+                    
+                    if (artist.setType(jComboBox1.getSelectedItem().toString())) {
+
+                        if (artist.getTags() != null && !artist.getTags().isEmpty())
+                        for (String tag : artist.getTags()) {
+                            artist.removeTag(tag);
+                        }
+                        
+                        if (!txtTags.getText().equals("")) {
+                            String tagArray[] = txtTags.getText().split(",");
+
+                            for (String currTag : tagArray) {
+                                currTag = currTag.replace (" ", "");
+                                if (!artist.addTag(currTag)) {
+                                    JOptionPane.showMessageDialog(this, "Error adding " + currTag + " tag.");
+                                }
+                            }
+                        }
+                        
+                        // Validate and set the Artist's social media links
+                        if (!txtFacebook.getText().equals("https://")) 
+                        {
+                            if (!artist.setFacebook(txtFacebook.getText()))
+                            {
+                                JOptionPane.showMessageDialog(this, "Invalid facebook URL. "
+                                        + "Connection couldn't be made to the website.");
+                            }
+                        }
+                        if (!txtTwitter.getText().equals("https://")) 
+                        {
+                            if (!artist.setTwitter(txtTwitter.getText()))
+                            {
+                                JOptionPane.showMessageDialog(this, "Invalid twitter URL. "
+                                        + "Connection couldn't be made to the website.");
+                            }
+                        }
+                        if (!txtInstagram.getText().equals("https://")) 
+                        {
+                            if (!artist.setFacebook(txtInstagram.getText()))
+                            {
+                                JOptionPane.showMessageDialog(this, "Invalid instagram URL. "
+                                        + "Connection couldn't be made to the website.");
+                            }
+                        }
+                        if (!txtSoundcloud.getText().equals("https://")) 
+                        {
+                            if (!artist.setFacebook(txtSoundcloud.getText()))
+                            {
+                                JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
+                                        + "Connection couldn't be made to the website.");
+                            }
+                        }
+                        if (!txtSpotify.getText().equals("https://")) 
+                        {
+                            if (!artist.setFacebook(txtSpotify.getText()))
+                            {
+                                JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
+                                        + "Connection couldn't be made to the website.");
+                            }
+                        }
+                        if (!txtWebsite.getText().equals("https://")) 
+                        {
+                            if (!artist.setFacebook(txtWebsite.getText()))
+                            {
+                                JOptionPane.showMessageDialog(this, "Invalid website URL. "
+                                        + "Connection couldn't be made to the website.");
+                            }
+                        }
+                            
+                        // Try to save the editted artist object.
+                        try 
+                        {
+                            DesktopWrapper.getInstance().updateObject(artist, DatabaseTable.ARTIST);
+                            parent.populateTable();
+                            dispose();
+                            parent.displayText("Success! " + artist.getName() + " editted!");
+                        } 
+                        catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "Error saving the editted artist, please try again.");
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, " +
+                            "and not contain blacklisted words");
+                }
             }
+            else {
+                JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
+                        + "contain any blacklisted words.");
+            }
+            }
+            
+            dispose();
+            parent.displayText("Artist saved");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
