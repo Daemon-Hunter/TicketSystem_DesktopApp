@@ -394,7 +394,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
                               {
                                   if(parentEvent != null)
                                   {
-                                   IChildEvent event = new ChildEvent(name,desc,startTime,endTime,venue,parentEvent);
+                                   IChildEvent event = new ChildEvent(name, desc, startTime, endTime, venue, parentEvent);
                                    IChildEvent  onceAddedEvent;  
                                    try {
                                             onceAddedEvent = (IChildEvent) DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.CHILD_EVENT);
