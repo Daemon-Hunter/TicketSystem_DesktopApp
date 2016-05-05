@@ -688,7 +688,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="To edit and add child events do so from the Events pannel"/>
+            <Property name="text" type="java.lang.String" value="Edit and add child events from the main events panel."/>
           </Properties>
         </Component>
       </SubComponents>

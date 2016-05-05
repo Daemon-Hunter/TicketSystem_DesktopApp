@@ -362,7 +362,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
 
         lblName7.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblName7.setForeground(new java.awt.Color(255, 255, 255));
-        lblName7.setText("To edit and add child events do so from the Events pannel");
+        lblName7.setText("Edit and add child events from the main events panel.");
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
