@@ -889,9 +889,10 @@ public class PnlNewVenue extends javax.swing.JFrame {
                                                                                 }
                                                                             }
                                                                             social.setImages(images);
-                                                                            //social = (SocialMedia) DesktopWrapper.getInstance().createNewObject(social, DatabaseTable.SOCIAL_MEDIA);
+                                                                            
                                                                             venue.setSocialMedia(social);
-                                                                            venue = (Venue) DesktopWrapper.getInstance().createNewObject(venue, DatabaseTable.VENUE);
+                                                                            
+                                                                            DesktopWrapper.getInstance().createNewObject(venue, DatabaseTable.VENUE);
 
                                                                             parent.populateTable();
                                                                             dispose();
@@ -919,11 +920,11 @@ public class PnlNewVenue extends javax.swing.JFrame {
                                             }
                                         }
                                         else {
-                                            JOptionPane.showMessageDialog(this, "Invalid phone number.");
+                                            JOptionPane.showMessageDialog(this, "Invalid phone number. Please check the format.");
                                         }
                                     }
                                     else {
-                                        JOptionPane.showMessageDialog(this, "Invalid postcode. Must have a valid UK postcode.");
+                                        JOptionPane.showMessageDialog(this, "Invalid postcode. Must have a valid UK postcode with no spaces.");
                                     }
                                 }
                                 else {
@@ -952,8 +953,7 @@ public class PnlNewVenue extends javax.swing.JFrame {
                             + "and must be between 2 & 20 characters long");
                 }
             } catch (IOException ex) {
-                System.out.println("Josh you're a bellend");
-                ex.printStackTrace();
+                System.out.println("Error writing object to the database. Please try again.");
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed

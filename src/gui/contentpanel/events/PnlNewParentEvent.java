@@ -67,25 +67,21 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
                
         lblDescriptionRemaining.setText(" 500 characters remaining");
         txtFacebook.setText("https://");
-            txtTwitter.setText("https://");
-            txtInstagram.setText("https://");
-            txtSoundcloud.setText("https://");
-            txtSpotify.setText("https://");
-            txtWebsite.setText("https://");
-                        Random r = new Random();
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(7) + ".gif";
+        txtTwitter.setText("https://");
+        txtInstagram.setText("https://");
+        txtSoundcloud.setText("https://");
+        txtSpotify.setText("https://");
+        txtWebsite.setText("https://");
             
-            try {
-                BufferedImage img = ImageIO.read(new File(filename));                
-                lblImage.setIcon(new ImageIcon(img));
-                 images = ImageAssist.duplicate(img);
-                
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
+        try {
+            images = ImageAssist.createDefaults();
+            lblImage.setIcon(new ImageIcon(images.get(1)));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
                         + " please try again.");
-            }
-
         }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -482,6 +478,90 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to add this parent Event? Changes will immediately become live.", "Add Event", JOptionPane.OK_CANCEL_OPTION);
+        
+        event = new ParentEvent();
+        
+        if (event.setName(txtName.getText())) {
+            
+            if (event.setDescription(txtDescription.getText())) {
+                
+                SocialMedia social = new SocialMedia();
+                
+                if (!txtFacebook.getText().equals("https://")) 
+                {
+                    if (!social.setFacebook(txtFacebook.getText()))
+                    {
+                        JOptionPane.showMessageDialog(this, "Invalid facebook URL. "
+                                + "Connection couldn't be made to the website.");
+                    }
+                }
+                if (!txtTwitter.getText().equals("https://")) 
+                {
+                    if (!social.setTwitter(txtTwitter.getText()))
+                    {
+                        JOptionPane.showMessageDialog(this, "Invalid twitter URL. "
+                                + "Connection couldn't be made to the website.");
+                    }
+                }
+                if (!txtInstagram.getText().equals("https://")) 
+                {
+                    if (!social.setFacebook(txtInstagram.getText()))
+                    {
+                        JOptionPane.showMessageDialog(this, "Invalid instagram URL. "
+                                + "Connection couldn't be made to the website.");
+                    }
+                }
+                if (!txtSoundcloud.getText().equals("https://")) 
+                {
+                    if (!social.setFacebook(txtSoundcloud.getText()))
+                    {
+                        JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
+                                + "Connection couldn't be made to the website.");
+                    }
+                }
+                if (!txtSpotify.getText().equals("https://")) 
+                {
+                    if (!social.setFacebook(txtSpotify.getText()))
+                    {
+                        JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
+                                + "Connection couldn't be made to the website.");
+                    }
+                }
+                if (!txtWebsite.getText().equals("https://")) 
+                {
+                    if (!social.setFacebook(txtWebsite.getText()))
+                    {
+                        JOptionPane.showMessageDialog(this, "Invalid website URL. "
+                                + "Connection couldn't be made to the website.");
+                    }
+                }
+                
+                social.setImages(images);
+                
+                event.setSocialMedia(social);
+                try 
+                {
+                    DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.PARENT_EVENT);
+                    
+                    parent.refreshParentEventsList();
+                    dispose();
+                    parent.displayText("Success! " + event.getName() + " added!");
+                } 
+                catch (IOException ex) {
+                    System.out.println("Error writing object to the database. Please try again.");
+                }
+                
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, " +
+                        "and not contain blacklisted words");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Invalid name. Must not contain any blacklisted words, "
+                    + "and must be between 2 & 20 characters long");
+        }
+        
         String fb,tw,insta,sc,www,sp,name,desc;
         fb = txtFacebook.getText();
         tw = txtTwitter.getText();

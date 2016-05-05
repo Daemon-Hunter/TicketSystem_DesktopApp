@@ -652,9 +652,9 @@ public class PnlNewArtist extends javax.swing.JFrame {
                             try 
                             {
                                 artist = (IArtist) DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
-                                parent.displayText("Success! " + artist.getName() + " added.");
                                 parent.populateTable();
                                 dispose();
+                                parent.displayText("Success! " + artist.getName() + " added!");
                             } 
                             catch (IOException ex) {
                                 JOptionPane.showMessageDialog(this, "Error creating the new artist, please try again.");

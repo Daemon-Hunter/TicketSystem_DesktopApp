@@ -98,7 +98,7 @@ public class PnlArtists extends javax.swing.JPanel {
             }
         };
         t.addActionListener(fadeDown);
-        t.setInitialDelay(2000);
+        t.setInitialDelay(5000);
         t.start();
     }
 

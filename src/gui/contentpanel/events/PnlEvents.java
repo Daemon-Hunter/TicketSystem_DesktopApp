@@ -269,11 +269,6 @@ public class PnlEvents extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel1)
-                        .addGap(96, 96, 96)
-                        .addComponent(lblDescription))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -284,7 +279,12 @@ public class PnlEvents extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(btnEditEvent1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNewParentEvent)))
+                        .addComponent(btnNewParentEvent))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel1)
+                        .addGap(96, 96, 96)
+                        .addComponent(lblDescription)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,7 +483,7 @@ public class PnlEvents extends javax.swing.JPanel {
             }
         };
         t.addActionListener(fadeDown);
-        t.setInitialDelay(2000);
+        t.setInitialDelay(5000);
         t.start();
     }
 
@@ -512,7 +512,7 @@ public class PnlEvents extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void refreshParentEventsList() {
-         listParentEventModel.clear();
+        
         EventTableModel childEventsModel = new EventTableModel();
         tableChildEvents.setModel(childEventsModel);
 
@@ -520,32 +520,13 @@ public class PnlEvents extends javax.swing.JPanel {
              DesktopWrapper.getInstance().refreshParentEvents();
              allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
            for (IParentEvent currEvent : allParentEvents)
-        {
-            listParentEventModel.addElement(currEvent.getName());
-    }
+            {
+                listParentEventModel.addElement(currEvent.getName());
+            }
     
         } catch (IOException ex) {
          listParentEventModel.addElement("No Events Found");
         }
-    }
-    public void newRefreshParentEventsList()
-    {
-        listParentEventModel.clear();
-        EventTableModel childEventsModel = new EventTableModel();
-        tableChildEvents.setModel(childEventsModel);
-        
-     //  populateChildEvents();
-//        try{
-//           allParentEvents=  DesktopWrapper.getInstance().refreshParentEvents();
-//           for (IParentEvent currEvent : allParentEvents)
-//        {
-//            listParentEventModel.addElement(currEvent.getName());
-//    }
-//    
-//        } catch (IOException ex) {
-//         listParentEventModel.addElement("No Events Found");
-//        }
-
     }
 
     private void populateChildEvents() {
