@@ -15,6 +15,8 @@ import gui.ObjectSelectDialog;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerDateModel;
@@ -421,7 +423,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
                   }else{}//DESC IS NULL
              
               System.out.println("Event Added");
-              parent.refreshParentEventsList();
+              refreshEvents();
               dispose();
               }else{}//name is null
               
@@ -521,5 +523,14 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
         listModel.addElement(artist.getName());
         artists.add(artist);
         
+    }
+
+    private void refreshEvents() {
+        try {
+            DesktopWrapper.getInstance().refreshParentEvents();
+            parent.revalidate();
+        } catch (IOException ex) {
+            Logger.getLogger(PnlAddChildEvent.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
