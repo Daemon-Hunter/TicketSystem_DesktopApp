@@ -149,14 +149,14 @@ public class Home extends javax.swing.JFrame {
 
         // Create a panel
         JPanel pnlLogo = new JPanel();                                                
-        Dimension logoSize = new Dimension(205, 95);                                  
+        Dimension logoSize = new Dimension(205, 100);                                  
         pnlLogo.setPreferredSize(logoSize);                                           
         pnlLogo.setMaximumSize(logoSize);                                             
         pnlLogo.setBackground(new Color(51,51,51)); // <- same color as background    
                                                                                       
         // Create a label to put the logo onto                                        
         JLabel lblLogo = new JLabel();                                               
-        Icon logo = new ImageIcon(getClass().getResource("/images/LogoWhite.png"));   
+        Icon logo = new ImageIcon(getClass().getResource("/images/fj-logo.png"));   
         lblLogo.setIcon(logo);  
         
         // Add the label to the panel

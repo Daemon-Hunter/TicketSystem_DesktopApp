@@ -46,7 +46,6 @@ public class LoginPanel extends javax.swing.JFrame {
 
         pnlContent.setBackground(new java.awt.Color(51, 51, 51));
         pnlContent.setPreferredSize(new java.awt.Dimension(870, 578));
-        pnlContent.setSize(new java.awt.Dimension(870, 578));
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
@@ -66,9 +65,8 @@ public class LoginPanel extends javax.swing.JFrame {
 
         pnlContent1.setBackground(new java.awt.Color(51, 51, 51));
         pnlContent1.setPreferredSize(new java.awt.Dimension(870, 578));
-        pnlContent1.setSize(new java.awt.Dimension(870, 578));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoWhite.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fj-logo.png"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 15)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -148,7 +146,7 @@ public class LoginPanel extends javax.swing.JFrame {
                     .addComponent(JPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addComponent(txtError)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
