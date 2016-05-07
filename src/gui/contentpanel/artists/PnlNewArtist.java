@@ -621,7 +621,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                         }
                         if (!txtSoundcloud.getText().equals("https://")) 
                         {
-                            if (!social.setFacebook(txtSoundcloud.getText()))
+                            if (!social.setSoundcloud(txtSoundcloud.getText()))
                             {
                                 JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
                                         + "Connection couldn't be made to the website.");
@@ -629,7 +629,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                         }
                         if (!txtSpotify.getText().equals("https://")) 
                         {
-                            if (!social.setFacebook(txtSpotify.getText()))
+                            if (!social.setSpotify(txtSpotify.getText()))
                             {
                                 JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
                                         + "Connection couldn't be made to the website.");
@@ -637,7 +637,7 @@ public class PnlNewArtist extends javax.swing.JFrame {
                         }
                         if (!txtWebsite.getText().equals("https://")) 
                         {
-                            if (!social.setFacebook(txtWebsite.getText()))
+                            if (!social.setWebsite(txtWebsite.getText()))
                             {
                                 JOptionPane.showMessageDialog(this, "Invalid website URL. "
                                         + "Connection couldn't be made to the website.");

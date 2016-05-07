@@ -189,7 +189,6 @@ public class LoginPanel extends javax.swing.JFrame {
         {
             Home pnl = new Home();
             pnl.setVisible(true);
-            pnl.setAlwaysOnTop(true);
             this.dispose();
         }
     }//GEN-LAST:event_jButton1MouseClicked

@@ -650,25 +650,25 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
                         }
                     }
                     if (!txtInstagram.getText().equals("https://")) {
-                        if (!event.setFacebook(txtInstagram.getText())) {
+                        if (!event.setInstagram(txtInstagram.getText())) {
                             JOptionPane.showMessageDialog(this, "Invalid instagram URL. "
                                     + "Connection couldn't be made to the website.");
                         }
                     }
                     if (!txtSoundcloud.getText().equals("https://")) {
-                        if (!event.setFacebook(txtSoundcloud.getText())) {
+                        if (!event.setSoundcloud(txtSoundcloud.getText())) {
                             JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
                                     + "Connection couldn't be made to the website.");
                         }
                     }
                     if (!txtSpotify.getText().equals("https://")) {
-                        if (!event.setFacebook(txtSpotify.getText())) {
+                        if (!event.setSpotify(txtSpotify.getText())) {
                             JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
                                     + "Connection couldn't be made to the website.");
                         }
                     }
                     if (!txtWebsite.getText().equals("https://")) {
-                        if (!event.setFacebook(txtWebsite.getText())) {
+                        if (!event.setWebsite(txtWebsite.getText())) {
                             JOptionPane.showMessageDialog(this, "Invalid website URL. "
                                     + "Connection couldn't be made to the website.");
                         }

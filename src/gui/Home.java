@@ -19,7 +19,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import wrappers.DesktopWrapper;
 
 
 /**
@@ -182,7 +181,7 @@ public class Home extends javax.swing.JFrame {
     }
     
     /**
-     * Initialises the background into its startup state
+     * Initializes the background into its startup state
      */
     private void initContent() {
         

@@ -193,6 +193,7 @@ public class PnlEvents extends javax.swing.JPanel {
         jScrollPane2.setForeground(new java.awt.Color(250, 250, 250));
         jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        txtDescription.setEditable(false);
         txtDescription.setBackground(new java.awt.Color(51, 51, 51));
         txtDescription.setColumns(1);
         txtDescription.setForeground(new java.awt.Color(250, 250, 250));
@@ -201,7 +202,6 @@ public class PnlEvents extends javax.swing.JPanel {
         txtDescription.setWrapStyleWord(true);
         txtDescription.setCaretColor(new java.awt.Color(250, 250, 250));
         txtDescription.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        txtDescription.setEnabled(false);
         txtDescription.setSelectedTextColor(new java.awt.Color(250, 250, 250));
         txtDescription.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {

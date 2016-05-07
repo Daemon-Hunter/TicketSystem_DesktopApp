@@ -200,6 +200,7 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         lblName3.setForeground(new java.awt.Color(255, 255, 255));
         lblName3.setText("End Time");
 
+        txtParentName.setEditable(false);
         txtParentName.setBackground(new java.awt.Color(51, 51, 51));
         txtParentName.setForeground(new java.awt.Color(250, 250, 250));
 
@@ -217,9 +218,9 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         lblName4.setForeground(new java.awt.Color(255, 255, 255));
         lblName4.setText("Event Venue");
 
+        txtVenue.setEditable(false);
         txtVenue.setBackground(new java.awt.Color(51, 51, 51));
         txtVenue.setForeground(new java.awt.Color(250, 250, 250));
-        txtVenue.setEnabled(false);
 
         btnCancel1.setText("Cancel");
         btnCancel1.addActionListener(new java.awt.event.ActionListener() {
