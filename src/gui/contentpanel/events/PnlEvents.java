@@ -510,7 +510,6 @@ public class PnlEvents extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void refreshParentEventsList() {
-        
         EventTableModel childEventsModel = new EventTableModel();
         tableChildEvents.setModel(childEventsModel);
 

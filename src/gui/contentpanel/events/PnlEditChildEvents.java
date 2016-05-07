@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -29,6 +30,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerDateModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import wrappers.DesktopWrapper;
 
@@ -45,7 +47,7 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
     DefaultListModel listModel;
     IVenue venue;
     List<IArtist> lineup;
-
+    SpinnerDateModel endModel,startModel;
     /**
      * Creates new form PnlEditArtist
      */
@@ -73,14 +75,18 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
        txtParentName.setText(parentEvent.getName());
        txtDescription.setText(childEvent.getDescription());
        
-                      String startTime = childEvent.getStartDateTime().toString().substring(0,10);
-                   startTime += " - " + childEvent.getStartDateTime().toString().substring(10,19);
-                    String endTime = childEvent.getEndDateTime().toString().substring(0,10);
-                   endTime += " - " + childEvent.getEndDateTime().toString().substring(10,19);
+                 endModel = (SpinnerDateModel) spnEndTime.getModel();
+                 startModel = (SpinnerDateModel) spnStartTime.getModel();
+       
+                startModel.setValue(childEvent.getStartDateTime());
+                endModel.setValue(childEvent.getEndDateTime());
+                spnEndTime.setModel(endModel);
+                spnStartTime.setModel(startModel);
+                
 
-       txtStartTime.setText(startTime);
-       txtEndTime.setText(endTime);
-       txtVenue.setText(childEvent.getVenue().getName());
+       venue = childEvent.getVenue();
+       txtVenue.setText(venue.getName());
+
        lblDescriptionRemaining.setText((descLength - childEvent.getDescription().length()) + " characters remaining");
           }
 
@@ -104,12 +110,10 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         lblDetailsTitle = new javax.swing.JLabel();
         btnSelectVenue = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        txtStartTime = new javax.swing.JTextField();
         lblName1 = new javax.swing.JLabel();
         lblName2 = new javax.swing.JLabel();
         lblName3 = new javax.swing.JLabel();
         txtParentName = new javax.swing.JTextField();
-        txtEndTime = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstLineup = new javax.swing.JList<>();
         lblDetailsTitle1 = new javax.swing.JLabel();
@@ -118,6 +122,8 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         btnCancel1 = new javax.swing.JButton();
         lblAddArtist = new javax.swing.JLabel();
         lblRemoveArtist = new javax.swing.JLabel();
+        spnStartTime = new javax.swing.JSpinner();
+        spnEndTime = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 51));
@@ -185,9 +191,6 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
             }
         });
 
-        txtStartTime.setBackground(new java.awt.Color(51, 51, 51));
-        txtStartTime.setForeground(new java.awt.Color(250, 250, 250));
-
         lblName1.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblName1.setForeground(new java.awt.Color(255, 255, 255));
         lblName1.setText("Parent Event :");
@@ -203,9 +206,6 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         txtParentName.setEditable(false);
         txtParentName.setBackground(new java.awt.Color(51, 51, 51));
         txtParentName.setForeground(new java.awt.Color(250, 250, 250));
-
-        txtEndTime.setBackground(new java.awt.Color(51, 51, 51));
-        txtEndTime.setForeground(new java.awt.Color(250, 250, 250));
 
         lstLineup.setModel(listModel);
         jScrollPane2.setViewportView(lstLineup);
@@ -249,6 +249,10 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
             }
         });
 
+        spnStartTime.setModel(new javax.swing.SpinnerDateModel());
+
+        spnEndTime.setModel(new javax.swing.SpinnerDateModel());
+
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
         pnlBackgroundLayout.setHorizontalGroup(
@@ -271,25 +275,17 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
                         .addGap(155, 155, 155)
                         .addComponent(lblDetailsTitle))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addGap(104, 104, 104)
-                                .addComponent(lblName2))
-                            .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(76, 76, 76)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(txtEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblName3)))
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblName1)
-                            .addComponent(lblName4))
+                            .addComponent(lblName4)
+                            .addComponent(lblName2)
+                            .addComponent(lblName3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(spnEndTime)
+                                .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtParentName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -325,7 +321,7 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(0, 30, Short.MAX_VALUE)
+                        .addGap(0, 36, Short.MAX_VALUE)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                 .addComponent(lblDetailsTitle1)
@@ -335,8 +331,7 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
                                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblAddArtist)
                                     .addComponent(lblRemoveArtist)))
-                            .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblDescriptionRemaining)
@@ -359,15 +354,16 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
                             .addComponent(lblName4)
                             .addComponent(txtVenue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSelectVenue))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblName2)
-                            .addComponent(lblName3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(spnEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblName3))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11))
             .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -397,15 +393,70 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
-            dispose();
-            if (parent != null) {
-                parent.displayText("Event saved");
+            if(parentEvent !=null)
+            {
+                if(childEvent.setName(txtName.getText()))
+                {
+                    if(childEvent.setDescription(txtDescription.getText()))
+                    {
+                        if(childEvent.setVenue(venue))
+                        {
+                            Date startDate = startModel.getDate();
+                            Date endDate = endModel.getDate();
+                            if(startDate.before(endDate))
+                            {
+                                if(childEvent.setStartDateTime(startDate))
+                                {
+                                    if(childEvent.setEndDateTime(endDate))
+                                    {
+                                        try {
+                                            DesktopWrapper.getInstance().updateObject(childEvent, DatabaseTable.CHILD_EVENT);
+                                            dispose();
+                                            parent.displayText("Success! " + childEvent.getName() + " editted!");
+
+                                        } catch (IOException ex) {
+                                            System.out.println("Error writing object to the database. Please try again.");
+                                        } finally {
+                                            parent.refreshParentEventsList();
+                                        }
+                                    }
+                                }else{
+                                    JOptionPane.showMessageDialog(this, "Invalid Start Date, please try again");
+                                }
+                            }else{
+                                JOptionPane.showMessageDialog(this, "Start Date must be before the End Date");
+                            }
+                        
+                        }else{
+                            JOptionPane.showMessageDialog(this,"Invalid venue, please select a venue again");
+                        }
+                        
+                    }else{
+                      JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, "
+                            + "and not contain blacklisted words");
+                    }
+                }else{
+                      JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
+                        + "contain any blacklisted words.");
+                }
+                
+                
+            }else{
+                JOptionPane.showMessageDialog(this, "Sorry, events parent hasn't been set."
+                        + " Find your nearest developer!");
             }
+            
+            
+            
+            
+            
+            
+            
+            
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnSelectVenueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectVenueActionPerformed
-
     
     }//GEN-LAST:event_btnSelectVenueActionPerformed
 
@@ -433,7 +484,6 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
 
     private void lblRemoveArtistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRemoveArtistMouseClicked
       // Remove Artist from Lineup Here
-
     }//GEN-LAST:event_lblRemoveArtistMouseClicked
 
     private void btnSelectVenueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSelectVenueMouseClicked
@@ -493,11 +543,11 @@ public class PnlEditChildEvents extends javax.swing.JFrame {
     private javax.swing.JLabel lblRemoveArtist;
     private javax.swing.JList<String> lstLineup;
     private javax.swing.JPanel pnlBackground;
+    private javax.swing.JSpinner spnEndTime;
+    private javax.swing.JSpinner spnStartTime;
     private javax.swing.JTextArea txtDescription;
-    private javax.swing.JTextField txtEndTime;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtParentName;
-    private javax.swing.JTextField txtStartTime;
     private javax.swing.JTextField txtVenue;
     // End of variables declaration//GEN-END:variables
 
