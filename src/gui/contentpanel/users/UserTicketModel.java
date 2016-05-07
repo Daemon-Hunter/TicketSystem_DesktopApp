@@ -8,6 +8,7 @@ package gui.contentpanel.users;
 import bookings.IBooking;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,9 +51,14 @@ public class UserTicketModel extends DefaultTableModel{
                 Logger.getLogger(UserTicketModel.class.getName()).log(Level.SEVERE, null, ex);
             }
        }
+               
 
     }
-        
+    UserTicketModel()
+    {
+        super(0,7);
+        bookings = new ArrayList<>();
+    }
         @Override
     public boolean isCellEditable(int row, int column) {
         return false;

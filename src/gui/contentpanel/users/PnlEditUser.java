@@ -5,6 +5,7 @@
  */
 package gui.contentpanel.users;
 
+import bookings.IBooking;
 import gui.contentpanel.artists.*;
 import utilities.ImageAssist;
 import events.IArtist;
@@ -23,6 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
+import people.ICustomer;
 import people.IUser;
 import tickets.ITicket;
 import wrappers.DesktopWrapper;
@@ -34,21 +36,21 @@ import wrappers.UserWrapper;
  */
 public class PnlEditUser extends javax.swing.JFrame {
 
-    private IUser user;
-    private List<ITicket> allTickets;
+    private ICustomer user;
+    private List<IBooking> allTickets;
     /**
      * Creates new form PnlEditArtist
      */
     public PnlEditUser() {
         initComponents();
-        populateTable();
-
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
     public void setUser(IUser user) {
-        this.user = user;
+        this.user = (ICustomer) user;
         initialisePanel();
+        populateTable();
+
     }
     
     public void initialisePanel() {
@@ -88,7 +90,7 @@ public class PnlEditUser extends javax.swing.JFrame {
         txtAddress = new javax.swing.JTextArea();
         lblCustomerDetails1 = new javax.swing.JLabel();
         tableScrollPane = new javax.swing.JScrollPane();
-        tableArtists = new javax.swing.JTable();
+        tableTickets = new javax.swing.JTable();
         btnBookingForCustomer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -168,7 +170,7 @@ public class PnlEditUser extends javax.swing.JFrame {
         lblCustomerDetails1.setForeground(new java.awt.Color(250, 250, 250));
         lblCustomerDetails1.setText("Customer's Tickets");
 
-        tableArtists.setModel(new javax.swing.table.DefaultTableModel(
+        tableTickets.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -191,18 +193,18 @@ public class PnlEditUser extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableArtists.getTableHeader().setReorderingAllowed(false);
-        tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
+        tableTickets.getTableHeader().setReorderingAllowed(false);
+        tableTickets.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                tableArtistsFocusLost(evt);
+                tableTicketsFocusLost(evt);
             }
         });
-        tableArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableTickets.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableArtistsMouseClicked(evt);
+                tableTicketsMouseClicked(evt);
             }
         });
-        tableScrollPane.setViewportView(tableArtists);
+        tableScrollPane.setViewportView(tableTickets);
 
         btnBookingForCustomer.setText("Make Booking For Customer");
         btnBookingForCustomer.addActionListener(new java.awt.event.ActionListener() {
@@ -339,14 +341,14 @@ public class PnlEditUser extends javax.swing.JFrame {
     private void txtAddressKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyTyped
     }//GEN-LAST:event_txtAddressKeyTyped
 
-    private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
+    private void tableTicketsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableTicketsFocusLost
         //
 
-    }//GEN-LAST:event_tableArtistsFocusLost
+    }//GEN-LAST:event_tableTicketsFocusLost
 
-    private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
+    private void tableTicketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableTicketsMouseClicked
         //
-    }//GEN-LAST:event_tableArtistsMouseClicked
+    }//GEN-LAST:event_tableTicketsMouseClicked
 
     private void btnBookingForCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingForCustomerActionPerformed
         // TODO add your handling code here:
@@ -379,8 +381,8 @@ public class PnlEditUser extends javax.swing.JFrame {
     private javax.swing.JLabel lblName3;
     private javax.swing.JLabel lblName4;
     private javax.swing.JPanel pnlBackground;
-    private javax.swing.JTable tableArtists;
     private javax.swing.JScrollPane tableScrollPane;
+    private javax.swing.JTable tableTickets;
     private javax.swing.JTextArea txtAddress;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtForename;
@@ -389,6 +391,13 @@ public class PnlEditUser extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void populateTable() {
-        //ToDO get tickets from user command
+        try {
+            allTickets = user.getBookings();
+            UserTicketModel model = new UserTicketModel(allTickets,allTickets.size()); 
+            tableTickets.setModel(model);
+        } catch (IOException ex) {
+            UserTicketModel model = new UserTicketModel();
+            tableTickets.setModel(model);
+        }
     }
 }

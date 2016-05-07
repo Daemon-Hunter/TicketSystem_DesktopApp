@@ -396,7 +396,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
 
                 IChildEvent event = new ChildEvent();
                 
-                event.setParentEvent(parentEvent);
+               // event.setParentEvent(parentEvent);
 
                 if (event.setName(txtName.getText())) {
 

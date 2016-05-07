@@ -9,7 +9,7 @@ import database.DatabaseTable;
 import events.IArtist;
 import events.IVenue;
 import gui.contentpanel.events.PnlAddChildEvent;
-import gui.contentpanel.events.PnlEditChildEvents;
+import gui.contentpanel.events.PnlEditChildEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ private DatabaseTable type;
 DefaultListModel listModel;
 List<IVenue> listOfVenues;
 List<IArtist> listOfArtists;
-PnlEditChildEvents editParent;
+PnlEditChildEvent editParent;
 PnlAddChildEvent  addParent;
     /**
      * Creates new form ObjectSelectDialog
@@ -41,7 +41,7 @@ PnlAddChildEvent  addParent;
     {
         this.addParent = parent;
     }
-    public void setEditParent(PnlEditChildEvents parent)
+    public void setEditParent(PnlEditChildEvent parent)
     {
         this.editParent = parent;
     }

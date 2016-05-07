@@ -373,7 +373,7 @@ public class PnlEvents extends javax.swing.JPanel {
            }
        } else if(currChildEvent.equals(currParentEvents_ChildEvents.get(tableChildEvents.getSelectedRow())));
        {
-            PnlEditChildEvents editPnl = new PnlEditChildEvents();
+            PnlEditChildEvent editPnl = new PnlEditChildEvent();
                try {
                    System.out.println(currParentEvent.getName());
                    editPnl.setChildEvent(currChildEvent,currChildEvent.getParentEvent());
