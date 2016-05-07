@@ -14,6 +14,7 @@ import events.IVenue;
 import gui.ObjectSelectDialog;
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
      */
     public PnlAddChildEvent() {
         listModel = new DefaultListModel();
+        artists = new LinkedList<>();
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -69,6 +71,21 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
     private void initPanel() {
         txtParentName.setText(parentEvent.getName());
         lblDescriptionRemaining.setText(descLength + " characters remaining");
+    }
+    
+    private void saveEvent(IChildEvent evt) {
+        try {
+            evt = (IChildEvent) DesktopWrapper.getInstance().createNewObject(evt, DatabaseTable.CHILD_EVENT);
+
+            for (IArtist artist : artists) {
+                evt.newContract(artist);
+            }
+            dispose();
+            parent.displayText("Success! " + evt.getName() + " added.");
+        } 
+        catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error creating child event in database. Please try again.");
+        }
     }
 
     /**
@@ -222,9 +239,9 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
             }
         });
 
-        spnStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1462273200000L), new java.util.Date(1462273200000L), null, java.util.Calendar.DAY_OF_MONTH));
+        spnStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1462632864635L), new java.util.Date(), null, java.util.Calendar.DAY_OF_MONTH));
 
-        spnEndTime.setModel(new javax.swing.SpinnerDateModel());
+        spnEndTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(), null, java.util.Calendar.DAY_OF_MONTH));
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
@@ -274,7 +291,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
                         .addComponent(lblDetailsTitle1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                 .addComponent(lblAddArtist)
@@ -394,60 +411,45 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
                                     Date endTime = endModel.getDate();
 
                                     if (event.setEndDateTime(endTime)) {
-
+                                        
+                                        if (artists.isEmpty()) {
+                                            result = JOptionPane.showConfirmDialog(this, "Are you sure you want to create an event with no lineup?");
+                                            
+                                            if (result == JOptionPane.OK_OPTION) {
+                                                saveEvent(event);
+                                            }
+                                        } else {
+                                            saveEvent(event);
+                                        }
+                                    }
+                                    else {
+                                        JOptionPane.showMessageDialog(this, "Error setting end time, please try again.");
                                     }
                                 }
+                                else {
+                                    JOptionPane.showMessageDialog(this, "Error setting start time, please try again.");
+                                }
+                            }
+                            else {
+                                JOptionPane.showMessageDialog(this, "Error setting venue, please try again.");
                             }
                         }
+                        else {
+                            JOptionPane.showMessageDialog(this, "Please select a venue.");
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, "
+                            + "and not contain blacklisted words");
                     }
                 }
-
-                String name, desc;
-                name = txtName.getText();
-                desc = txtDescription.getText();
-//                if (name != null) {
-//                    if (desc != null) {
-//                        if (startTime != null) {
-//                            if (endTime != null) {
-//                                if (venue != null) {
-//                                    if (parentEvent != null) {
-//                                        IChildEvent event = new ChildEvent(name, desc, startTime, endTime, venue, parentEvent);
-//                                        IChildEvent onceAddedEvent;
-//                                        try {
-//                                            onceAddedEvent = (IChildEvent) DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.CHILD_EVENT);
-//                                        } catch (IOException ex) {
-//                                            onceAddedEvent = new ChildEvent();
-//                                        }
-//                                        if (artists != null || onceAddedEvent.getID() != 0) {
-//                                            Boolean failed = false;
-//                                            for (IArtist artist : artists) {
-//                                                try {
-//                                                    event.newContract(artist);
-//                                                } catch (IOException ex) {
-//                                                    failed = true;
-//                                                }
-//                                            }
-//                                            if (failed == true) {
-//                                                JOptionPane.showMessageDialog(parent, "Unable to add all of the lineup");
-//                                            }
-//                                        }
-//                                    } else {
-//                                    }//parent
-//                                } else {
-//                                }//venue IS NULL
-//                            } else {
-//                            }//end is null
-//                        } else {
-//                        }//start is null
-//                    } else {
-//                    }//DESC IS NULL
-//
-//                    System.out.println("Event Added");
-//                    refreshEvents();
-//                    dispose();
-//                } else {
-//                }//name is null
-
+                else {
+                    JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
+                        + "contain any blacklisted words.");
+                }
+            } 
+            else {
+                JOptionPane.showMessageDialog(this, "Sorry, events parent hasn't been set. Find your nearest developer!");
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed

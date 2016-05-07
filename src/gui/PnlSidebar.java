@@ -445,12 +445,14 @@ public class PnlSidebar extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblArtists;
+    private javax.swing.JLabel lblArtists1;
     private javax.swing.JLabel lblBookings;
     private javax.swing.JLabel lblEvents;
     private javax.swing.JLabel lblHome;
     private javax.swing.JLabel lblUsers;
     private javax.swing.JLabel lblVenues;
     private javax.swing.JPanel pnlArtists;
+    private javax.swing.JPanel pnlArtists1;
     private javax.swing.JPanel pnlEvents;
     private javax.swing.JPanel pnlHelp;
     private javax.swing.JPanel pnlHome;
