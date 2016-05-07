@@ -14,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
 import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
@@ -26,7 +29,8 @@ public class PnlArtists extends javax.swing.JPanel {
     
     private Home parent = null;
     
-    private ArrayList<IArtist> allArtists;
+    private List<IArtist> allArtists;
+    private List<IArtist> originalAllArtists;
     private IArtist curArtist;
 
     /**
@@ -40,7 +44,7 @@ public class PnlArtists extends javax.swing.JPanel {
         initButtons();
         populateTable();
         
-        txtSearchbar.setBorder(new RoundedBorder());
+        txtSearchBar.setBorder(new RoundedBorder());
     }
     
     private void initButtons() {
@@ -52,7 +56,7 @@ public class PnlArtists extends javax.swing.JPanel {
     public void populateTable() {
         try {
             allArtists = new ArrayList (DesktopWrapper.getInstance().refreshArtists());
-
+            originalAllArtists = allArtists;
             if (allArtists.size() > 0) {
 
                 // Creates a table model
@@ -61,7 +65,7 @@ public class PnlArtists extends javax.swing.JPanel {
                 tableArtists.setModel(artistData);
             }
         } catch (IOException e) {
-            //Handle exception ----------------------------------------------------------------------------------------------------------------------
+            originalAllArtists = new ArrayList<>();
         }
     }
     
@@ -112,7 +116,7 @@ public class PnlArtists extends javax.swing.JPanel {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        txtSearchbar = new javax.swing.JTextField();
+        txtSearchBar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
         tableArtists = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
@@ -136,17 +140,32 @@ public class PnlArtists extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchbar.setText("Search Artists...");
-        txtSearchbar.setAutoscrolls(false);
-        txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtSearchBar.setText("Search Artists...");
+        txtSearchBar.setAutoscrolls(false);
+        txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtSearchbarFocusLost(evt);
+                txtSearchBarFocusLost(evt);
             }
         });
-        txtSearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtSearchBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtSearchbarMouseClicked(evt);
+                txtSearchBarMouseClicked(evt);
+            }
+        });
+        txtSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchBarActionPerformed(evt);
+            }
+        });
+        txtSearchBar.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtSearchBarPropertyChange(evt);
+            }
+        });
+        txtSearchBar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSearchBarKeyTyped(evt);
             }
         });
 
@@ -252,10 +271,10 @@ public class PnlArtists extends javax.swing.JPanel {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(192, 192, 192)
                                 .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(tableScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
@@ -265,18 +284,18 @@ public class PnlArtists extends javax.swing.JPanel {
                         .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearchBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -287,15 +306,15 @@ public class PnlArtists extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchbarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchbarFocusLost
-        txtSearchbar.setText("Search Artists...");
-    }//GEN-LAST:event_txtSearchbarFocusLost
+    private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
+        txtSearchBar.setText("Search Artists...");
+    }//GEN-LAST:event_txtSearchBarFocusLost
 
-    private void txtSearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchbarMouseClicked
-        if (txtSearchbar.getText().contains("Search Artists...")) {
-            txtSearchbar.setText("");
+    private void txtSearchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchBarMouseClicked
+        if (txtSearchBar.getText().contains("Search Artists...")) {
+            txtSearchBar.setText("");
         }
-    }//GEN-LAST:event_txtSearchbarMouseClicked
+    }//GEN-LAST:event_txtSearchBarMouseClicked
 
     private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
         // User can double click to open 'Edit' dialog.
@@ -344,6 +363,44 @@ public class PnlArtists extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEditArtistActionPerformed
 
+    private void txtSearchBarPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtSearchBarPropertyChange
+      
+    }//GEN-LAST:event_txtSearchBarPropertyChange
+
+    private void txtSearchBarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchBarKeyTyped
+        
+    }//GEN-LAST:event_txtSearchBarKeyTyped
+
+    private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
+        String textToSearch = txtSearchBar.getText();        
+        if(!textToSearch.equals(""))
+        {
+            try {
+                System.out.println("Change");
+              allArtists =  DesktopWrapper.getInstance().searchArtists(textToSearch);
+              ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
+              tableArtists.setModel(model);
+            } catch (IOException ex) {
+              System.out.println("Nah");
+
+                allArtists = originalAllArtists;
+               ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
+              tableArtists.setModel(model);
+
+            }
+        }
+        else
+        {
+               allArtists = originalAllArtists;
+               ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
+              tableArtists.setModel(model);
+              System.out.println("nope");
+
+
+        }
+
+    }//GEN-LAST:event_txtSearchBarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteArtist;
     private javax.swing.JButton btnEditArtist;
@@ -355,7 +412,7 @@ public class PnlArtists extends javax.swing.JPanel {
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JTable tableArtists;
     private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JTextField txtSearchbar;
+    private javax.swing.JTextField txtSearchBar;
     // End of variables declaration//GEN-END:variables
 
 }
