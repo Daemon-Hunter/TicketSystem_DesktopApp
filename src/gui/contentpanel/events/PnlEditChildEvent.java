@@ -249,7 +249,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
             }
         });
 
-        lstTickets.setModel(lineupListModel);
+        lstTickets.setModel(ticketsListModel);
         jScrollPane3.setViewportView(lstTickets);
 
         lblDetailsTitle2.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
