@@ -28,6 +28,7 @@ public class PnlUsers extends javax.swing.JPanel {
     
     private Home parent = null;
     private List<ICustomer> allUsers;
+    private List<ICustomer> originalAllUsers;
     private IUser currUser;
 
 
@@ -40,7 +41,7 @@ public class PnlUsers extends javax.swing.JPanel {
         initComponents();
         this.parent = parent;
         
-        txtSearchbar.setBorder(new RoundedBorder());
+        txtSearchBar.setBorder(new RoundedBorder());
         populateTable();
     }
     
@@ -73,7 +74,7 @@ public class PnlUsers extends javax.swing.JPanel {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        txtSearchbar = new javax.swing.JTextField();
+        txtSearchBar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
         tableUsers = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
@@ -92,21 +93,21 @@ public class PnlUsers extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchbar.setText("Search Customers...");
-        txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtSearchBar.setText("Search Customers...");
+        txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtSearchbarFocusLost(evt);
+                txtSearchBarFocusLost(evt);
             }
         });
-        txtSearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtSearchBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtSearchbarMouseClicked(evt);
+                txtSearchBarMouseClicked(evt);
             }
         });
-        txtSearchbar.addActionListener(new java.awt.event.ActionListener() {
+        txtSearchBar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchbarActionPerformed(evt);
+                txtSearchBarActionPerformed(evt);
             }
         });
 
@@ -184,7 +185,7 @@ public class PnlUsers extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
@@ -195,22 +196,22 @@ public class PnlUsers extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSearchbar))
+                    .addComponent(txtSearchBar))
                 .addGap(47, 47, 47)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchbarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchbarFocusLost
-        txtSearchbar.setText("Search Customers...");
-    }//GEN-LAST:event_txtSearchbarFocusLost
+    private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
+        txtSearchBar.setText("Search Customers...");
+    }//GEN-LAST:event_txtSearchBarFocusLost
 
-    private void txtSearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchbarMouseClicked
-        if (txtSearchbar.getText().contains("Search Customers...")) {
-            txtSearchbar.setText("");
+    private void txtSearchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchBarMouseClicked
+        if (txtSearchBar.getText().contains("Search Customers...")) {
+            txtSearchBar.setText("");
         }
-    }//GEN-LAST:event_txtSearchbarMouseClicked
+    }//GEN-LAST:event_txtSearchBarMouseClicked
 
     private void tableUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUsersMouseClicked
         if (currUser == null) {
@@ -234,9 +235,38 @@ public class PnlUsers extends javax.swing.JPanel {
     private void tableUsersFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableUsersFocusLost
     }//GEN-LAST:event_tableUsersFocusLost
 
-    private void txtSearchbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchbarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchbarActionPerformed
+    private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
+//     Once API Method is created
+
+
+//  String textToSearch = txtSearchBar.getText();        
+//        if(!textToSearch.equals(""))
+//        {
+//            try {
+//                System.out.println("Change");
+//              allUsers =  DesktopWrapper.getInstance().searchUsers(textToSearch);
+//               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+//              tableUsers.setModel(model);
+//            } catch (IOException ex) {
+//              System.out.println("Nah");
+//
+//                allUsers = originalAllUsers;
+//               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+//              tableUsers.setModel(model);
+//
+//            }
+//        }
+//        else
+//        {
+//
+//               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+//              tableUsers.setModel(model);
+//              System.out.println("nope");
+//
+//
+//        }
+
+    }//GEN-LAST:event_txtSearchBarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -245,7 +275,7 @@ public class PnlUsers extends javax.swing.JPanel {
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JTable tableUsers;
-    private javax.swing.JTextField txtSearchbar;
+    private javax.swing.JTextField txtSearchBar;
     // End of variables declaration//GEN-END:variables
 
 }
