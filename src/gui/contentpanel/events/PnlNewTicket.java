@@ -5,14 +5,18 @@
  */
 package gui.contentpanel.events;
 
+import events.IChildEvent;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Dominic
  */
 public class PnlNewTicket extends javax.swing.JFrame {
 
-PnlEditChildEvent editParent;
+PnlEditChildEvent parent;
 PnlAddChildEvent  addParent;
+IChildEvent event;
 
     /**
      * Creates new form PnlNewTicket
@@ -20,6 +24,19 @@ PnlAddChildEvent  addParent;
     public PnlNewTicket() {
         initComponents();
     }
+    
+    public void setEvent(IChildEvent event)
+    {
+        if(event != null)
+        {
+        this.event = event;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Error : No Child Event Selected"
+                    + "Please Contact a Developer about this issue!");
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,7 +56,13 @@ PnlAddChildEvent  addParent;
         txtDescription = new javax.swing.JTextArea();
         lblDescriptionRemaining = new javax.swing.JLabel();
         lblName1 = new javax.swing.JLabel();
-        txtName1 = new javax.swing.JTextField();
+        txtType = new javax.swing.JTextField();
+        txtAmount = new javax.swing.JTextField();
+        lblName2 = new javax.swing.JLabel();
+        txtPrice = new javax.swing.JTextField();
+        lblName3 = new javax.swing.JLabel();
+        btnCancel = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
 
         lblName.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblName.setForeground(new java.awt.Color(255, 255, 255));
@@ -88,36 +111,84 @@ PnlAddChildEvent  addParent;
         lblName1.setForeground(new java.awt.Color(255, 255, 255));
         lblName1.setText("Type : ");
 
-        txtName1.setBackground(new java.awt.Color(51, 51, 51));
-        txtName1.setForeground(new java.awt.Color(250, 250, 250));
+        txtType.setBackground(new java.awt.Color(51, 51, 51));
+        txtType.setForeground(new java.awt.Color(250, 250, 250));
+
+        txtAmount.setBackground(new java.awt.Color(51, 51, 51));
+        txtAmount.setForeground(new java.awt.Color(250, 250, 250));
+
+        lblName2.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        lblName2.setForeground(new java.awt.Color(255, 255, 255));
+        lblName2.setText("Amount : ");
+
+        txtPrice.setBackground(new java.awt.Color(51, 51, 51));
+        txtPrice.setForeground(new java.awt.Color(250, 250, 250));
+
+        lblName3.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        lblName3.setForeground(new java.awt.Color(255, 255, 255));
+        lblName3.setText("Price : ");
+
+        btnCancel.setText("Cancel");
+        btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCancelMouseClicked(evt);
+            }
+        });
+
+        btnSave.setText("Cancel");
+        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSaveMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
         pnlBackgroundLayout.setHorizontalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                .addGap(108, 108, 108)
+                .addContainerGap()
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDescriptionRemaining)
-                    .addComponent(txtTitle))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblName1)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(txtTitle))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(txtType, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addComponent(lblName2)
+                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                        .addGap(44, 44, 44)
+                                        .addComponent(lblDescriptionRemaining))
+                                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                        .addGap(28, 28, 28)
+                                        .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addComponent(lblDescription)
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addComponent(lblName3)
+                                .addGap(50, 50, 50)
+                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblName1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtName1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66))
-            .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                    .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(lblDescription))
-                        .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                            .addGap(105, 105, 105)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addContainerGap(95, Short.MAX_VALUE)))
         );
+
+        pnlBackgroundLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane1, txtAmount, txtType});
+
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
@@ -126,17 +197,26 @@ PnlAddChildEvent  addParent;
                 .addGap(33, 33, 33)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblName1)
-                    .addComponent(txtName1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
+                    .addComponent(txtType))
+                .addGap(18, 18, 18)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDescription)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDescriptionRemaining)
-                .addGap(148, 148, 148))
-            .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                    .addGap(169, 169, 169)
-                    .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblDescription)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(170, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName2)
+                    .addComponent(txtAmount))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName3)
+                    .addComponent(txtPrice))
+                .addGap(110, 110, 110)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,7 +225,7 @@ PnlAddChildEvent  addParent;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,6 +244,19 @@ PnlAddChildEvent  addParent;
             txtDescription.setText(txtDescription.getText().substring(0, txtDescription.getText().length() - 1));
         }
     }//GEN-LAST:event_txtDescriptionKeyTyped
+
+    private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+        dispose();
+    }//GEN-LAST:event_btnCancelMouseClicked
+
+    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
+//        try {
+//            
+//        } catch (IllegalArgumentException ex ) {
+//
+//        } Add Once Updated with exceptions
+        
+    }//GEN-LAST:event_btnSaveMouseClicked
 
     /**
      * @param args the command line arguments
@@ -201,22 +294,25 @@ PnlAddChildEvent  addParent;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnSave;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDescriptionRemaining;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblName1;
+    private javax.swing.JLabel lblName2;
+    private javax.swing.JLabel lblName3;
     private javax.swing.JPanel pnlBackground;
+    private javax.swing.JTextField txtAmount;
     private javax.swing.JTextArea txtDescription;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtName1;
+    private javax.swing.JTextField txtPrice;
     private javax.swing.JLabel txtTitle;
+    private javax.swing.JTextField txtType;
     // End of variables declaration//GEN-END:variables
 
-    void setEditParent(PnlEditChildEvent parent) {
-        this.editParent = parent;
-    }
-     void setAddParent(PnlAddChildEvent parent) {
-        this.addParent = parent;
+    void setParent(PnlEditChildEvent parent) {
+        this.parent = parent;
     }
 }
