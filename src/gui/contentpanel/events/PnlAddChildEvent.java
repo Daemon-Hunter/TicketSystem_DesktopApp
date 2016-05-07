@@ -239,7 +239,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
             }
         });
 
-        spnStartTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1462632864635L), new java.util.Date(), null, java.util.Calendar.DAY_OF_MONTH));
+        spnStartTime.setModel(new javax.swing.SpinnerDateModel());
 
         spnEndTime.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), new java.util.Date(), null, java.util.Calendar.DAY_OF_MONTH));
 
@@ -282,7 +282,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(spnEndTime)
-                            .addComponent(spnStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(spnStartTime))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,11 +390,13 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             
-            if (parent != null) {
+            if (parentEvent != null) {
                 SpinnerDateModel endModel = (SpinnerDateModel) spnEndTime.getModel();
                 SpinnerDateModel startModel = (SpinnerDateModel) spnStartTime.getModel();
 
                 IChildEvent event = new ChildEvent();
+                
+                event.setParentEvent(parentEvent);
 
                 if (event.setName(txtName.getText())) {
 
@@ -405,29 +407,34 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
                             if (event.setVenue(venue)) {
 
                                 Date startTime = startModel.getDate();
+                                Date endTime = endModel.getDate();
+                                
+                                if (startTime.before(endTime)) {
 
-                                if (event.setStartDateTime(startTime)) {
+                                    if (event.setStartDateTime(startTime)) {
 
-                                    Date endTime = endModel.getDate();
+                                        if (event.setEndDateTime(endTime)) {
 
-                                    if (event.setEndDateTime(endTime)) {
-                                        
-                                        if (artists.isEmpty()) {
-                                            result = JOptionPane.showConfirmDialog(this, "Are you sure you want to create an event with no lineup?");
-                                            
-                                            if (result == JOptionPane.OK_OPTION) {
+                                            if (artists.isEmpty()) {
+                                                result = JOptionPane.showConfirmDialog(this, "Are you sure you want to create an event with no lineup?");
+
+                                                if (result == JOptionPane.OK_OPTION) {
+                                                    saveEvent(event);
+                                                }
+                                            } else {
                                                 saveEvent(event);
                                             }
-                                        } else {
-                                            saveEvent(event);
+                                        }
+                                        else {
+                                            JOptionPane.showMessageDialog(this, "Error setting end time, please try again.");
                                         }
                                     }
                                     else {
-                                        JOptionPane.showMessageDialog(this, "Error setting end time, please try again.");
+                                        JOptionPane.showMessageDialog(this, "Error setting start time, please try again.");
                                     }
                                 }
                                 else {
-                                    JOptionPane.showMessageDialog(this, "Error setting start time, please try again.");
+                                    JOptionPane.showMessageDialog(this, "Events end time needs to be after the start time! Fool!");
                                 }
                             }
                             else {
