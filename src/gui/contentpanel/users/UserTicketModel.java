@@ -39,7 +39,6 @@ public class UserTicketModel extends DefaultTableModel{
                 NumberFormat formatter = NumberFormat.getCurrencyInstance();
                 String price = formatter.format(currTicket.getPrice());
                 String amountPaid = formatter.format(currTicket.getPrice() * currBooking.getQuantity());
-              
                 this.setValueAt(currBooking.getBookingID().toString(),i,0);
                 this.setValueAt(currTicket.getChildEvent().getParentEvent().getName(),i,1);
                 this.setValueAt(currTicket.getChildEvent().getName(),i,2);

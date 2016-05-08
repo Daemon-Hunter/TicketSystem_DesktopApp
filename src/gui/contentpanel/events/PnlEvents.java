@@ -9,6 +9,7 @@ import events.IChildEvent;
 import events.IParentEvent;
 import gui.Home;
 import gui.RoundedBorder;
+import gui.contentpanel.artists.ArtistTableModel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,7 @@ public class PnlEvents extends javax.swing.JPanel {
     
     private Home parent = null;
     List<IParentEvent> allParentEvents;
+    List<IParentEvent> originalAllParentEvents;
     private DefaultListModel listParentEventModel;
     IParentEvent currParentEvent;
     IChildEvent currChildEvent;
@@ -42,7 +44,7 @@ public class PnlEvents extends javax.swing.JPanel {
         listParentEventModel = new DefaultListModel();
         initComponents();
         this.parent = parent;
-        txtSearchbar.setBorder(new RoundedBorder());
+        txtSearchBar.setBorder(new RoundedBorder());
         refreshParentEventsList();       
     }
     
@@ -61,7 +63,7 @@ public class PnlEvents extends javax.swing.JPanel {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        txtSearchbar = new javax.swing.JTextField();
+        txtSearchBar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
         tableChildEvents = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
@@ -94,16 +96,21 @@ public class PnlEvents extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchbar.setText("Search Events");
-        txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtSearchBar.setText("Search Events");
+        txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtSearchbarFocusLost(evt);
+                txtSearchBarFocusLost(evt);
             }
         });
-        txtSearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtSearchBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtSearchbarMouseClicked(evt);
+                txtSearchBarMouseClicked(evt);
+            }
+        });
+        txtSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchBarActionPerformed(evt);
             }
         });
 
@@ -290,7 +297,7 @@ public class PnlEvents extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50))
@@ -332,7 +339,7 @@ public class PnlEvents extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtSearchbar))
+                            .addComponent(txtSearchBar))
                         .addGap(18, 18, 18))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -352,15 +359,15 @@ public class PnlEvents extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchbarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchbarFocusLost
-        txtSearchbar.setText("Search Artists...");
-    }//GEN-LAST:event_txtSearchbarFocusLost
+    private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
+        txtSearchBar.setText("Search Artists...");
+    }//GEN-LAST:event_txtSearchBarFocusLost
 
-    private void txtSearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchbarMouseClicked
-        if (txtSearchbar.getText().contains("Search Artists...")) {
-            txtSearchbar.setText("");
+    private void txtSearchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchBarMouseClicked
+        if (txtSearchBar.getText().contains("Search Artists...")) {
+            txtSearchBar.setText("");
         }
-    }//GEN-LAST:event_txtSearchbarMouseClicked
+    }//GEN-LAST:event_txtSearchBarMouseClicked
 
     private void tableChildEventsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableChildEventsMouseClicked
            if(currChildEvent == null)
@@ -450,6 +457,37 @@ public class PnlEvents extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_lblAddImage1MouseClicked
+
+    private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
+        String textToSearch = txtSearchBar.getText();        
+        if(!textToSearch.equals(""))
+        {
+            listParentEventModel.clear();
+            try {
+              allParentEvents =  DesktopWrapper.getInstance().searchParentEvents(textToSearch);
+                for (IParentEvent event : allParentEvents) {
+                    
+                    listParentEventModel.addElement(event.getName());
+                }
+            } catch (IOException ex) {
+              System.out.println("Nah");
+
+                allParentEvents = originalAllParentEvents;
+                for (IParentEvent event : allParentEvents) {
+                    listParentEventModel.addElement(event.getName());
+                }
+
+            }
+        }
+        else
+        {
+                listParentEventModel.clear();
+                allParentEvents = originalAllParentEvents;
+                for (IParentEvent event : allParentEvents) {
+                    listParentEventModel.addElement(event.getName());
+                }
+        }
+    }//GEN-LAST:event_txtSearchBarActionPerformed
     /**
      * Displays a message that fades out after 2 seconds.
      * Use for notifying user.
@@ -504,7 +542,7 @@ public class PnlEvents extends javax.swing.JPanel {
     private javax.swing.JTable tableChildEvents;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JTextArea txtDescription;
-    private javax.swing.JTextField txtSearchbar;
+    private javax.swing.JTextField txtSearchBar;
     // End of variables declaration//GEN-END:variables
 
     public void refreshParentEventsList() {
@@ -512,8 +550,8 @@ public class PnlEvents extends javax.swing.JPanel {
         tableChildEvents.setModel(childEventsModel);
 
         try {
-             DesktopWrapper.getInstance().refreshParentEvents();
              allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
+             originalAllParentEvents = allParentEvents;
            for (IParentEvent currEvent : allParentEvents)
             {
                 listParentEventModel.addElement(currEvent.getName());
@@ -525,6 +563,8 @@ public class PnlEvents extends javax.swing.JPanel {
     }
 
     private void populateChildEvents() {
+     if(listParentEvents.getSelectedIndex() != -1)
+     {
         IParentEvent currParentEvent = allParentEvents.get(listParentEvents.getSelectedIndex());
         txtDescription.setText(currParentEvent.getDescription());
         try {
@@ -534,7 +574,7 @@ public class PnlEvents extends javax.swing.JPanel {
         } catch (IOException ex) {
             Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+     }
 }
     
 

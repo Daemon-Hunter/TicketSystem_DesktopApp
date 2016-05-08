@@ -8,6 +8,7 @@ package gui;
 import database.DatabaseTable;
 import events.IArtist;
 import events.IVenue;
+import gui.contentpanel.artists.ArtistTableModel;
 import gui.contentpanel.events.PnlAddChildEvent;
 import gui.contentpanel.events.PnlEditChildEvent;
 import java.io.IOException;
@@ -24,7 +25,9 @@ public class ObjectSelectDialog extends javax.swing.JFrame {
 private DatabaseTable type;
 DefaultListModel listModel;
 List<IVenue> listOfVenues;
+List<IVenue> originalVenues;
 List<IArtist> listOfArtists;
+List<IArtist> originalArtists;
 PnlEditChildEvent editParent;
 PnlAddChildEvent  addParent;
     /**
@@ -54,13 +57,13 @@ PnlAddChildEvent  addParent;
         {
             case ARTIST:
                 txtTitle.setText("Please Select An Artist");
-              //  txtSearch.setText("Artist...");
+                 txtSearch.setText("Search Artist...");
                 listOfArtists = new ArrayList<>();
                populateTable(DatabaseTable.ARTIST);
                 break;
             case VENUE : 
                 txtTitle.setText("Please Select A Venue");
-                //txtSearch.setText("Venue...");
+                txtSearch.setText("Search Venue...");
                 listOfVenues = new ArrayList<>();
                 populateTable(DatabaseTable.VENUE);
                 break;
@@ -85,9 +88,9 @@ PnlAddChildEvent  addParent;
         lstObjects = new javax.swing.JList<>();
         btnCancel = new javax.swing.JButton();
         btnSelect = new javax.swing.JButton();
-        btnSearch = new javax.swing.JButton();
         txtTitle = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
+        searchPnlLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,11 +115,17 @@ PnlAddChildEvent  addParent;
             }
         });
 
-        btnSearch.setText("Search");
-
         txtTitle.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         txtTitle.setForeground(new java.awt.Color(255, 255, 255));
         txtTitle.setText("Please Select ");
+
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
+        searchPnlLbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/search.png"))); // NOI18N
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
@@ -131,9 +140,9 @@ PnlAddChildEvent  addParent;
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(txtSearch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSearch)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(searchPnlLbl)
+                .addGap(55, 55, 55))
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
@@ -150,15 +159,16 @@ PnlAddChildEvent  addParent;
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(searchPnlLbl))
                 .addContainerGap())
         );
 
@@ -198,6 +208,22 @@ PnlAddChildEvent  addParent;
         }
     }//GEN-LAST:event_btnSelectMouseClicked
 
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        
+        
+            switch(type)
+           {
+               case ARTIST:
+                   searchArtist();
+                   break;
+               case VENUE : 
+                   searchVenue();
+                   break;
+    
+        
+            }
+    }//GEN-LAST:event_txtSearchActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -235,11 +261,11 @@ PnlAddChildEvent  addParent;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSelect;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> lstObjects;
     private javax.swing.JPanel pnlBackground;
+    private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JLabel txtTitle;
     // End of variables declaration//GEN-END:variables
@@ -265,7 +291,6 @@ PnlAddChildEvent  addParent;
                     listOfArtists = DesktopWrapper.getInstance().getArtists();
                     for (IArtist artist : listOfArtists) {
                         listModel.addElement(artist.getName() + " - " + artist.getType());
-                        
                     }
             } catch (IOException ex) {
                 listModel.addElement("No Artists Found");
@@ -307,4 +332,59 @@ PnlAddChildEvent  addParent;
         }
 
     }
+
+    private void searchArtist() {
+       String textToSearch = txtSearch.getText();
+       if(!textToSearch.equals(""))
+        {
+            try {
+                listOfArtists = DesktopWrapper.getInstance().searchArtists(textToSearch);
+                listModel.clear();
+                    for (IArtist artist : listOfArtists) {
+                        listModel.addElement(artist.getName() + " - " + artist.getType());
+                        
+                    }
+
+            } catch (IOException ex) {
+              System.out.println("Nah");
+              listOfArtists = originalArtists;
+              listModel.clear();
+              populateTable(type);
+            }
+        }
+        else
+        {
+                listModel.clear();
+                listOfArtists = originalArtists;
+                populateTable(type);
+
+
+        }
+
+    }
+
+    private void searchVenue() {
+        String textToSearch = txtSearch.getText();
+        if (!textToSearch.equals("")) {
+            try {
+                listOfVenues = DesktopWrapper.getInstance().searchVenues(textToSearch);
+                listModel.clear();
+                for (IVenue venue : listOfVenues) {
+                    listModel.addElement(venue.getName() + " - " + venue.getCity());
+                }
+
+            } catch (IOException ex) {
+                listModel.clear();
+                listOfVenues = originalVenues;
+                populateTable(type);
+
+            }
+        } else {
+                listModel.clear();
+                listOfVenues = originalVenues;
+                populateTable(type);
+        }
+    }
 }
+
+
