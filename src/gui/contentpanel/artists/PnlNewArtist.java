@@ -583,12 +583,12 @@ public class PnlNewArtist extends javax.swing.JFrame {
                 String type = jComboBox1.getSelectedItem().toString();
                 LinkedList<String> tags = new LinkedList<>();
 
-                String facebook   = "";
-                String twitter    = "";
-                String instagram  = "";
-                String soundcloud = "";
-                String spotify    = "";
-                String website    = "";
+                String facebook   = null;
+                String twitter    = null;
+                String instagram  = null;
+                String soundcloud = null;
+                String spotify    = null;
+                String website    = null;
 
                 if (!txtTags.getText().equals("")) {
                     String[] tagArray = txtTags.getText().split(",");

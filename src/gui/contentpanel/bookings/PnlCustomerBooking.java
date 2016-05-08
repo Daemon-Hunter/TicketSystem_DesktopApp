@@ -240,36 +240,37 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbChildEventsActionPerformed
 
     private void btnBuyNowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuyNowMouseClicked
-
-         if (user == null) {
-            JOptionPane.showMessageDialog(this, "Error : No User Selected"
-                    + "Please Contact a Developer about this issue!");
-            dispose();
-        }
-        try{
-            if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty())
-            {
-                ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
-                Integer quantity = (Integer) spnQuantity.getValue();
-                
-                String question = "Are you sure you want to book " + quantity.toString() +
-                        " " + ticket.getType() + " tickets for " + user.getFirstName() 
-                       +" " +  user.getLastName();
-               if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION)
-               {
-                DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity);
-                parent.populateTable();
-                dispose();
-               }
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
-            }
-            
-    }   catch (IOException ex) {
-        System.out.println("Unable To Make Booking");
-        }
+//
+//    if (user == null) {
+//       JOptionPane.showMessageDialog(this, "Error : No User Selected"
+//               + "Please Contact a Developer about this issue!");
+//       dispose();
+//   }
+//   try{
+//       if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty())
+//       {
+//           ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
+//           Integer quantity = (Integer) spnQuantity.getValue();
+//
+//           String question = "Are you sure you want to book " + quantity.toString() +
+//                   " " + ticket.getType() + " tickets for " + user.getFirstName() 
+//                  +" " +  user.getLastName();
+//          if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION)
+//          {
+//               DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity);
+//               parent.populateTable();
+//               dispose();
+//          }
+//       }
+//       else
+//       {
+//           JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
+//       }
+//            
+//    }   
+//    catch (IOException ex) {
+//    System.out.println("Unable To Make Booking");
+//    }
     }//GEN-LAST:event_btnBuyNowMouseClicked
 
     /**

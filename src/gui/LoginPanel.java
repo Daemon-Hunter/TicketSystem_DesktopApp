@@ -1,7 +1,10 @@
 package gui;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import wrappers.DesktopWrapper;
 
 /*
@@ -15,6 +18,8 @@ import wrappers.DesktopWrapper;
  * @author Dominic
  */
 public class LoginPanel extends javax.swing.JFrame {
+    
+    private Boolean passloggedIn = false;
 
     /**
      * Creates new form LoginPanel
@@ -22,6 +27,7 @@ public class LoginPanel extends javax.swing.JFrame {
     public LoginPanel() {
         initComponents();
         setResizable(false);
+        loading_icon_lbl.setVisible(false);
     }
 
     /**
@@ -44,6 +50,7 @@ public class LoginPanel extends javax.swing.JFrame {
         txtError = new javax.swing.JLabel();
         txtUsernameError = new javax.swing.JLabel();
         JPassword = new javax.swing.JPasswordField();
+        loading_icon_lbl = new javax.swing.JLabel();
 
         pnlContent.setBackground(new java.awt.Color(51, 51, 51));
         pnlContent.setPreferredSize(new java.awt.Dimension(870, 578));
@@ -101,6 +108,8 @@ public class LoginPanel extends javax.swing.JFrame {
             }
         });
 
+        loading_icon_lbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loading_icon.gif"))); // NOI18N
+
         javax.swing.GroupLayout pnlContent1Layout = new javax.swing.GroupLayout(pnlContent1);
         pnlContent1.setLayout(pnlContent1Layout);
         pnlContent1Layout.setHorizontalGroup(
@@ -125,7 +134,9 @@ public class LoginPanel extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(pnlContent1Layout.createSequentialGroup()
                         .addGap(219, 219, 219)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1)
+                        .addGap(153, 153, 153)
+                        .addComponent(loading_icon_lbl)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -133,7 +144,7 @@ public class LoginPanel extends javax.swing.JFrame {
 
         pnlContent1Layout.setVerticalGroup(
             pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlContent1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContent1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -147,8 +158,10 @@ public class LoginPanel extends javax.swing.JFrame {
                     .addComponent(JPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addComponent(txtError)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(pnlContent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loading_icon_lbl))
                 .addContainerGap())
         );
 
@@ -156,41 +169,112 @@ public class LoginPanel extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(pnlContent1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(pnlContent1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-       
-    Boolean passloggedIn = false;
-    txtError.setText("");
+   
+        loading_icon_lbl.setVisible(true);
+        
+        txtUsername.setEditable(false);
+        JPassword.setEditable(false);
+        jButton1.setEnabled(false);
+        
+        txtError.setText("");
+        
+        SwingWorker<String, Object> sWorker = new SwingWorker() {
+            @Override
+            public String doInBackground() {
+                try {
+                    passloggedIn = DesktopWrapper.getInstance().loginAdmin(txtUsername.getText(), JPassword.getText());
+                    
+                    if (passloggedIn == true) {
+                        Home pnl = new Home();
+                        pnl.setVisible(true);
+                        LoginPanel.this.dispose();
+                    }
+                    done();
+                } 
+                catch (IOException ex) 
+                {
+                    JOptionPane.showMessageDialog(LoginPanel.this, "IOException  " +  ex.getMessage());
+                    done();
+                }
+                catch (IllegalArgumentException ex) 
+                {
+                    JOptionPane.showMessageDialog(LoginPanel.this, ex.getMessage());
+                    done();
+                }
+                
+                return "";
+            }
 
-        try {
-            passloggedIn = DesktopWrapper.getInstance().loginAdmin(txtUsername.getText(), JPassword.getText());
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "IOException  " +  ex.getMessage());
-        }
-            catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        } 
-        if(passloggedIn == true)
-        {
-            Home pnl = new Home();
-            pnl.setVisible(true);
-            this.dispose();
-        }
+            @Override
+            protected void done() {
+                loading_icon_lbl.setVisible(false);
+                txtUsername.setEditable(true);
+                JPassword.setEditable(true);
+                jButton1.setEnabled(true);
+            }
+        };
+
+        sWorker.execute();
+        
+//        Thread loginThread = new Thread() {
+//            
+//            @Override
+//            public void run() {
+//                txtError.setText("");
+//                try {
+//                    passloggedIn = DesktopWrapper.getInstance().loginAdmin(txtUsername.getText(), JPassword.getText());
+//                } 
+//                catch (IOException ex) 
+//                {
+//                    JOptionPane.showMessageDialog(LoginPanel.this, "IOException  " +  ex.getMessage());
+//                }
+//                catch (IllegalArgumentException ex) 
+//                {
+//                JOptionPane.showMessageDialog(LoginPanel.this, ex.getMessage());
+//                } 
+//                
+//                if (passloggedIn == true) {
+//                    Home pnl = new Home();
+//                    pnl.setVisible(true);
+//                    LoginPanel.this.dispose();
+//                }
+//            }
+//        };
+//        
+//        loading_icon_lbl.setVisible(true);
+//        
+//        loginThread.start();
+//        
+//        loading_icon_lbl.setVisible(false);
+        
+//        Boolean passloggedIn = false;
+//        txtError.setText("");
+//
+//        try {
+//            passloggedIn = DesktopWrapper.getInstance().loginAdmin(txtUsername.getText(), JPassword.getText());
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(this, "IOException  " +  ex.getMessage());
+//        }
+//            catch (IllegalArgumentException ex) {
+//            JOptionPane.showMessageDialog(this, ex.getMessage());
+//        } 
+//        if(passloggedIn == true)
+//        {
+//            Home pnl = new Home();
+//            pnl.setVisible(true);
+//            this.dispose();
+//        }
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void JPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPasswordMouseClicked
@@ -237,6 +321,7 @@ public class LoginPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel loading_icon_lbl;
     private javax.swing.JPanel pnlContent;
     private javax.swing.JPanel pnlContent1;
     private javax.swing.JLabel txtError;

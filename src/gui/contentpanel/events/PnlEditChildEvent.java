@@ -529,7 +529,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
             dialog.setVisible(true);
             dialog.setParent(this);
             dialog.setEvent(childEvent);
-                        dialog.setAlwaysOnTop(true);
+            dialog.setAlwaysOnTop(true);
 
     }//GEN-LAST:event_lblAddTicketsMouseClicked
      /**

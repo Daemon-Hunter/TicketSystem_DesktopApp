@@ -471,12 +471,13 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
 
         String name = txtName.getText();
         String desc = txtDescription.getText();
-        String facebook   = "";
-        String twitter    = "";
-        String instagram  = "";
-        String soundcloud = "";
-        String spotify    = "";
-        String website    = "";
+        
+        String facebook   = null;
+        String twitter    = null;
+        String instagram  = null;
+        String soundcloud = null;
+        String spotify    = null;
+        String website    = null;
 
         if (!txtFacebook.getText().equals("https://"))
             facebook = txtFacebook.getText();
