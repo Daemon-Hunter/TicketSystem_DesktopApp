@@ -548,6 +548,7 @@ public class PnlEvents extends javax.swing.JPanel {
     public void refreshParentEventsList() {
         EventTableModel childEventsModel = new EventTableModel();
         tableChildEvents.setModel(childEventsModel);
+        listParentEventModel.clear();
 
         try {
              allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();

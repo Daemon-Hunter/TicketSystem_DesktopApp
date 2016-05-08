@@ -6,29 +6,12 @@
 package gui.contentpanel.users;
 
 import bookings.IBooking;
-import gui.contentpanel.artists.*;
-import utilities.ImageAssist;
-import events.IArtist;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageFilter;
+import gui.contentpanel.bookings.PnlCustomerBooking;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableModel;
 import people.ICustomer;
 import people.IUser;
-import tickets.ITicket;
-import wrappers.DesktopWrapper;
-import wrappers.UserWrapper;
 
 /**
  *
@@ -207,6 +190,11 @@ public class PnlEditUser extends javax.swing.JFrame {
         tableScrollPane.setViewportView(tableTickets);
 
         btnBookingForCustomer.setText("Make Booking For Customer");
+        btnBookingForCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBookingForCustomerMouseClicked(evt);
+            }
+        });
         btnBookingForCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBookingForCustomerActionPerformed(evt);
@@ -353,6 +341,13 @@ public class PnlEditUser extends javax.swing.JFrame {
     private void btnBookingForCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingForCustomerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBookingForCustomerActionPerformed
+
+    private void btnBookingForCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingForCustomerMouseClicked
+       PnlCustomerBooking dialog = new PnlCustomerBooking();
+            dialog.setVisible(true);
+            dialog.setAlwaysOnTop(true);
+            dialog.setUser(user);
+    }//GEN-LAST:event_btnBookingForCustomerMouseClicked
 
     /**
      * @param args the command line arguments

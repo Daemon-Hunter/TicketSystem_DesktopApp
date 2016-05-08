@@ -429,6 +429,7 @@
             <Property name="text" type="java.lang.String" value="Make Booking For Customer"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnBookingForCustomerMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBookingForCustomerActionPerformed"/>
           </Events>
         </Component>

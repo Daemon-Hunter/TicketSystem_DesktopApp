@@ -128,7 +128,7 @@ public class PnlNewTicket extends javax.swing.JFrame {
             }
         });
 
-        btnSave.setText("Cancel");
+        btnSave.setText("Add");
         btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnSaveMouseClicked(evt);

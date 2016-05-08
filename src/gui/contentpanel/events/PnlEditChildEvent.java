@@ -16,6 +16,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerDateModel;
@@ -119,7 +121,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         lstTickets = new javax.swing.JList<>();
         lblDetailsTitle2 = new javax.swing.JLabel();
-        lblAddImage2 = new javax.swing.JLabel();
+        lblAddTickets = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(51, 51, 51));
@@ -256,10 +258,20 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
         lblDetailsTitle2.setForeground(new java.awt.Color(250, 250, 250));
         lblDetailsTitle2.setText("Tickets");
 
-        lblAddImage2.setForeground(new java.awt.Color(251, 251, 251));
-        lblAddImage2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
-        lblAddImage2.setText("Add Tickets");
-        lblAddImage2.setToolTipText("");
+        lblAddTickets.setForeground(new java.awt.Color(251, 251, 251));
+        lblAddTickets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/addIcon.png"))); // NOI18N
+        lblAddTickets.setText("Add Tickets");
+        lblAddTickets.setToolTipText("");
+        lblAddTickets.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAddTicketsMouseClicked(evt);
+            }
+        });
+        lblAddTickets.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lblAddTicketsKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
@@ -320,7 +332,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
                                         .addComponent(lblRemoveArtist))
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblAddImage2))
+                                    .addComponent(lblAddTickets))
                                 .addGap(8, 8, 8))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
                                 .addComponent(lblDetailsTitle2)
@@ -348,7 +360,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAddImage2)
+                        .addComponent(lblAddTickets)
                         .addGap(3, 3, 3))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -419,7 +431,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescriptionKeyTyped
 
     private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnCancel1ActionPerformed
 
     private void lblAddArtistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddArtistMouseClicked
@@ -508,6 +520,18 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_btnSaveMouseClicked
+
+    private void lblAddTicketsKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lblAddTicketsKeyPressed
+    }//GEN-LAST:event_lblAddTicketsKeyPressed
+
+    private void lblAddTicketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddTicketsMouseClicked
+       PnlNewTicket dialog = new PnlNewTicket();
+            dialog.setVisible(true);
+            dialog.setParent(this);
+            dialog.setEvent(childEvent);
+                        dialog.setAlwaysOnTop(true);
+
+    }//GEN-LAST:event_lblAddTicketsMouseClicked
      /**
      * @param args the command line arguments
      */
@@ -543,10 +567,18 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
     public void addTicket(ITicket ticket)
     {
         if (ticket == null)
+        {
             JOptionPane.showMessageDialog(this, "Can't add a null ticket to the tickets list!");
-            
+        }else
+        {
+            try {
+                DesktopWrapper.getInstance().createNewObject(ticket, DatabaseTable.TICKET);
+            } catch (IOException ex) {
+              JOptionPane.showMessageDialog(this, "Error adding ticket !");
+            }
         tickets.add(ticket);
         ticketsListModel.addElement(ticket.getType() + " - " + ticket.getRemaining() + "Remaining");
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel1;
@@ -557,7 +589,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator;
     private javax.swing.JLabel lblAddArtist;
-    private javax.swing.JLabel lblAddImage2;
+    private javax.swing.JLabel lblAddTickets;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDescriptionRemaining;
     private javax.swing.JLabel lblDetailsTitle;
@@ -616,7 +648,7 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
         
         }catch(IOException ex)
         {
-            System.out.println("No Parent Events Found");
+            System.out.println("No Tickts Events Found");
 
         }
             
