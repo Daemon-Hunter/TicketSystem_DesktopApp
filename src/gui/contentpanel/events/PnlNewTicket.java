@@ -231,7 +231,7 @@ public class PnlNewTicket extends javax.swing.JFrame {
     private void txtDescriptionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescriptionKeyTyped
         // Allow user to type if the description length is < 500
         if ( txtDescription.getText().length() >= 0) {
-            lblDescriptionRemaining.setText(( txtDescription.getText().length()) + " characters remaining");
+            lblDescriptionRemaining.setText(( 500 - txtDescription.getText().length()) + " characters remaining");
         } else {
             // else remove any additional characters
             txtDescription.setText(txtDescription.getText().substring(0, txtDescription.getText().length() - 1));

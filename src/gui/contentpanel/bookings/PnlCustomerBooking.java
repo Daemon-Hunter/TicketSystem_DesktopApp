@@ -9,6 +9,7 @@ import events.IChildEvent;
 import events.IParentEvent;
 import gui.contentpanel.events.EventTableModel;
 import gui.contentpanel.events.PnlEvents;
+import gui.contentpanel.users.PnlEditUser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import people.ICustomer;
 import tickets.ITicket;
 import wrappers.DesktopWrapper;
@@ -31,6 +33,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     private List<IChildEvent> childEvents = new ArrayList<>();
     private List<ITicket> tickets = new ArrayList<>();
     private ICustomer user;
+    PnlEditUser parent;
     /**
      * Creates new form customerBooking
      */
@@ -60,7 +63,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
         lstParentEvents = new javax.swing.JList<>();
         cmbChildEvents = new javax.swing.JComboBox<>();
         cmbTickets = new javax.swing.JComboBox<>();
-        jSpinner1 = new javax.swing.JSpinner();
+        spnQuantity = new javax.swing.JSpinner();
         lblName1 = new javax.swing.JLabel();
         lblName2 = new javax.swing.JLabel();
         lblName3 = new javax.swing.JLabel();
@@ -97,6 +100,8 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
         });
 
         cmbTickets.setModel(ticketsModel);
+
+        spnQuantity.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         lblName1.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblName1.setForeground(new java.awt.Color(255, 255, 255));
@@ -153,7 +158,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(btnBuyNow)
-                                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(spnQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                 .addGap(79, 79, 79)
                                 .addComponent(lblName3))))
@@ -180,7 +185,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
                         .addComponent(cmbTickets, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spnQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblName4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBuyNow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,24 +219,57 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
             
     }//GEN-LAST:event_cmbChildEventsPropertyChange
 
+    private void setParent(PnlEditUser parent)
+    {
+        this.parent = parent;
+    }
     private void cmbChildEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbChildEventsActionPerformed
-        if(cmbChildEvents.getSelectedIndex() != -1)
+        if(!cmbChildEvents.getSelectedItem().equals("No Events Found"))
         {
             try {
                 tickets = childEvents.get(cmbChildEvents.getSelectedIndex()).getTickets();
                 cmbTickets.setModel(new DefaultComboBoxModel());
                 for (ITicket ticket : tickets) {
-                    cmbTickets.addItem(ticket.getType() + "- £" + ticket.getPrice().toString());
+                    cmbTickets.addItem(ticket.getType() + " - £" + ticket.getPrice().toString());
                 }
             } catch (IOException ex) {
-                Logger.getLogger(PnlCustomerBooking.class.getName()).log(Level.SEVERE, null, ex);
+                    cmbTickets.setModel(new DefaultComboBoxModel());
+                    cmbTickets.addItem(("IO ERROR"));
             }
         }
     }//GEN-LAST:event_cmbChildEventsActionPerformed
 
     private void btnBuyNowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuyNowMouseClicked
 
-       
+         if (user == null) {
+            JOptionPane.showMessageDialog(this, "Error : No User Selected"
+                    + "Please Contact a Developer about this issue!");
+            dispose();
+        }
+        try{
+            if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty())
+            {
+                ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
+                Integer quantity = (Integer) spnQuantity.getValue();
+                
+                String question = "Are you sure you want to book " + quantity.toString() +
+                        " " + ticket.getType() + " tickets for " + user.getFirstName() 
+                       +" " +  user.getLastName();
+               if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION)
+               {
+                DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity);
+                parent.populateTable();
+                dispose();
+               }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
+            }
+            
+    }   catch (IOException ex) {
+        System.out.println("Unable To Make Booking");
+        }
     }//GEN-LAST:event_btnBuyNowMouseClicked
 
     /**
@@ -275,7 +313,6 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbChildEvents;
     private javax.swing.JComboBox<String> cmbTickets;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblName1;
     private javax.swing.JLabel lblName2;
@@ -283,6 +320,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     private javax.swing.JLabel lblName4;
     private javax.swing.JList<String> lstParentEvents;
     private javax.swing.JPanel pnlBackground;
+    private javax.swing.JSpinner spnQuantity;
     private javax.swing.JLabel txtBooking;
     // End of variables declaration//GEN-END:variables
 

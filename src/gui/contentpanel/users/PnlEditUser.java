@@ -42,8 +42,6 @@ public class PnlEditUser extends javax.swing.JFrame {
         txtEmail.setText(user.getEmail());
         txtAddress.setText(user.getAddress());
         txtPostcode.setText(user.getPostcode());
-        
-        
     }
 
     /**
@@ -385,7 +383,7 @@ public class PnlEditUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtSurname;
     // End of variables declaration//GEN-END:variables
 
-    private void populateTable() {
+    public void populateTable() {
         try {
             allTickets = user.getBookings();
             UserTicketModel model = new UserTicketModel(allTickets,allTickets.size()); 
