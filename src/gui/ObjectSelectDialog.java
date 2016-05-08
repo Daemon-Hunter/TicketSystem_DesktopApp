@@ -9,7 +9,7 @@ import database.DatabaseTable;
 import events.IArtist;
 import events.IVenue;
 import gui.contentpanel.artists.ArtistTableModel;
-import gui.contentpanel.events.PnlAddChildEvent;
+import gui.contentpanel.events.PnlNewChildEvent;
 import gui.contentpanel.events.PnlEditChildEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ List<IVenue> originalVenues;
 List<IArtist> listOfArtists;
 List<IArtist> originalArtists;
 PnlEditChildEvent editParent;
-PnlAddChildEvent  addParent;
+PnlNewChildEvent  addParent;
     /**
      * Creates new form ObjectSelectDialog
      * @param table
@@ -40,7 +40,7 @@ PnlAddChildEvent  addParent;
         this.setResizable(false);
         initComponents();
     }
-    public void setAddParent(PnlAddChildEvent parent)
+    public void setAddParent(PnlNewChildEvent parent)
     {
         this.addParent = parent;
     }
@@ -306,9 +306,10 @@ PnlAddChildEvent  addParent;
         {
            if(addParent != null)
            {
-               addParent.addLineup(listOfArtists.get(lstObjects.getSelectedIndex()));   
+               addParent.addToLineup(listOfArtists.get(lstObjects.getSelectedIndex()));   
                dispose();
-           }else if(editParent != null)
+           }
+           else if(editParent != null)
            {
                editParent.addLineup(listOfArtists.get(lstObjects.getSelectedIndex()));   
                dispose();
@@ -323,7 +324,8 @@ PnlAddChildEvent  addParent;
            {
                addParent.setVenue(listOfVenues.get(lstObjects.getSelectedIndex()));
                dispose();
-           }else if(editParent != null)
+           }
+           else if(editParent != null)
            {
               System.out.println(listOfVenues.get(lstObjects.getSelectedIndex()).getCity());
                editParent.setVenue(listOfVenues.get(lstObjects.getSelectedIndex()));

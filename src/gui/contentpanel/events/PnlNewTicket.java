@@ -7,6 +7,8 @@ package gui.contentpanel.events;
 
 import events.IChildEvent;
 import javax.swing.JOptionPane;
+import tickets.ITicket;
+import utilities.Validator;
 
 /**
  *
@@ -14,9 +16,9 @@ import javax.swing.JOptionPane;
  */
 public class PnlNewTicket extends javax.swing.JFrame {
 
-PnlEditChildEvent parent;
-PnlAddChildEvent  addParent;
-IChildEvent event;
+    private PnlEditChildEvent parent;
+    private PnlNewChildEvent  addParent;
+    private IChildEvent event;
 
     /**
      * Creates new form PnlNewTicket
@@ -27,13 +29,13 @@ IChildEvent event;
     
     public void setEvent(IChildEvent event)
     {
-        if(event != null)
-        {
-        this.event = event;
+        if (event != null) {
+            this.event = event;
         }
-        else{
+        else {
             JOptionPane.showMessageDialog(this, "Error : No Child Event Selected"
                     + "Please Contact a Developer about this issue!");
+            dispose();
         }
     }
     
@@ -47,8 +49,6 @@ IChildEvent event;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblName = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
         pnlBackground = new javax.swing.JPanel();
         txtTitle = new javax.swing.JLabel();
         lblDescription = new javax.swing.JLabel();
@@ -63,13 +63,6 @@ IChildEvent event;
         lblName3 = new javax.swing.JLabel();
         btnCancel = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-
-        lblName.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
-        lblName.setForeground(new java.awt.Color(255, 255, 255));
-        lblName.setText("Name:");
-
-        txtName.setBackground(new java.awt.Color(51, 51, 51));
-        txtName.setForeground(new java.awt.Color(250, 250, 250));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -250,11 +243,44 @@ IChildEvent event;
     }//GEN-LAST:event_btnCancelMouseClicked
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
-//        try {
-//            
-//        } catch (IllegalArgumentException ex ) {
-//
-//        } Add Once Updated with exceptions
+        if (event == null) {
+            JOptionPane.showMessageDialog(this, "Error : No Child Event Selected"
+                    + "Please Contact a Developer about this issue!");
+            dispose();
+        }
+        
+        try 
+        {
+            Validator.priceValidator(txtPrice.getText());
+            
+            double price = Double.parseDouble(txtPrice.getText());
+            utilities.Formatter.formatPrice(price);
+             
+            try {
+                int remaining = Integer.parseInt(txtAmount.getText());
+                
+                String type = txtType.getText();
+                String desc = txtDescription.getText();
+        
+                ITicket ticket = event.getTicketFactory().createTicket(price, desc, remaining, type);
+                
+                dispose();
+                parent.addTicket(ticket);
+            }
+            
+            catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Couldn't convert inputted amount to an integer.");
+            }
+            
+            // Thrown if the new tickets arguments are invalid
+            catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+        
+        catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
         
     }//GEN-LAST:event_btnSaveMouseClicked
 
@@ -299,14 +325,12 @@ IChildEvent event;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDescriptionRemaining;
-    private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblName1;
     private javax.swing.JLabel lblName2;
     private javax.swing.JLabel lblName3;
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JTextField txtAmount;
     private javax.swing.JTextArea txtDescription;
-    private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;
     private javax.swing.JLabel txtTitle;
     private javax.swing.JTextField txtType;

@@ -27,7 +27,7 @@ import wrappers.DesktopWrapper;
  *
  * @author 10512691
  */
-public class PnlAddChildEvent extends javax.swing.JFrame {
+public class PnlNewChildEvent extends javax.swing.JFrame {
 
     private PnlEvents parent;
     private final int descLength = 500;
@@ -39,7 +39,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
     /**
      * Creates new form PnlEditArtist
      */
-    public PnlAddChildEvent() {
+    public PnlNewChildEvent() {
         listModel = new DefaultListModel();
         artists = new LinkedList<>();
         initComponents();
@@ -73,18 +73,21 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
         lblDescriptionRemaining.setText(descLength + " characters remaining");
     }
     
-    private void saveEvent(IChildEvent evt) {
+    private void saveEvent(IChildEvent event) {
         try {
-            evt = (IChildEvent) DesktopWrapper.getInstance().createNewObject(evt, DatabaseTable.CHILD_EVENT);
+            event = (IChildEvent) DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.CHILD_EVENT);
 
             for (IArtist artist : artists) {
-                evt.newContract(artist);
+                event.newContract(artist);
             }
             dispose();
-            parent.displayText("Success! " + evt.getName() + " added.");
+            parent.displayText("Success! " + event.getName() + " added.");
         } 
         catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error creating child event in database. Please try again.");
+        }
+        catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
 
@@ -391,68 +394,51 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
         if (result == JOptionPane.OK_OPTION) {
             
             if (parentEvent != null) {
-                SpinnerDateModel endModel = (SpinnerDateModel) spnEndTime.getModel();
-                SpinnerDateModel startModel = (SpinnerDateModel) spnStartTime.getModel();
-
-                IChildEvent event = new ChildEvent();
                 
-               // event.setParentEvent(parentEvent);
+                if (venue != null) {
+                    
+                    SpinnerDateModel endModel = (SpinnerDateModel) spnEndTime.getModel();
+                    SpinnerDateModel startModel = (SpinnerDateModel) spnStartTime.getModel();
 
-                if (event.setName(txtName.getText())) {
+                    Date startTime = startModel.getDate();
+                    Date endTime = endModel.getDate();
+                    
+                    if (startTime.before(endTime)) {
 
-                    if (event.setDescription(txtDescription.getText())) {
+                        // IParentEvent parentEvent;
+                        // IVenue venue;
+                        String name = txtName.getText();
+                        String desc = txtDescription.getText();
 
-                        if (venue != null) {
+                        if (artists.isEmpty()) {
+                            result = JOptionPane.showConfirmDialog(this, "Are you sure you want to create an event with no lineup?");
 
-                            if (event.setVenue(venue)) {
-
-                                Date startTime = startModel.getDate();
-                                Date endTime = endModel.getDate();
-                                
-                                if (startTime.before(endTime)) {
-
-                                    if (event.setStartDateTime(startTime)) {
-
-                                        if (event.setEndDateTime(endTime)) {
-
-                                            if (artists.isEmpty()) {
-                                                result = JOptionPane.showConfirmDialog(this, "Are you sure you want to create an event with no lineup?");
-
-                                                if (result == JOptionPane.OK_OPTION) {
-                                                    saveEvent(event);
-                                                }
-                                            } else {
-                                                saveEvent(event);
-                                            }
-                                        }
-                                        else {
-                                            JOptionPane.showMessageDialog(this, "Error setting end time, please try again.");
-                                        }
-                                    }
-                                    else {
-                                        JOptionPane.showMessageDialog(this, "Error setting start time, please try again.");
-                                    }
+                            if (result == JOptionPane.OK_OPTION) {
+                                try {
+                                    IChildEvent event = new ChildEvent(name, desc, startTime, endTime, venue, parentEvent);
+                                    saveEvent(event);
                                 }
-                                else {
-                                    JOptionPane.showMessageDialog(this, "Events end time needs to be after the start time! Fool!");
+                                catch (IllegalArgumentException ex) {
+                                    JOptionPane.showMessageDialog(this, ex.getMessage());
                                 }
                             }
-                            else {
-                                JOptionPane.showMessageDialog(this, "Error setting venue, please try again.");
-                            }
-                        }
+                        } 
                         else {
-                            JOptionPane.showMessageDialog(this, "Please select a venue.");
+                            try {
+                                IChildEvent event = new ChildEvent(name, desc, startTime, endTime, venue, parentEvent);
+                                saveEvent(event);
+                            }
+                            catch (IllegalArgumentException ex) {
+                                JOptionPane.showMessageDialog(this, ex.getMessage());
+                            }
                         }
                     }
                     else {
-                        JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, "
-                            + "and not contain blacklisted words");
+                        JOptionPane.showMessageDialog(this, "Events end time needs to be after the start time! Fool!");
                     }
                 }
                 else {
-                    JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
-                        + "contain any blacklisted words.");
+                    JOptionPane.showMessageDialog(this, "Error setting venue, please try again.");
                 }
             } 
             else {
@@ -506,7 +492,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PnlAddChildEvent().setVisible(true);
+                new PnlNewChildEvent().setVisible(true);
             }
         });
     }
@@ -539,9 +525,9 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
     private javax.swing.JTextField txtVenue;
     // End of variables declaration//GEN-END:variables
 
-    public void addLineup(IArtist artist) {
+    public void addToLineup(IArtist artist) {
         if (artists.contains(artist)) {
-            throw new IllegalArgumentException("Artist allready is in the lineup");
+            throw new IllegalArgumentException("Artist already is in the lineup");
         }
         listModel.addElement(artist.getName());
         artists.add(artist);
@@ -553,7 +539,7 @@ public class PnlAddChildEvent extends javax.swing.JFrame {
             DesktopWrapper.getInstance().refreshParentEvents();
             parent.revalidate();
         } catch (IOException ex) {
-            Logger.getLogger(PnlAddChildEvent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PnlNewChildEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

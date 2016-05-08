@@ -622,24 +622,29 @@ public class PnlNewArtist extends javax.swing.JFrame {
                     website = txtWebsite.getText();
                 }
                 
-                SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
-                
-                try 
-                {
-                    IArtist artist = new Artist(name, desc, tags, social, result);
-                    DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
+                try {
+                    SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
                     
-                    parent.populateTable();
-                    dispose();
-                    parent.displayText("Success! " + artist.getName() + " added!");
+                    try 
+                    {
+                        IArtist artist = new Artist(name, desc, tags, social, result);
+                        DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
+
+                        parent.populateTable();
+                        dispose();
+                        parent.displayText("Success! " + artist.getName() + " added!");
+                    }
+                    catch (IllegalArgumentException ex) 
+                    {
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    } 
+                    catch (IOException ex) 
+                    {
+                        JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
+                    }
                 }
-                catch (IllegalArgumentException ex) 
-                {
+                catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
-                } 
-                catch (IOException ex) 
-                {
-                    JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
                 }
                 
                 

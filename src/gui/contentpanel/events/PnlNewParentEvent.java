@@ -5,23 +5,16 @@
  */
 package gui.contentpanel.events;
 
-import gui.contentpanel.artists.*;
 import utilities.ImageAssist;
 import database.DatabaseTable;
-import events.IArtist;
-import events.IChildEvent;
 import events.IParentEvent;
 import events.ParentEvent;
 import events.SocialMedia;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -35,7 +28,6 @@ import wrappers.DesktopWrapper;
  */
 public class PnlNewParentEvent extends javax.swing.JFrame {
 
-    private IParentEvent event;
     private PnlEvents parent;
     private final int descLength = 500;
     List<BufferedImage> images;
@@ -477,80 +469,63 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to add this parent Event? Changes will immediately become live.", "Add Event", JOptionPane.OK_CANCEL_OPTION);
 
-        event = new ParentEvent();
+        String name = txtName.getText();
+        String desc = txtDescription.getText();
+        String facebook   = "";
+        String twitter    = "";
+        String instagram  = "";
+        String soundcloud = "";
+        String spotify    = "";
+        String website    = "";
 
-        if (event.setName(txtName.getText())) {
+        if (!txtFacebook.getText().equals("https://"))
+            facebook = txtFacebook.getText();
 
-            if (event.setDescription(txtDescription.getText())) {
+        if (!txtTwitter.getText().equals("https://"))
+            twitter = txtTwitter.getText();
 
-                SocialMedia social = new SocialMedia();
+        if (!txtInstagram.getText().equals("https://"))
+            instagram = txtInstagram.getText();
 
-                if (!txtFacebook.getText().equals("https://")) {
-                    if (!social.setFacebook(txtFacebook.getText())) {
-                        JOptionPane.showMessageDialog(this, "Invalid facebook URL. "
-                                + "Connection couldn't be made to the website.");
-                    }
-                }
-                if (!txtTwitter.getText().equals("https://")) {
-                    if (!social.setTwitter(txtTwitter.getText())) {
-                        JOptionPane.showMessageDialog(this, "Invalid twitter URL. "
-                                + "Connection couldn't be made to the website.");
-                    }
-                }
-                if (!txtInstagram.getText().equals("https://")) {
-                    if (!social.setFacebook(txtInstagram.getText())) {
-                        JOptionPane.showMessageDialog(this, "Invalid instagram URL. "
-                                + "Connection couldn't be made to the website.");
-                    }
-                }
-                if (!txtSoundcloud.getText().equals("https://")) {
-                    if (!social.setFacebook(txtSoundcloud.getText())) {
-                        JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
-                                + "Connection couldn't be made to the website.");
-                    }
-                }
-                if (!txtSpotify.getText().equals("https://")) {
-                    if (!social.setFacebook(txtSpotify.getText())) {
-                        JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
-                                + "Connection couldn't be made to the website.");
-                    }
-                }
-                if (!txtWebsite.getText().equals("https://")) {
-                    if (!social.setFacebook(txtWebsite.getText())) {
-                        JOptionPane.showMessageDialog(this, "Invalid website URL. "
-                                + "Connection couldn't be made to the website.");
-                    }
-                }
+        if (!txtSoundcloud.getText().equals("https://"))
+            soundcloud = txtSoundcloud.getText();
 
-                social.setImages(images);
+        if (!txtSpotify.getText().equals("https://"))
+            spotify = txtSpotify.getText();
 
+        if (!txtWebsite.getText().equals("https://"))
+            website = txtWebsite.getText();
+
+        // social.setImages(images);
+
+        try 
+        {
+            SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
+            DesktopWrapper.getInstance().createNewObject(social, DatabaseTable.SOCIAL_MEDIA);
+
+            try 
+            {
+                IParentEvent event = new ParentEvent(social.getSocialId(), name, desc);
                 event.setSocialMedia(social);
-                try {
-                    DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.PARENT_EVENT);
-                    dispose();
-                } catch (IOException ex) {
-                    System.out.println("Error writing object to the database. Please try again.");
-                }
-                finally 
-                {
-                    parent.refreshParentEventsList();
-                    
-                    if (parent.allParentEvents.contains(event)) {
-                        parent.displayText(event.getName() + " added!");
-                    } 
-                    else {
-                        parent.displayText("Couldn't add " + event.getName() + ". Please try again.");
-                    }
+                DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.PARENT_EVENT);
+                dispose();
+                parent.displayText("Succss! " + event.getName() + " added!");
+                parent.refreshParentEventsList();
+            } 
 
-                }
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, "
-                        + "and not contain blacklisted words");
+            catch (IOException ex) {
+                System.out.println("Error writing object to the database. Please try again.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid name. Must not contain any blacklisted words, "
-                    + "and must be between 2 & 20 characters long");
+            catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        }
+
+        catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error writing object to the database. Please try again.");
+        } 
+        catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 

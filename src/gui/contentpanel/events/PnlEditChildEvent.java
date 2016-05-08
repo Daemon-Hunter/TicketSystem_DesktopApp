@@ -542,21 +542,11 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
     
     public void addTicket(ITicket ticket)
     {
-        if(tickets.contains(ticket))
-        {
-         JOptionPane.showMessageDialog(this, "Ticket allready exists");
-        }else{
-            try{
-                ITicket newTicket;
-                newTicket = (ITicket) DesktopWrapper.getInstance().createNewObject(ticket, DatabaseTable.TICKET);
-                tickets.add(ticket);
-                ticketsListModel.addElement(ticket.getType()+" - " + ticket.getRemaining() +"Remaining");
-            }catch(IOException ex)
-            {
-              JOptionPane.showMessageDialog(this, "Unable to add to ticket");
-
-            }
-        }
+        if (ticket == null)
+            JOptionPane.showMessageDialog(this, "Can't add a null ticket to the tickets list!");
+            
+        tickets.add(ticket);
+        ticketsListModel.addElement(ticket.getType() + " - " + ticket.getRemaining() + "Remaining");
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel1;

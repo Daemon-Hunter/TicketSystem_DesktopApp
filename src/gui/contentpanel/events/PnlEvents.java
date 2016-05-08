@@ -445,7 +445,7 @@ public class PnlEvents extends javax.swing.JPanel {
     private void lblAddImage1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAddImage1MouseClicked
         if(currParentEvent != null)
         {
-            PnlAddChildEvent panel = new PnlAddChildEvent();
+            PnlNewChildEvent panel = new PnlNewChildEvent();
             panel.setParentEvent(currParentEvent);
             panel.setParent(this);
             panel.setVisible(true);

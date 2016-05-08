@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.IOException;
+import javax.swing.JOptionPane;
 import wrappers.DesktopWrapper;
 
 /*
@@ -174,16 +175,15 @@ public class LoginPanel extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
        
     Boolean passloggedIn = false;
-    String email = "";
-    String password = "";
-                txtError.setText("");
+    txtError.setText("");
 
         try {
-            email = txtUsername.getText();
-            password = JPassword.getText();
-            passloggedIn = DesktopWrapper.getInstance().loginAdmin(email, password);
-        } catch (IOException | IllegalArgumentException ex) {
-            txtError.setText("Unable To Log In'");
+            passloggedIn = DesktopWrapper.getInstance().loginAdmin(txtUsername.getText(), JPassword.getText());
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "IOException  " +  ex.getMessage());
+        }
+            catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         } 
         if(passloggedIn == true)
         {
