@@ -311,14 +311,11 @@ public class PnlArtists extends javax.swing.JPanel {
             editPnl.setArtist(curArtist);
             editPnl.setParent(this);
             editPnl.setVisible(true);
-            editPnl.setAlwaysOnTop(true);
             curArtist = null;
         } else {
             // Clicking a different artist sets the current artist.
             if (allArtists != null) {
                 curArtist = allArtists.get(tableArtists.getSelectedRow());
-            } else {
-                curArtist = null;
             }
         }
     }//GEN-LAST:event_tableArtistsMouseClicked

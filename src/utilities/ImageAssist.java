@@ -50,7 +50,7 @@ public class ImageAssist {
     public static ArrayList<BufferedImage> createDefaults() throws IOException {
             Random r = new Random();
         
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(8) + ".gif";
+            String filename = "src/images/defaults/defaultImage" + r.nextInt(7) + ".gif";
             
             BufferedImage img = ImageIO.read(new File(filename));
             return ImageAssist.duplicate(img);

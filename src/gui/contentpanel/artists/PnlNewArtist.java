@@ -9,11 +9,15 @@ import database.DatabaseTable;
 import events.Artist;
 import utilities.ImageAssist;
 import events.IArtist;
+import events.ISocial;
 import events.SocialMedia;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -571,107 +575,125 @@ public class PnlNewArtist extends javax.swing.JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             
-            artist = new Artist();
-            if (artist.setName(txtName.getText())) {
+            //artist = new Artist();
+            //if (artist.setName(txtName.getText())) {
                 
-                if (artist.setDescription(txtDescription.getText())) {
+                String name = txtName.getText();
+                String desc = txtDescription.getText();
+                String type = jComboBox1.getSelectedItem().toString();
+                LinkedList<String> tags = new LinkedList<>();
+
+                String facebook   = "";
+                String twitter    = "";
+                String instagram  = "";
+                String soundcloud = "";
+                String spotify    = "";
+                String website    = "";
+
+                if (!txtTags.getText().equals("")) {
+                    String[] tagArray = txtTags.getText().split(",");
+                    for (String tag : tagArray)
+                        tags.add(tag);
+                }
+
+                // Get input string if the user has made a change
+                if (!txtFacebook.getText().equals("https://")) 
+                {
+                    facebook = txtFacebook.getText();
+                }
+                if (!txtTwitter.getText().equals("https://")) 
+                {
+                    twitter = txtTwitter.getText();
+                }
+                if (!txtInstagram.getText().equals("https://")) 
+                {
+                    instagram = txtInstagram.getText();
+                }
+                if (!txtSoundcloud.getText().equals("https://")) 
+                {
+                    soundcloud = txtSoundcloud.getText();
+                }
+                if (!txtSpotify.getText().equals("https://")) 
+                {
+                    spotify = txtSpotify.getText();
+                }
+                if (!txtWebsite.getText().equals("https://")) 
+                {
+                    website = txtWebsite.getText();
+                }
+                
+                SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
+                
+                try 
+                {
+                    IArtist artist = new Artist(name, desc, tags, social, result);
+                    DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
                     
-                    if (artist.setType(jComboBox1.getSelectedItem().toString())) {
-
-                        if (!txtTags.getText().equals("")) {
-                            String tagArray[] = txtTags.getText().split(",");
-
-                            for (String currTag : tagArray) {
-                                currTag = currTag.replace (" ", "");
-                                if (!artist.addTag(currTag)) {
-                                    JOptionPane.showMessageDialog(this, "Error adding a tag. Check what's been added on the 'Edit Artist' dialog.");
-                                }
-                            }
-                        }
-                        
-                        SocialMedia social = new SocialMedia();
-                        
-                        // Validate and set the Artist's social media links
-                        if (!txtFacebook.getText().equals("https://")) 
-                        {
-                            if (!social.setFacebook(txtFacebook.getText()))
-                            {
-                                JOptionPane.showMessageDialog(this, "Invalid facebook URL. "
-                                        + "Connection couldn't be made to the website.");
-                            }
-                        }
-                        if (!txtTwitter.getText().equals("https://")) 
-                        {
-                            if (!social.setTwitter(txtTwitter.getText()))
-                            {
-                                JOptionPane.showMessageDialog(this, "Invalid twitter URL. "
-                                        + "Connection couldn't be made to the website.");
-                            }
-                        }
-                        if (!txtInstagram.getText().equals("https://")) 
-                        {
-                            if (!social.setFacebook(txtInstagram.getText()))
-                            {
-                                JOptionPane.showMessageDialog(this, "Invalid instagram URL. "
-                                        + "Connection couldn't be made to the website.");
-                            }
-                        }
-                        if (!txtSoundcloud.getText().equals("https://")) 
-                        {
-                            if (!social.setSoundcloud(txtSoundcloud.getText()))
-                            {
-                                JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
-                                        + "Connection couldn't be made to the website.");
-                            }
-                        }
-                        if (!txtSpotify.getText().equals("https://")) 
-                        {
-                            if (!social.setSpotify(txtSpotify.getText()))
-                            {
-                                JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
-                                        + "Connection couldn't be made to the website.");
-                            }
-                        }
-                        if (!txtWebsite.getText().equals("https://")) 
-                        {
-                            if (!social.setWebsite(txtWebsite.getText()))
-                            {
-                                JOptionPane.showMessageDialog(this, "Invalid website URL. "
-                                        + "Connection couldn't be made to the website.");
-                            }
-                        }
-                        
-                        // Set the social media images.
-                        if (social.setImages(images)) {
-                            artist.setSocialMedia(social);
-                            
-                            // Try to create the new artist object.
-                            try 
-                            {
-                                artist = (IArtist) DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
-                                parent.populateTable();
-                                dispose();
-                                parent.displayText("Success! " + artist.getName() + " added!");
-                            } 
-                            catch (IOException ex) {
-                                JOptionPane.showMessageDialog(this, "Error creating the new artist, please try again.");
-                            }
-                        }
-                        else {
-                            JOptionPane.showMessageDialog(this, "Error setting images, please try again.");
-                        }
-                        
-                    }
+                    parent.populateTable();
+                    dispose();
+                    parent.displayText("Success! " + artist.getName() + " added!");
                 }
-                else {
-                    JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, " +
-                            "and not contain blacklisted words");
+                catch (IllegalArgumentException ex) 
+                {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                } 
+                catch (IOException ex) 
+                {
+                    JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
                 }
-            }
-            else {
-                JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
-                        + "contain any blacklisted words.");
-            }
+                
+                
+                //if (artist.setDescription(txtDescription.getText())) {
+                    
+//                    if (artist.setType(jComboBox1.getSelectedItem().toString())) {
+//
+//                        if (!txtTags.getText().equals("")) {
+//                            String tagArray[] = txtTags.getText().split(",");
+//
+//                            for (String currTag : tagArray) {
+//                                currTag = currTag.replace (" ", "");
+//                                if (!artist.addTag(currTag)) {
+//                                    JOptionPane.showMessageDialog(this, "Error adding a tag. Check what's been added on the 'Edit Artist' dialog.");
+//                                }
+//                            }
+//                        }
+//                        
+//                        SocialMedia social = new SocialMedia();
+//                          HAD IF STATEMENTS FOR SOCIAL MEDIA LINKS HERE
+//                        
+//                        
+//                        
+//                        // Set the social media images.
+//                        if (social.setImages(images)) {
+//                            artist.setSocialMedia(social);
+//                            
+//                            // Try to create the new artist object.
+//                            try 
+//                            {
+//                                artist = (IArtist) DesktopWrapper.getInstance().createNewObject(artist, DatabaseTable.ARTIST);
+//                                parent.populateTable();
+//                                dispose();
+//                                parent.displayText("Success! " + artist.getName() + " added!");
+//                            } 
+//                            catch (IOException ex) {
+//                                JOptionPane.showMessageDialog(this, "Error creating the new artist, please try again.");
+//                            }
+//                        }
+//                        else {
+//                            JOptionPane.showMessageDialog(this, "Error setting images, please try again.");
+//                        }
+//                        
+//                    }
+//                }
+//                else {
+//                    JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, " +
+//                            "and not contain blacklisted words");
+//                }
+//            }
+//            else {
+//                JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
+//                        + "contain any blacklisted words.");
+//            }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
