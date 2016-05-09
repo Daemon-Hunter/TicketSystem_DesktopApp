@@ -270,7 +270,7 @@ public class PnlNewTicket extends javax.swing.JFrame {
             parent.addTicket(ticket);
         }
         catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Couldn't convert inputted amount to an integer.");
+            JOptionPane.showMessageDialog(this, "Couldn't convert inputted ticket amount to an integer.");
         }
         // Thrown from price validator
         catch (IllegalArgumentException ex) {

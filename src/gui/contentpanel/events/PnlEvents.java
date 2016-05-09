@@ -137,6 +137,7 @@ public class PnlEvents extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableChildEvents.setRowHeight(24);
         tableChildEvents.getTableHeader().setReorderingAllowed(false);
         tableChildEvents.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {

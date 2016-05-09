@@ -126,6 +126,7 @@ public class PnlBookings extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableArtists.setRowHeight(24);
         tableArtists.getTableHeader().setReorderingAllowed(false);
         tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {

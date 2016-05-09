@@ -180,6 +180,7 @@ public class PnlVenues extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableVenues.setRowHeight(24);
         tableVenues.getTableHeader().setReorderingAllowed(false);
         tableVenues.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {

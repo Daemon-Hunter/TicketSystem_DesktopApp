@@ -7,6 +7,8 @@ package gui;
 
 import gui.contentpanel.artists.PnlArtists;
 import gui.contentpanel.*;
+import gui.contentpanel.admins.PnlAdmins;
+import gui.contentpanel.admins.PnlAdmins;
 import gui.contentpanel.bookings.PnlBookings;
 import gui.contentpanel.events.PnlEvents;
 import gui.contentpanel.users.PnlUsers;
@@ -30,6 +32,7 @@ public class Home extends javax.swing.JFrame {
     
     private Pages page = null;
     private CardLayout cards = null;
+    public PnlSidebar sidebar;
     
     /**
      * Creates new form Home
@@ -166,7 +169,7 @@ public class Home extends javax.swing.JFrame {
         
         // Give sidebar access to 'this' frame. Allows the sidebar to call public
         // methods contained in this class - specifically setContent(JPanel content)
-        PnlSidebar sidebar = new PnlSidebar();
+        sidebar = new PnlSidebar();
         sidebar.setParent(this);
         pnlSidebar.add(sidebar);
     }
@@ -189,12 +192,13 @@ public class Home extends javax.swing.JFrame {
         pnlContent.setLayout(new CardLayout());
         
         // Creates a new insatance of the content panels
-        JPanel home = new PnlHome();
+        JPanel home = new PnlHome(this);
         JPanel bookings = new PnlBookings(this);
         JPanel users = new PnlUsers(this);
         JPanel artists = new PnlArtists(this);
         JPanel venues = new PnlVenues(this);
         JPanel events = new PnlEvents(this);
+        JPanel admins = new PnlAdmins(this);
         
         // Sets the size of the content panels to match the 'container' panel
         home.setMinimumSize(pnlContent.getSize());
@@ -203,6 +207,7 @@ public class Home extends javax.swing.JFrame {
         bookings.setMinimumSize(pnlContent.getSize());
         venues.setMinimumSize(pnlContent.getSize());
         events.setMinimumSize(pnlContent.getSize());
+        admins.setMinimumSize(pnlContent.getSize());
         
         
         // Add the panels to the 'container' panel, with specified indexes
@@ -212,6 +217,7 @@ public class Home extends javax.swing.JFrame {
         pnlContent.add(bookings,Pages.BOOKINGS.toString());
         pnlContent.add(venues,Pages.VENUES.toString());
         pnlContent.add(events,Pages.EVENTS.toString());
+        pnlContent.add(admins, Pages.ADMINS.toString());
         
         cards = (CardLayout)(pnlContent.getLayout());
         

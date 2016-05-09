@@ -29,8 +29,7 @@ import wrappers.DesktopWrapper;
  * @author 10512691
  */
 public class PnlNewVenue extends javax.swing.JFrame {
-
-    private IVenue venue;
+    
     private PnlVenues parent;
     private ArrayList<BufferedImage> images;
     /**

@@ -17,14 +17,11 @@ public class ArtistTableModel extends DefaultTableModel {
     
     private final String[] headers = { "Name", "Description", "Tags", "More"};
     
-    private final List<IArtist> artists;
-    
     
     // access to parent, and therefore wrapper. Can get access to artist list, and then open
     // new JPanel that displays the artist data. Pass JPanel the artist object.
     public ArtistTableModel(List<IArtist> artists, int rows) {
         super(rows, 4);
-        this.artists = artists;
         
         IArtist currArtist;
         

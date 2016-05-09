@@ -13,6 +13,7 @@ public enum Pages {
     HOME,
     USERS,
     VENUES,
+    ADMINS,
     ARTISTS,
     EVENTS,
     BOOKINGS;

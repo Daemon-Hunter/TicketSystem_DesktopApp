@@ -71,6 +71,32 @@ public class PnlSidebar extends javax.swing.JPanel {
                 break;
         }
     }
+    
+    public void deselectAll() {
+        lblHome.setForeground(Color.LIGHT_GRAY);
+        Icon icon = new ImageIcon(getClass().getResource("/images/icons/homeIcon.png"));
+        lblHome.setIcon(icon);
+
+        lblUsers.setForeground(Color.LIGHT_GRAY);
+        icon = new ImageIcon(getClass().getResource("/images/icons/userIcon.png"));
+        lblUsers.setIcon(icon);
+
+        lblVenues.setForeground(Color.LIGHT_GRAY);
+        icon = new ImageIcon(getClass().getResource("/images/icons/venueIcon.png"));
+        lblVenues.setIcon(icon);
+
+        lblArtists.setForeground(Color.LIGHT_GRAY);
+        icon = new ImageIcon(getClass().getResource("/images/icons/artistIcon.png"));
+        lblArtists.setIcon(icon);
+
+        lblEvents.setForeground(Color.LIGHT_GRAY);
+        icon = new ImageIcon(getClass().getResource("/images/icons/eventIcon.png"));
+        lblEvents.setIcon(icon);
+
+        lblBookings.setForeground(Color.LIGHT_GRAY);
+        icon = new ImageIcon(getClass().getResource("/images/icons/helpIcon.png"));
+        lblBookings.setIcon(icon);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

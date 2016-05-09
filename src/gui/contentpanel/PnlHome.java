@@ -5,17 +5,21 @@
  */
 package gui.contentpanel;
 
+import gui.Home;
+
 /**
  *
  * @author 10512691
  */
 public class PnlHome extends javax.swing.JPanel {
 
+    private Home parent;
     /**
      * Creates new form PnlHome
      */
-    public PnlHome() {
+    public PnlHome(Home parent) {
         initComponents();
+        this.parent = parent;
     }
 
     /**
@@ -58,6 +62,9 @@ public class PnlHome extends javax.swing.JPanel {
         lblPopVenue1 = new javax.swing.JLabel();
         lblPopVenue2 = new javax.swing.JLabel();
         lblPopVenue3 = new javax.swing.JLabel();
+        pnlAdminSettings = new javax.swing.JPanel();
+        lblAdminSettings = new javax.swing.JLabel();
+        iconAdminSettings = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(873, 32767));
         setMinimumSize(new java.awt.Dimension(873, 0));
@@ -378,6 +385,40 @@ public class PnlHome extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        pnlAdminSettings.setBackground(new java.awt.Color(51, 51, 51));
+        pnlAdminSettings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pnlAdminSettingsMouseClicked(evt);
+            }
+        });
+
+        lblAdminSettings.setForeground(new java.awt.Color(251, 251, 251));
+        lblAdminSettings.setText("Admin Settings");
+
+        iconAdminSettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settings_icon.png"))); // NOI18N
+
+        javax.swing.GroupLayout pnlAdminSettingsLayout = new javax.swing.GroupLayout(pnlAdminSettings);
+        pnlAdminSettings.setLayout(pnlAdminSettingsLayout);
+        pnlAdminSettingsLayout.setHorizontalGroup(
+            pnlAdminSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAdminSettingsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAdminSettings)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAdminSettingsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(iconAdminSettings)
+                .addGap(21, 21, 21))
+        );
+        pnlAdminSettingsLayout.setVerticalGroup(
+            pnlAdminSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAdminSettingsLayout.createSequentialGroup()
+                .addComponent(iconAdminSettings)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblAdminSettings)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
         pnlBackgroundLayout.setHorizontalGroup(
@@ -390,11 +431,17 @@ public class PnlHome extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                         .addComponent(pnlActiveBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pnlNewEventsBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(83, 83, 83)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlTopSearchBackground, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlPopVenuesBackground, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(119, Short.MAX_VALUE))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(pnlPopVenuesBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(pnlTopSearchBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addComponent(pnlAdminSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,7 +455,11 @@ public class PnlHome extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pnlNewEventsBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(pnlTopSearchBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlTopSearchBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(pnlAdminSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(33, 33, 33)
                         .addComponent(pnlPopVenuesBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 61, Short.MAX_VALUE))
@@ -426,10 +477,17 @@ public class PnlHome extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pnlAdminSettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlAdminSettingsMouseClicked
+        parent.sidebar.deselectAll();
+        parent.setPage(Pages.ADMINS);
+    }//GEN-LAST:event_pnlAdminSettingsMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel iconAdminSettings;
     private javax.swing.JLabel lblActive;
     private javax.swing.JLabel lblActiveTitle;
+    private javax.swing.JLabel lblAdminSettings;
     private javax.swing.JLabel lblNewEvent1;
     private javax.swing.JLabel lblNewEvent2;
     private javax.swing.JLabel lblNewEvent3;
@@ -450,6 +508,7 @@ public class PnlHome extends javax.swing.JPanel {
     private javax.swing.JLabel lblTopSearchTitle;
     private javax.swing.JPanel pnlActiveBackground;
     private javax.swing.JPanel pnlActiveTitle;
+    private javax.swing.JPanel pnlAdminSettings;
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JPanel pnlNewEventsBackground;
     private javax.swing.JPanel pnlNewEventsTitle;

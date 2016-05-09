@@ -5,14 +5,10 @@
  */
 package gui.contentpanel.users;
 
-import gui.contentpanel.artists.ArtistTableModel;
-import gui.contentpanel.bookings.*;
-import gui.contentpanel.artists.*;
 import people.IUser;
 import gui.Home;
 import gui.RoundedBorder;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -134,6 +130,7 @@ public class PnlUsers extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableUsers.setRowHeight(24);
         tableUsers.getTableHeader().setReorderingAllowed(false);
         tableUsers.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
