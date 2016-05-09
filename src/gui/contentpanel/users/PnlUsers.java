@@ -8,10 +8,14 @@ package gui.contentpanel.users;
 import people.IUser;
 import gui.Home;
 import gui.RoundedBorder;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
 import javax.swing.table.TableModel;
 import people.ICustomer;
 import wrappers.DesktopWrapper;
@@ -55,6 +59,38 @@ public class PnlUsers extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Displays a message that fades out after 2 seconds.
+     * Use for notifying user.
+     * @param text Must be less than 30 characters.
+     */
+    public void displayText(String text) {
+        infoTextBox.setForeground(new Color(251,251,251));
+        infoTextBox.setText(text);
+
+        Timer t = new Timer(50, null);
+
+        ActionListener fadeDown = new ActionListener() {
+
+            Color c = infoTextBox.getForeground();
+            int rgb = c.getBlue();
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rgb > 51) {
+                    rgb -= 5;
+                    infoTextBox.setForeground(new Color(rgb, rgb, rgb));
+                }
+                else {
+                    infoTextBox.setText("");
+                    t.stop();
+                }
+            }
+        };
+        t.addActionListener(fadeDown);
+        t.setInitialDelay(5000);
+        t.start();
+    }
     
     public void setParent(Home parent) {
         this.parent = parent;
@@ -75,6 +111,8 @@ public class PnlUsers extends javax.swing.JPanel {
         tableUsers = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        infoTextBox = new javax.swing.JTextArea();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -173,6 +211,21 @@ public class PnlUsers extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        infoTextBox.setEditable(false);
+        infoTextBox.setBackground(new java.awt.Color(51, 51, 51));
+        infoTextBox.setColumns(20);
+        infoTextBox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        infoTextBox.setLineWrap(true);
+        infoTextBox.setRows(5);
+        infoTextBox.setWrapStyleWord(true);
+        infoTextBox.setAutoscrolls(false);
+        infoTextBox.setDragEnabled(false);
+        jScrollPane1.setViewportView(infoTextBox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,6 +235,8 @@ public class PnlUsers extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
                         .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -191,10 +246,12 @@ public class PnlUsers extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSearchBar))
-                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtSearchBar))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(71, Short.MAX_VALUE))
         );
@@ -219,6 +276,7 @@ public class PnlUsers extends javax.swing.JPanel {
         else if (currUser.equals(allUsers.get(tableUsers.getSelectedRow()))) {
             PnlEditUser editPnl = new PnlEditUser();
             editPnl.setUser(currUser);
+            editPnl.setParent(this);
             editPnl.setVisible(true);
             editPnl.setAlwaysOnTop(true);
             currUser = null;
@@ -267,7 +325,9 @@ public class PnlUsers extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JScrollPane tableScrollPane;

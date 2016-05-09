@@ -659,6 +659,85 @@ public class PnlEditArtist extends javax.swing.JFrame {
         
         if (result == JOptionPane.OK_OPTION) {
             
+            // Variables for Artist object
+            String name = txtName.getText();
+            String desc = txtDescription.getText();
+            String type = jComboBox1.getSelectedItem().toString();
+            String tags = txtTags.getText();
+
+            // Variables for SocialMedia object (images declared at top of class)
+            String facebook   = null;
+            String twitter    = null;
+            String instagram  = null;
+            String soundcloud = null;
+            String spotify    = null;
+            String website    = null;
+
+            // Get input string if the user has made a change
+            if (!txtFacebook.getText().equals("https://")) 
+            {
+                facebook = txtFacebook.getText();
+            }
+            if (!txtTwitter.getText().equals("https://")) 
+            {
+                twitter = txtTwitter.getText();
+            }
+            if (!txtInstagram.getText().equals("https://")) 
+            {
+                instagram = txtInstagram.getText();
+            }
+            if (!txtSoundcloud.getText().equals("https://")) 
+            {
+                soundcloud = txtSoundcloud.getText();
+            }
+            if (!txtSpotify.getText().equals("https://")) 
+            {
+                spotify = txtSpotify.getText();
+            }
+            if (!txtWebsite.getText().equals("https://")) 
+            {
+                website = txtWebsite.getText();
+            }
+
+            try 
+            {
+                artist.setName(name);
+                artist.setDescription(desc);
+                artist.setType(type);
+                
+                for (String tag : artist.getTags()) {
+                    artist.removeTag(tag);
+                }
+                
+                String[] tagArray = tags.split(",");
+                for (String tag : tagArray) {
+                    tag = tag.replace(" ", "");
+                    artist.addTag(tag);
+                }
+                
+                artist.setFacebook(facebook);
+                artist.setTwitter(twitter);
+                artist.setInstagram(instagram);
+                artist.setSoundcloud(soundcloud);
+                artist.setWebsite(website);
+                artist.setSpotify(spotify);
+                
+                DesktopWrapper.getInstance().updateObject(artist, DatabaseTable.ARTIST);
+
+                parent.populateTable();
+                dispose();
+                parent.displayText("Success! " + artist.getName() + " updated!");
+            }
+            catch (IllegalArgumentException ex) 
+            {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            } 
+            catch (IOException ex) 
+            {
+                JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
+            }
+            
+            
             if (artist == null) {
                 JOptionPane.showMessageDialog(this, "Error loading artist into dialog. Please try again.");
                 dispose();

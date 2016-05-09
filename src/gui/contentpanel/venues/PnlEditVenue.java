@@ -29,7 +29,6 @@ public class PnlEditVenue extends javax.swing.JFrame {
 
     private IVenue venue;
     private PnlVenues parent;
-    private ArrayList<BufferedImage> images;
     private final int facilLength = 200;
     private final int descLength = 500;
     
@@ -42,7 +41,6 @@ public class PnlEditVenue extends javax.swing.JFrame {
         
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
-        images = new ArrayList<>();
     }
     
     public void setVenue(IVenue venue) {
@@ -811,8 +809,8 @@ public class PnlEditVenue extends javax.swing.JFrame {
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                images = ImageAssist.duplicate(img);
-                lblImage.setIcon(new ImageIcon(images.get(1)));
+                venue.setImages(ImageAssist.duplicate(img));
+                lblImage.setIcon(new ImageIcon(venue.getImage(1)));
             }
             catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem reading the file you selected,"
@@ -826,13 +824,13 @@ public class PnlEditVenue extends javax.swing.JFrame {
         int dialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this image?", "Confirm", JOptionPane.OK_CANCEL_OPTION);
         if (dialog == JOptionPane.OK_OPTION) {
             
-            for (int i = 0; i < images.size(); i++) {
-                images.remove(i);
+            for (int i = 0; i < venue.getImages().size(); i++) {
+                venue.removeImage(i);
             }
             
             try {
-                images = ImageAssist.createDefaults();
-                lblImage.setIcon(new ImageIcon(images.get(1)));
+                venue.setImages(ImageAssist.createDefaults());
+                lblImage.setIcon(new ImageIcon(venue.getImage(1)));
                 
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
@@ -902,29 +900,42 @@ public class PnlEditVenue extends javax.swing.JFrame {
                             website = txtWebsite.getText();
                         }
 
-                        try {
-                            SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
+                        try 
+                        {
+                            venue.setName(name);
+                            venue.setDescription(desc);
+                            venue.setSeatingCapacity(capSeating);
+                            venue.setStandingCapacity(capStanding);
+                            venue.setParking(capParking);
+                            venue.setDisabledAccess(access);
+                            venue.setFacilites(facil);
+                            venue.setEmail(email);
+                            venue.setAddress(addr);
+                            venue.setCity(city);
+                            venue.setPostcode(pCode);
+                            venue.setPhoneNumber(pNo);
+                            
+                            venue.setFacebook(facebook);
+                            venue.setTwitter(twitter);
+                            venue.setInstagram(instagram);
+                            venue.setSoundcloud(soundcloud);
+                            venue.setWebsite(website);
+                            venue.setSpotify(spotify);
+                            
+                            DesktopWrapper.getInstance().updateObject(venue, DatabaseTable.VENUE);
 
-                            try 
-                            {
-                                IVenue venue = new Venue(social, desc, capSeating, capStanding, access, facil, capParking, pNo, email, addr, city, pCode, name);
-                                DesktopWrapper.getInstance().createNewObject(venue, DatabaseTable.VENUE);
-
-                                parent.populateTable();
-                                dispose();
-                                parent.displayText("Success! " + venue.getName() + " added!");
-                            }
-                            catch (IllegalArgumentException ex) 
-                            {
-                                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                            } 
-                            catch (IOException ex) 
-                            {
-                                JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
-                            }
+                            parent.populateTable();
+                            dispose();
+                            parent.displayText("Success! " + venue.getName() + " updated!");
                         }
-                        catch (IllegalArgumentException ex) {
+                        catch (IllegalArgumentException ex) 
+                        {
                             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        } 
+                        catch (IOException ex) 
+                        {
+                            JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
+                            parent.populateTable();
                         }
                     }
                     catch (NumberFormatException ex) {

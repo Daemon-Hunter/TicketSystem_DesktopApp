@@ -46,6 +46,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
         ticketsModel = new DefaultComboBoxModel();
         initComponents();
         populateParentEvents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
