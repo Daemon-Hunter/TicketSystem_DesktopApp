@@ -64,25 +64,24 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
     }
 
     private void initPanel() {
-       txtName.setText(childEvent.getName());
-       DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.UK);
-       txtParentName.setText(parentEvent.getName());
-       txtDescription.setText(childEvent.getDescription());
-       
-                 endModel = (SpinnerDateModel) spnEndTime.getModel();
-                 startModel = (SpinnerDateModel) spnStartTime.getModel();
-       
-                startModel.setValue(childEvent.getStartDateTime());
-                endModel.setValue(childEvent.getEndDateTime());
-                spnEndTime.setModel(endModel);
-                spnStartTime.setModel(startModel);
-                
+        txtName.setText(childEvent.getName());
+        DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.UK);
+        txtParentName.setText(parentEvent.getName());
+        txtDescription.setText(childEvent.getDescription());
 
-       venue = childEvent.getVenue();
-       txtVenue.setText(venue.getName());
+        endModel = (SpinnerDateModel) spnEndTime.getModel();
+        startModel = (SpinnerDateModel) spnStartTime.getModel();
 
-       lblDescriptionRemaining.setText((descLength - childEvent.getDescription().length()) + " characters remaining");
-          }
+        startModel.setValue(childEvent.getStartDateTime());
+        endModel.setValue(childEvent.getEndDateTime());
+        spnEndTime.setModel(endModel);
+        spnStartTime.setModel(startModel);
+
+        venue = childEvent.getVenue();
+        txtVenue.setText(venue.getName());
+
+        lblDescriptionRemaining.setText((descLength - childEvent.getDescription().length()) + " characters remaining");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

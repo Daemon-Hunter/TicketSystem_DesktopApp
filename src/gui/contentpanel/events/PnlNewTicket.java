@@ -239,48 +239,44 @@ public class PnlNewTicket extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescriptionKeyTyped
 
     private void btnCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseClicked
+        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel?");
+        if (result == JOptionPane.OK_OPTION)
         dispose();
     }//GEN-LAST:event_btnCancelMouseClicked
 
     private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
         if (event == null) {
             JOptionPane.showMessageDialog(this, "Error : No Child Event Selected"
-                    + "Please Contact a Developer about this issue!");
+                    + "Please Contact a Developer about this issue!"
+                    + "\n\nFrom PnlChildEvent, you need to set the parent of this JFrame after construction.");
             dispose();
         }
         
-        try 
-        {
+        try {
+            
             Validator.priceValidator(txtPrice.getText());
             
             double price = Double.parseDouble(txtPrice.getText());
             utilities.Formatter.formatPrice(price);
-             
-            try {
-                int remaining = Integer.parseInt(txtAmount.getText());
-                
-                String type = txtType.getText();
-                String desc = txtDescription.getText();
-        
-                ITicket ticket = event.getTicketFactory().createTicket(price, desc, remaining, type);
-                
-                dispose();
-                parent.addTicket(ticket);
-            }
-            
-            catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Couldn't convert inputted amount to an integer.");
-            }
-            
-            // Thrown if the new tickets arguments are invalid
-            catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
-            }
+
+            int remaining = Integer.parseInt(txtAmount.getText());
+
+            String type = txtType.getText();
+            String desc = txtDescription.getText();
+
+            ITicket ticket = event.getTicketFactory().createTicket(price, desc, remaining, type);
+
+            dispose();
+            parent.addTicket(ticket);
         }
-        
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Couldn't convert inputted amount to an integer.");
+        }
+        // Thrown from price validator
         catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
+        
         
     }//GEN-LAST:event_btnSaveMouseClicked
 

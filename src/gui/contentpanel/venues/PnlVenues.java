@@ -8,11 +8,15 @@ import events.IVenue;
 import gui.Home;
 import gui.RoundedBorder;
 import gui.contentpanel.artists.ArtistTableModel;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Timer;
 import wrappers.DesktopWrapper;
 
 /**
@@ -62,6 +66,39 @@ public class PnlVenues extends javax.swing.JPanel {
         this.parent = parent;
     }
     
+    /**
+     * Displays a message that fades out after 2 seconds.
+     * Use for notifying user.
+     * @param text Must be less than 30 characters.
+     */
+    public void displayText(String text) {
+        infoTextBox.setForeground(new Color(251,251,251));
+        infoTextBox.setText(text);
+
+        Timer t = new Timer(50, null);
+
+        ActionListener fadeDown = new ActionListener() {
+
+            Color c = infoTextBox.getForeground();
+            int rgb = c.getBlue();
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (rgb > 51) {
+                    rgb -= 5;
+                    infoTextBox.setForeground(new Color(rgb, rgb, rgb));
+                }
+                else {
+                    infoTextBox.setText("");
+                    t.stop();
+                }
+            }
+        };
+        t.addActionListener(fadeDown);
+        t.setInitialDelay(5000);
+        t.start();
+    }
+    
     private void initButtons() {
         btnNewArtist.setMaximumSize(new Dimension(75, 29));
         btnDeleteArtist.setMaximumSize(new Dimension(75, 29));
@@ -86,6 +123,8 @@ public class PnlVenues extends javax.swing.JPanel {
         btnNewArtist = new javax.swing.JButton();
         btnEditArtist = new javax.swing.JButton();
         btnDeleteArtist = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        infoTextBox = new javax.swing.JTextArea();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -192,12 +231,29 @@ public class PnlVenues extends javax.swing.JPanel {
         btnDeleteArtist.setMinimumSize(new java.awt.Dimension(75, 29));
         btnDeleteArtist.setPreferredSize(new java.awt.Dimension(75, 29));
 
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        infoTextBox.setEditable(false);
+        infoTextBox.setBackground(new java.awt.Color(51, 51, 51));
+        infoTextBox.setColumns(20);
+        infoTextBox.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        infoTextBox.setLineWrap(true);
+        infoTextBox.setRows(5);
+        infoTextBox.setWrapStyleWord(true);
+        infoTextBox.setAutoscrolls(false);
+        infoTextBox.setDragEnabled(false);
+        jScrollPane1.setViewportView(infoTextBox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(564, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -214,7 +270,7 @@ public class PnlVenues extends javax.swing.JPanel {
                         .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,7 +278,9 @@ public class PnlVenues extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSearchBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
@@ -254,12 +312,12 @@ public class PnlVenues extends javax.swing.JPanel {
         } 
         // Clicking the same artist twice opens the dialog.
         else if (currVenue.equals(allVenues.get(tableVenues.getSelectedRow()))) {
-//            PnlEditVenue editPnl = new PnlEditVenue();
-//            editPnl.setArtist(currVenue);
-//            editPnl.setParent(this);
-//            editPnl.setVisible(true);
-//            editPnl.setAlwaysOnTop(true);
-//            currVenue = null;
+            PnlEditVenue editPnl = new PnlEditVenue();
+            editPnl.setVenue(currVenue);
+            editPnl.setParent(this);
+            editPnl.setVisible(true);
+            editPnl.setAlwaysOnTop(true);
+            currVenue = null;
         } else {
             // Clicking a different artist sets the current artist.
             if (allVenues != null) {
@@ -315,7 +373,9 @@ public class PnlVenues extends javax.swing.JPanel {
     private javax.swing.JButton btnDeleteArtist;
     private javax.swing.JButton btnEditArtist;
     private javax.swing.JButton btnNewArtist;
+    private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JScrollPane tableScrollPane;

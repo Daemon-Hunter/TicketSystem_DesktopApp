@@ -6,6 +6,8 @@
 package gui.contentpanel.venues;
 
 import database.DatabaseTable;
+import events.Artist;
+import events.IArtist;
 import utilities.ImageAssist;
 import events.IVenue;
 import events.SocialMedia;
@@ -14,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -799,172 +802,107 @@ public class PnlNewVenue extends javax.swing.JFrame {
         
         if (result == JOptionPane.OK_OPTION) {
             
-            venue = new Venue();
             try {
-                if (venue.setName(txtName.getText())) 
-                {
-                    if (venue.setDescription(txtDescription.getText())) 
-                    {
-                        if (venue.setFacilites(txtFacilities.getText())) 
+                Integer capStanding = Integer.parseInt(txtCapacityStanding.getText());
+                
+                try {
+                    Integer capSeating = Integer.parseInt(txtCapacitySeating.getText());
+                    
+                    try {
+                        Integer capParking = Integer.parseInt(txtParking.getText());
+                        
+                        // Variables for Venue object
+                        String name = txtName.getText();
+                        String desc = txtDescription.getText();
+                        String facil = txtFacilities.getText();
+                        String addr = txtAddress.getText();
+                        String city = txtCity.getText();
+                        String pCode = txtPostcode.getText();
+                        String pNo = txtPhone.getText();
+                        String email = txtEmail.getText();
+
+                        Boolean access = checkBoxAccess.isSelected();
+                        
+                        // Variables for SocialMedia object
+                        String facebook   = null;
+                        String twitter    = null;
+                        String instagram  = null;
+                        String soundcloud = null;
+                        String spotify    = null;
+                        String website    = null;
+
+                        // Get input string if the user has made a change
+                        if (!txtFacebook.getText().equals("https://")) 
                         {
-                            if (venue.setAddress(txtAddress.getText())) 
+                            facebook = txtFacebook.getText();
+                        }
+                        if (!txtTwitter.getText().equals("https://")) 
+                        {
+                            twitter = txtTwitter.getText();
+                        }
+                        if (!txtInstagram.getText().equals("https://")) 
+                        {
+                            instagram = txtInstagram.getText();
+                        }
+                        if (!txtSoundcloud.getText().equals("https://")) 
+                        {
+                            soundcloud = txtSoundcloud.getText();
+                        }
+                        if (!txtSpotify.getText().equals("https://")) 
+                        {
+                            spotify = txtSpotify.getText();
+                        }
+                        if (!txtWebsite.getText().equals("https://")) 
+                        {
+                            website = txtWebsite.getText();
+                        }
+
+                        try {
+                            SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
+
+                            try 
                             {
-                                if (venue.setCity(txtCity.getText())) 
-                                {
-                                    if (venue.setPostcode(txtPostcode.getText()))
-                                    {
-                                        // No regular expression here...
-                                        if (venue.setPhoneNumber(txtPhone.getText()))
-                                        {
-                                            if (venue.setEmail(txtEmail.getText()))
-                                            {
-                                                try {
-                                                    int capStanding = Integer.parseInt(txtCapacityStanding.getText());
-                                                    
-                                                    if (venue.setStandingCapacity(capStanding)) {
-                                                        
-                                                        try {
-                                                            int capSeating = Integer.parseInt(txtCapacitySeating.getText());
-                                                            
-                                                            if (venue.setSeatingCapacity(capSeating)) {
-                                                                
-                                                                if (txtParking.getText().equals("")) {
-                                                                    venue.setParking(0);
-                                                                } else {
-                                                                    try {
-                                                                        int capParking = Integer.parseInt(txtParking.getText());
-                                                                        
-                                                                        if (venue.setParking(capParking)) {
-                                                                            
-                                                                            venue.setDisabledAccess(checkBoxAccess.isSelected());
-                                                
-                                                                            SocialMedia social = new SocialMedia();
+                                IVenue venue = new Venue(social, desc, capSeating, capStanding, access, facil, capParking, pNo, email, addr, city, pCode, name);
+                                DesktopWrapper.getInstance().createNewObject(venue, DatabaseTable.VENUE);
 
-                                                                            if (!txtFacebook.getText().equals("https://")) 
-                                                                            {
-                                                                                if (!social.setFacebook(txtFacebook.getText()))
-                                                                                {
-                                                                                    JOptionPane.showMessageDialog(this, "Invalid facebook URL. "
-                                                                                            + "Connection couldn't be made to the website.");
-                                                                                }
-                                                                            }
-                                                                            if (!txtTwitter.getText().equals("https://")) 
-                                                                            {
-                                                                                if (!social.setTwitter(txtTwitter.getText()))
-                                                                                {
-                                                                                    JOptionPane.showMessageDialog(this, "Invalid twitter URL. "
-                                                                                            + "Connection couldn't be made to the website.");
-                                                                                }
-                                                                            }
-                                                                            if (!txtInstagram.getText().equals("https://")) 
-                                                                            {
-                                                                                if (!social.setFacebook(txtInstagram.getText()))
-                                                                                {
-                                                                                    JOptionPane.showMessageDialog(this, "Invalid instagram URL. "
-                                                                                            + "Connection couldn't be made to the website.");
-                                                                                }
-                                                                            }
-                                                                            if (!txtSoundcloud.getText().equals("https://")) 
-                                                                            {
-                                                                                if (!social.setFacebook(txtSoundcloud.getText()))
-                                                                                {
-                                                                                    JOptionPane.showMessageDialog(this, "Invalid soundcloud URL. "
-                                                                                            + "Connection couldn't be made to the website.");
-                                                                                }
-                                                                            }
-                                                                            if (!txtSpotify.getText().equals("https://")) 
-                                                                            {
-                                                                                if (!social.setFacebook(txtSpotify.getText()))
-                                                                                {
-                                                                                    JOptionPane.showMessageDialog(this, "Invalid spotify URL. "
-                                                                                            + "Connection couldn't be made to the website.");
-                                                                                }
-                                                                            }
-                                                                            if (!txtWebsite.getText().equals("https://")) 
-                                                                            {
-                                                                                if (!social.setFacebook(txtWebsite.getText()))
-                                                                                {
-                                                                                    JOptionPane.showMessageDialog(this, "Invalid website URL. "
-                                                                                            + "Connection couldn't be made to the website.");
-                                                                                }
-                                                                            }
-                                                                            social.setImages(images);
-                                                                            
-                                                                            venue.setSocialMedia(social);
-                                                                            
-                                                                            DesktopWrapper.getInstance().createNewObject(venue, DatabaseTable.VENUE);
-
-                                                                            parent.populateTable();
-                                                                            dispose();
-                                                                        }
-                                                                    }
-                                                                    catch (NumberFormatException ex) {
-                                                                        JOptionPane.showMessageDialog(this, "Parking capacity must be an integer value.");
-                                                                    }
-                                                                }
-                                                            }
-                                                            
-                                                        }
-                                                        catch (NumberFormatException ex) {
-                                                            JOptionPane.showMessageDialog(this, "Seating capacity must be an integer value.");
-                                                        }
-                                                    }
-                                                }
-                                                catch (NumberFormatException ex) {
-                                                    JOptionPane.showMessageDialog(this, "Standing capacity must be an integer value.");
-                                                }
-                                            }
-                                            else {
-                                                JOptionPane.showMessageDialog(this, "Invalid email address. "
-                                                        + "Please check the format.");
-                                            }
-                                        }
-                                        else {
-                                            JOptionPane.showMessageDialog(this, "Invalid phone number. Please check the format.");
-                                        }
-                                    }
-                                    else {
-                                        JOptionPane.showMessageDialog(this, "Invalid postcode. Must have a valid UK postcode with no spaces.");
-                                    }
-                                }
-                                else {
-                                    JOptionPane.showMessageDialog(this, "Invalid city.");
-                                }
+                                parent.populateTable();
+                                dispose();
+                                parent.displayText("Success! " + venue.getName() + " added!");
                             }
-                            else {
-                                JOptionPane.showMessageDialog(this, "Invalid address. Must be between 5 & 200 characters "
-                                        + "and not contain any blacklisted words.");
+                            catch (IllegalArgumentException ex) 
+                            {
+                                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                            } 
+                            catch (IOException ex) 
+                            {
+                                JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
                             }
                         }
-                        else {
-                            JOptionPane.showMessageDialog(this, "Invalid facilities description. Must be under 100 characters, "
-                                    + "and not contain any blacklisted words.");
+                        catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                         }
                     }
-                    else 
-                    {
-                        JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, " +
-                            "and not contain blacklisted words");
+                    catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Parking capacity needs to be an integer value.");
                     }
                 }
-                else 
-                {
-                    JOptionPane.showMessageDialog(this, "Invalid name. Must not contain any blacklisted words, "
-                            + "and must be between 2 & 20 characters long");
+                catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Standing capacity needs to be an integer value.");
                 }
-            } catch (IOException ex) {
-                System.out.println("Error writing object to the database. Please try again.");
+            }
+            catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Standing capacity needs to be an integer value.");
             }
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void txtFacilitiesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFacilitiesKeyTyped
         // Allow user to type if the description length is < 200
-        if (200 - txtDescription.getText().length() >= 0) {
-            lblDescriptionRemaining.setText((200 - txtDescription.getText().length()) + " characters remaining");
+        if (200 - txtFacilities.getText().length() >= 0) {
+            lblFacilitiesRemaining.setText((200 - txtFacilities.getText().length()) + " characters remaining");
         } else {
             // else remove any additional characters
-            txtDescription.setText(txtDescription.getText().substring(0, txtDescription.getText().length() - 1));
+            txtFacilities.setText(txtFacilities.getText().substring(0, txtFacilities.getText().length() - 1));
         }
     }//GEN-LAST:event_txtFacilitiesKeyTyped
 
