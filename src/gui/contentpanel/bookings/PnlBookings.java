@@ -43,7 +43,7 @@ public class PnlBookings extends javax.swing.JPanel {
 
     public final void populateTable() {
 
-    //    populateGuestTable();// No Method IN the API for guestBookings;
+        populateGuestTable();// No Method IN the API for guestBookings;
 
     }
 
