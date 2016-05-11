@@ -5,6 +5,7 @@
  */
 package gui.contentpanel.bookings;
 
+import bookings.GuestBooking;
 import bookings.IBooking;
 import java.util.LinkedList;
 import javax.swing.event.TableModelListener;
@@ -21,18 +22,26 @@ class GuestBookingTableModel extends DefaultTableModel {
     // Should include ticket name / type
     private final String[] headers = { "Booking ID", "Ticket ID", "Email", "Address", "Postcode", "Date", "Quantity"};
 
-    public GuestBookingTableModel(LinkedList<IBooking> bookings, int rows) {
+    public GuestBookingTableModel(LinkedList<GuestBooking> bookings, int rows) {
         super(rows, 7);
-        
-        IBooking curBooking;
+        GuestBooking currBooking;
         
         for (int i = 0; i < bookings.size(); i++) {
-            curBooking = bookings.get(i);
+            currBooking = bookings.get(i);
+            String time  = currBooking.getBookingTime().toString().substring(0,10);
+            time+= " - " + currBooking.getBookingTime().toString().substring(10,19);
+
             
-            setValueAt(curBooking.getBookingID(), i, 0);
-            
-            setValueAt(curBooking.getTicketID(), i, 1);
-            setValueAt(curBooking.)
+            setValueAt(currBooking.getBookingID(), i, 0);
+            setValueAt(currBooking.getTicketID(), i, 1);
+            setValueAt(currBooking.getGuest().getEmail(),i,2);
+            setValueAt(currBooking.getGuest().getAddress(),i,3);
+            setValueAt(currBooking.getGuest().getPostcode(),i,4);
+            setValueAt(time,i,5);
+            setValueAt(currBooking.getQuantity(),i,6);
+
+
+
         }
     }
 

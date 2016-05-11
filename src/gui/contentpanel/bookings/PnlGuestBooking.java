@@ -644,7 +644,7 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     
     private void addBooking(IBooking booking) throws IOException 
     {
-       bookingListModel.addElement(booking.getTicket().getType() + " - " + booking.getQuantity());
+       bookingListModel.addElement(booking.getTicket().getChildEvent().getName() + " " + booking.getTicket().getType() + " - " + booking.getQuantity());
        guestBookings.add((GuestBooking) booking);
     }
             

@@ -5,6 +5,7 @@
  */
 package gui.contentpanel.bookings;
 
+import bookings.GuestBooking;
 import bookings.IBooking;
 import gui.contentpanel.artists.ArtistTableModel;
 import gui.Home;
@@ -12,6 +13,7 @@ import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
 
@@ -20,42 +22,47 @@ import wrappers.DesktopWrapper;
  * @author 10512691
  */
 public class PnlBookings extends javax.swing.JPanel {
-    
-    private LinkedList<IBooking> bookings = new LinkedList<>();
+
+    private LinkedList<GuestBooking> guestBookings = new LinkedList<>();
     private Home parent = null;
-    
 
     /**
      * Creates new Artist panel
+     *
      * @param parent
      */
     public PnlBookings(Home parent) {
-        
+
         initComponents();
         this.parent = parent;
-        
-        txtSearchbar.setBorder(new RoundedBorder());
-        
-        populateTable();
-        
-    }
-    
-    public final void populateTable() {
-        try {
-            bookings = DesktopWrapper.getInstance().getGuestBookings();
 
-            if (bookings.size() > 0) {
+        txtSearchbar.setBorder(new RoundedBorder());
+        populateTable();
+
+    }
+
+    public final void populateTable() {
+
+    //    populateGuestTable();// No Method IN the API for guestBookings;
+
+    }
+
+    public final void populateGuestTable() {
+        try {
+            guestBookings = DesktopWrapper.getInstance().getGuestBookings();
+
+            if (guestBookings.size() > 0) {
 
                 // Creates a table model
-                TableModel bookingData = new GuestBookingTableModel(bookings, bookings.size());
-
-                tableArtists.setModel(artistData);
+                TableModel bookingData = new GuestBookingTableModel(guestBookings, guestBookings.size());
+                tableGuestBookings.setModel(bookingData);
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error getting bookings from the database. Please refresh the page and try again.");
+            JOptionPane.showMessageDialog(this, "Error getting bookings from the database. \n  "
+                    + e.getMessage());
         }
     }
-    
+
     public void setParent(Home parent) {
         this.parent = parent;
     }
@@ -72,7 +79,7 @@ public class PnlBookings extends javax.swing.JPanel {
         jDialog1 = new javax.swing.JDialog();
         txtSearchbar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
-        tableArtists = new javax.swing.JTable();
+        tableGuestBookings = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
         btnNewBooking = new javax.swing.JButton();
@@ -103,7 +110,7 @@ public class PnlBookings extends javax.swing.JPanel {
             }
         });
 
-        tableArtists.setModel(new javax.swing.table.DefaultTableModel(
+        tableGuestBookings.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -126,22 +133,22 @@ public class PnlBookings extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tableArtists.setRowHeight(24);
-        tableArtists.getTableHeader().setReorderingAllowed(false);
-        tableArtists.addFocusListener(new java.awt.event.FocusAdapter() {
+        tableGuestBookings.setRowHeight(24);
+        tableGuestBookings.getTableHeader().setReorderingAllowed(false);
+        tableGuestBookings.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                tableArtistsFocusLost(evt);
+                tableGuestBookingsFocusLost(evt);
             }
         });
-        tableArtists.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableGuestBookings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableArtistsMouseClicked(evt);
+                tableGuestBookingsMouseClicked(evt);
             }
         });
-        tableScrollPane.setViewportView(tableArtists);
-        if (tableArtists.getColumnModel().getColumnCount() > 0) {
-            tableArtists.getColumnModel().getColumn(0).setPreferredWidth(20);
-            tableArtists.getColumnModel().getColumn(3).setHeaderValue("More");
+        tableScrollPane.setViewportView(tableGuestBookings);
+        if (tableGuestBookings.getColumnModel().getColumnCount() > 0) {
+            tableGuestBookings.getColumnModel().getColumn(0).setPreferredWidth(20);
+            tableGuestBookings.getColumnModel().getColumn(3).setHeaderValue("More");
         }
 
         searchPnl.setBackground(new java.awt.Color(51, 51, 51));
@@ -215,11 +222,11 @@ public class PnlBookings extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtSearchbarMouseClicked
 
-    private void tableArtistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableArtistsMouseClicked
-    }//GEN-LAST:event_tableArtistsMouseClicked
+    private void tableGuestBookingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableGuestBookingsMouseClicked
+    }//GEN-LAST:event_tableGuestBookingsMouseClicked
 
-    private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
-    }//GEN-LAST:event_tableArtistsFocusLost
+    private void tableGuestBookingsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableGuestBookingsFocusLost
+    }//GEN-LAST:event_tableGuestBookingsFocusLost
 
     private void btnNewBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewBookingActionPerformed
         PnlGuestBooking newPnl = new PnlGuestBooking();
@@ -230,13 +237,11 @@ public class PnlBookings extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnNewArtist;
-    private javax.swing.JButton btnNewArtist1;
     private javax.swing.JButton btnNewBooking;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
-    private javax.swing.JTable tableArtists;
+    private javax.swing.JTable tableGuestBookings;
     private javax.swing.JScrollPane tableScrollPane;
     private javax.swing.JTextField txtSearchbar;
     // End of variables declaration//GEN-END:variables
