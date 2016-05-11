@@ -60,6 +60,8 @@
                       <Component id="btnEditArtist" min="-2" pref="75" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnDeleteArtist" min="-2" pref="75" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnLoadMore" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -84,6 +86,7 @@
                   <Component id="btnNewArtist" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                   <Component id="btnEditArtist" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                   <Component id="btnDeleteArtist" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="btnLoadMore" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -262,5 +265,14 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnLoadMore">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Load More"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnLoadMoreMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLoadMoreActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
 
@@ -86,6 +87,7 @@ public class PnlBookings extends javax.swing.JPanel {
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
         btnNewBooking = new javax.swing.JButton();
+        btnLoadMore = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -187,23 +189,38 @@ public class PnlBookings extends javax.swing.JPanel {
             }
         });
 
+        btnLoadMore.setText("Load More");
+        btnLoadMore.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoadMoreMouseClicked(evt);
+            }
+        });
+        btnLoadMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadMoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(50, 50, 50))
             .addGroup(layout.createSequentialGroup()
-                .addGap(372, 372, 372)
-                .addComponent(btnNewBooking)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(50, 50, 50))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnNewBooking)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoadMore)
+                        .addGap(357, 357, 357))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,9 +231,11 @@ public class PnlBookings extends javax.swing.JPanel {
                     .addComponent(txtSearchBar))
                 .addGap(47, 47, 47)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnNewBooking, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNewBooking, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -270,8 +289,27 @@ public class PnlBookings extends javax.swing.JPanel {
 
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
+    private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
+        System.out.println("Clicked");
+        try {
+            guestBookings = (LinkedList<GuestBooking>) DesktopWrapper.getInstance().loadMoreGuestBookings();
+            guestBookings = (LinkedList<GuestBooking>) DesktopWrapper.getInstance().getGuestBookings();
+            tableGuestBookings.setModel(new DefaultTableModel());
+            GuestBookingTableModel artistData = new GuestBookingTableModel(guestBookings, guestBookings.size());
+            tableGuestBookings.setModel(artistData);
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
+        }
+    }//GEN-LAST:event_btnLoadMoreMouseClicked
+
+    private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLoadMoreActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLoadMore;
     private javax.swing.JButton btnNewBooking;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel searchPnl;

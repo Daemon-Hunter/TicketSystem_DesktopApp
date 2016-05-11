@@ -13,8 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import people.IAdmin;
 import wrappers.DesktopWrapper;
 
@@ -84,7 +87,7 @@ public class PnlAdmins extends javax.swing.JPanel {
     public final void populateTable() {
   
         try {
-            allAdmins = DesktopWrapper.getInstance().refreshAdmins();
+            allAdmins = DesktopWrapper.getInstance().getAdmins();
             originalAllAdmins = allAdmins;
 
             
@@ -119,6 +122,7 @@ public class PnlAdmins extends javax.swing.JPanel {
         btnDeleteAdmin = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTextBox = new javax.swing.JTextArea();
+        bntLoadMore = new javax.swing.JButton();
 
         pnlBackground.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -225,6 +229,18 @@ public class PnlAdmins extends javax.swing.JPanel {
         infoTextBox.setDragEnabled(false);
         jScrollPane1.setViewportView(infoTextBox);
 
+        bntLoadMore.setText("Load More");
+        bntLoadMore.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                bntLoadMoreMouseClicked(evt);
+            }
+        });
+        bntLoadMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntLoadMoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
         pnlBackgroundLayout.setHorizontalGroup(
@@ -247,13 +263,15 @@ public class PnlAdmins extends javax.swing.JPanel {
                         .addComponent(btnEditAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnDeleteAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bntLoadMore)
+                        .addGap(7, 7, 7)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(searchPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,9 +282,11 @@ public class PnlAdmins extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnNewAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDeleteAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnDeleteAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(bntLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(6, 6, 6))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
                         .addComponent(btnEditAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -283,7 +303,7 @@ public class PnlAdmins extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 541, Short.MAX_VALUE)
+            .addGap(0, 549, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -368,8 +388,28 @@ public class PnlAdmins extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEditAdminActionPerformed
 
+    private void bntLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntLoadMoreActionPerformed
+             System.out.println("Clicked");
+        try {
+            allAdmins = DesktopWrapper.getInstance().loadMoreAdmins();
+            allAdmins = DesktopWrapper.getInstance().getAdmins();
+            System.out.println(allAdmins.size() + "Size");
+            AdminTableModel adminData = new AdminTableModel(allAdmins, allAdmins.size());
+            tableAdmins.setModel(new DefaultTableModel());
+            tableAdmins.setModel(adminData);
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
+        }
+    }//GEN-LAST:event_bntLoadMoreActionPerformed
+
+    private void bntLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bntLoadMoreMouseClicked
+   
+    }//GEN-LAST:event_bntLoadMoreMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bntLoadMore;
     private javax.swing.JButton btnDeleteAdmin;
     private javax.swing.JButton btnEditAdmin;
     private javax.swing.JButton btnNewAdmin;
