@@ -26,7 +26,7 @@ public class ArtistTableModel extends DefaultTableModel {
         IArtist currArtist;
         
         // Populate model with data
-        for (int i = 0; i < 20 && i < artists.size(); i++) {
+        for (int i = 0; i < artists.size(); i++) {
             currArtist = artists.get(i);
             String artistTags = "";
 

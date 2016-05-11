@@ -7,7 +7,6 @@ package gui.contentpanel.bookings;
 
 import events.IChildEvent;
 import events.IParentEvent;
-import gui.contentpanel.events.EventTableModel;
 import gui.contentpanel.events.PnlEvents;
 import gui.contentpanel.users.PnlEditUser;
 import java.io.IOException;
@@ -19,6 +18,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import people.ICustomer;
 import tickets.ITicket;
 import wrappers.DesktopWrapper;
@@ -32,21 +32,38 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     private  List<IParentEvent> allParentEvents = new ArrayList<>();
     private List<IChildEvent> childEvents = new ArrayList<>();
     private List<ITicket> tickets = new ArrayList<>();
+    private ComboBoxModel childEventsModel;
+    private DefaultListModel listModel;
+    private ComboBoxModel ticketsModel;
     private ICustomer user;
-    PnlEditUser parent;
+    private PnlEditUser parent;
+    
     /**
      * Creates new form customerBooking
      */
-    ComboBoxModel childEventsModel;
-    DefaultListModel listModel ;
-    ComboBoxModel ticketsModel;
     public PnlCustomerBooking() {
         listModel = new DefaultListModel();
         childEventsModel = new DefaultComboBoxModel();
         ticketsModel = new DefaultComboBoxModel();
+        loadParentEvents();
         initComponents();
-        populateParentEvents();
+        loading_icon_lbl.setVisible(false);
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
+    
+    public void setParent(PnlEditUser parent) {
+        this.parent = parent;
+    }
+    
+    private void editable(boolean flag) {
+        jScrollPane1.setEnabled(flag);
+        cmbChildEvents.setEnabled(flag);
+        cmbTickets.setEnabled(flag);
+        spnQuantity.setEnabled(flag);
+        btnBuyNow.setEnabled(flag);
+        btnCancel.setEnabled(flag);
+        loading_icon_lbl.setVisible(!flag);
     }
 
     /**
@@ -71,6 +88,8 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
         lblName4 = new javax.swing.JLabel();
         btnBuyNow = new javax.swing.JButton();
         txtBooking = new javax.swing.JLabel();
+        loading_icon_lbl = new javax.swing.JLabel();
+        btnCancel = new javax.swing.JButton();
 
         lblName.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblName.setForeground(new java.awt.Color(255, 255, 255));
@@ -81,6 +100,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
         pnlBackground.setBackground(new java.awt.Color(51, 51, 51));
 
         lstParentEvents.setModel(listModel);
+        lstParentEvents.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstParentEvents.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstParentEventsValueChanged(evt);
@@ -131,20 +151,38 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
         txtBooking.setForeground(new java.awt.Color(255, 255, 255));
         txtBooking.setText("Make A Booking For ");
 
+        loading_icon_lbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loading_icon.gif"))); // NOI18N
+
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
         pnlBackgroundLayout.setHorizontalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(txtBooking)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(lblName1)))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(lblName1)))
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(loading_icon_lbl))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                 .addGap(67, 67, 67)
@@ -153,20 +191,19 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
                                 .addGap(12, 12, 12)
                                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cmbChildEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(lblName3))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(63, 63, 63)
+                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnBuyNow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                         .addComponent(lblName4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btnBuyNow)
-                                            .addComponent(spnQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addGap(79, 79, 79)
-                                .addComponent(lblName3))))
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(txtBooking)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(spnQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 6, Short.MAX_VALUE))))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,6 +213,11 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addComponent(lblName1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 12, Short.MAX_VALUE))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(lblName2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -184,18 +226,19 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
                         .addComponent(lblName3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbTickets, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(spnQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblName4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuyNow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(lblName1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 12, Short.MAX_VALUE))))
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(spnQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblName4))
+                                .addGap(57, 57, 57)
+                                .addComponent(btnBuyNow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCancel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(loading_icon_lbl))))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -213,17 +256,22 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lstParentEventsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstParentEventsValueChanged
-        loadChildEvents();
+        loading_icon_lbl.setVisible(true);
+        SwingWorker<String, Object> worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                loadChildEvents();
+                loading_icon_lbl.setVisible(false);
+                return "";
+            }
+        };
+        worker.execute();
     }//GEN-LAST:event_lstParentEventsValueChanged
 
     private void cmbChildEventsPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_cmbChildEventsPropertyChange
             
     }//GEN-LAST:event_cmbChildEventsPropertyChange
 
-    private void setParent(PnlEditUser parent)
-    {
-        this.parent = parent;
-    }
     private void cmbChildEventsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbChildEventsActionPerformed
         if(!cmbChildEvents.getSelectedItem().equals("No Events Found"))
         {
@@ -231,7 +279,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
                 tickets = childEvents.get(cmbChildEvents.getSelectedIndex()).getTickets();
                 cmbTickets.setModel(new DefaultComboBoxModel());
                 for (ITicket ticket : tickets) {
-                    cmbTickets.addItem(ticket.getType() + " - £" + ticket.getPrice().toString());
+                    cmbTickets.addItem(ticket.getType() + " - " + utilities.Formatter.formatPrice(ticket.getPrice()));
                 }
             } catch (IOException ex) {
                     cmbTickets.setModel(new DefaultComboBoxModel());
@@ -241,38 +289,60 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbChildEventsActionPerformed
 
     private void btnBuyNowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuyNowMouseClicked
-//
-//    if (user == null) {
-//       JOptionPane.showMessageDialog(this, "Error : No User Selected"
-//               + "Please Contact a Developer about this issue!");
-//       dispose();
-//   }
-//   try{
-//       if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty())
-//       {
-//           ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
-//           Integer quantity = (Integer) spnQuantity.getValue();
-//
-//           String question = "Are you sure you want to book " + quantity.toString() +
-//                   " " + ticket.getType() + " tickets for " + user.getFirstName() 
-//                  +" " +  user.getLastName();
-//          if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION)
-//          {
-//               DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity);
-//               parent.populateTable();
-//               dispose();
-//          }
-//       }
-//       else
-//       {
-//           JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
-//       }
-//            
-//    }   
-//    catch (IOException ex) {
-//    System.out.println("Unable To Make Booking");
-//    }
+
+        if (user != null) {
+            if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty()) {
+
+                ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
+                Integer quantity = (Integer) spnQuantity.getValue();
+
+                String question = "Are you sure you want to book " + quantity.toString() +
+                        " " + ticket.getType() + " tickets for " + user.getFirstName() + " " +  user.getLastName() + "?";
+
+                if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION) {
+                    
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                user.addOrder(DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity));
+                                dispose();
+                                editable(true);
+                            }
+                            catch (IllegalArgumentException ex) {
+                                JOptionPane.showMessageDialog(PnlCustomerBooking.this, "Cannot make booking.\n\n" + ex.getMessage());
+                            }
+                            catch (IOException ex) {
+                                JOptionPane.showMessageDialog(PnlCustomerBooking.this, "There's been an error creating the booking.\n\n"
+                                        + "Please check the Customer Tickets table for confirmation of result.");
+                            }
+                            finally {
+                                parent.populateTable();
+                            }
+                        }
+
+                    }, "OrderThread");
+                    
+                    editable(false);
+                    t.start();
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Error : No User Selected. \n\n"
+                   + "Please Contact a developer about this issue!");
+            dispose();
+        }
     }//GEN-LAST:event_btnBuyNowMouseClicked
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel this booking?") == JOptionPane.OK_OPTION) {
+            dispose();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,6 +382,7 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuyNow;
+    private javax.swing.JButton btnCancel;
     private javax.swing.JComboBox<String> cmbChildEvents;
     private javax.swing.JComboBox<String> cmbTickets;
     private javax.swing.JScrollPane jScrollPane1;
@@ -320,13 +391,14 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
     private javax.swing.JLabel lblName2;
     private javax.swing.JLabel lblName3;
     private javax.swing.JLabel lblName4;
+    private javax.swing.JLabel loading_icon_lbl;
     private javax.swing.JList<String> lstParentEvents;
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JSpinner spnQuantity;
     private javax.swing.JLabel txtBooking;
     // End of variables declaration//GEN-END:variables
 
-    private void populateParentEvents() {
+    private void loadParentEvents() {
         try {
              allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
            for (IParentEvent currEvent : allParentEvents)
@@ -338,37 +410,37 @@ public class PnlCustomerBooking extends javax.swing.JFrame {
          listModel.addElement("No Events Found");
         }
     }
+    
     public void setUser(ICustomer user) {
         this.user = user;
         txtBooking.setText("Making  A Booking For " + user.getFirstName() + " " + user.getLastName());
     }
 
     private void loadChildEvents() {
-     if(lstParentEvents.getSelectedIndex() != -1)
-     {
-        IParentEvent currParentEvent = allParentEvents.get(lstParentEvents.getSelectedIndex());
-        try {
-            childEvents = currParentEvent.getChildEvents();
-            cmbChildEvents.setModel(new DefaultComboBoxModel());
-           if(childEvents.isEmpty())
-           {
-            cmbChildEvents.addItem("No Events Found");
-            cmbTickets.setEnabled(false);
+        if(lstParentEvents.getSelectedIndex() != -1)
+        {
+            IParentEvent currParentEvent = allParentEvents.get(lstParentEvents.getSelectedIndex());
+            try {
+                childEvents = currParentEvent.getChildEvents();
+                cmbChildEvents.setModel(new DefaultComboBoxModel());
+                
+                if(childEvents.isEmpty()) {
+                 cmbChildEvents.addItem("No Events Found");
+                 cmbTickets.setEnabled(false);
 
-           }
-           else
-           {
-               cmbTickets.setEnabled(true);
-               cmbTickets.setModel(new DefaultComboBoxModel());
-               cmbTickets.addItem("No Tickets Found");
-               for (IChildEvent event : childEvents) {
-                cmbChildEvents.addItem(event.getName());
+                }
+                else {
+                    cmbTickets.setEnabled(true);
+                    cmbTickets.setModel(new DefaultComboBoxModel());
+                    cmbTickets.addItem("No Tickets Found");
+                    for (IChildEvent event : childEvents) {
+                        cmbChildEvents.addItem(event.getName());
+                    }
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
             }
-           }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }
     }
 }

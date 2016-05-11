@@ -5,15 +5,13 @@
  */
 package gui.contentpanel.bookings;
 
-import gui.contentpanel.artists.*;
+import bookings.IBooking;
 import gui.contentpanel.artists.ArtistTableModel;
-import events.IArtist;
 import gui.Home;
 import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.LinkedList;
 import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
 
@@ -23,6 +21,7 @@ import wrappers.DesktopWrapper;
  */
 public class PnlBookings extends javax.swing.JPanel {
     
+    private LinkedList<IBooking> bookings = new LinkedList<>();
     private Home parent = null;
     
 
@@ -37,25 +36,25 @@ public class PnlBookings extends javax.swing.JPanel {
         
         txtSearchbar.setBorder(new RoundedBorder());
         
-//        populateTable();
+        populateTable();
         
     }
     
-//    public final void populateTable() {
-//        try {
-//            allArtists = new ArrayList (DesktopWrapper.getInstance().getArtists());
-//
-//            if (allArtists.size() > 0) {
-//
-//                // Creates a table model
-//                TableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
-//
-//                tableArtists.setModel(artistData);
-//            }
-//        } catch (IOException e) {
-//            //Handle exception ----------------------------------------------------------------------------------------------------------------------
-//        }
-//    }
+    public final void populateTable() {
+        try {
+            bookings = DesktopWrapper.getInstance().getGuestBookings();
+
+            if (bookings.size() > 0) {
+
+                // Creates a table model
+                TableModel bookingData = new GuestBookingTableModel(bookings, bookings.size());
+
+                tableArtists.setModel(artistData);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error getting bookings from the database. Please refresh the page and try again.");
+        }
+    }
     
     public void setParent(Home parent) {
         this.parent = parent;
@@ -76,6 +75,7 @@ public class PnlBookings extends javax.swing.JPanel {
         tableArtists = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
         searchPnlLbl = new javax.swing.JLabel();
+        btnNewBooking = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -165,6 +165,13 @@ public class PnlBookings extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnNewBooking.setText("New");
+        btnNewBooking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewBookingActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,6 +185,10 @@ public class PnlBookings extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(372, 372, 372)
+                .addComponent(btnNewBooking)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +199,9 @@ public class PnlBookings extends javax.swing.JPanel {
                     .addComponent(txtSearchbar))
                 .addGap(47, 47, 47)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnNewBooking, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -208,8 +221,18 @@ public class PnlBookings extends javax.swing.JPanel {
     private void tableArtistsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableArtistsFocusLost
     }//GEN-LAST:event_tableArtistsFocusLost
 
+    private void btnNewBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewBookingActionPerformed
+        PnlGuestBooking newPnl = new PnlGuestBooking();
+        newPnl.setParent(this);
+        newPnl.setVisible(true);
+        newPnl.setAlwaysOnTop(true);
+    }//GEN-LAST:event_btnNewBookingActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNewArtist;
+    private javax.swing.JButton btnNewArtist1;
+    private javax.swing.JButton btnNewBooking;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;

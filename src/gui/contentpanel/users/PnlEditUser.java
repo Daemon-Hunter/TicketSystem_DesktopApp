@@ -10,9 +10,8 @@ import database.DatabaseTable;
 import gui.contentpanel.bookings.PnlCustomerBooking;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import people.ICustomer;
 import people.IUser;
 import wrappers.DesktopWrapper;
@@ -54,6 +53,18 @@ public class PnlEditUser extends javax.swing.JFrame {
         txtEmail.setText(user.getEmail());
         txtAddress.setText(user.getAddress());
         txtPostcode.setText(user.getPostcode());
+    }
+    
+    public void editable(boolean flag) {
+        txtAddress.setEditable(flag);
+        txtEmail.setEditable(flag);
+        txtForename.setEditable(flag);
+        txtPostcode.setEditable(flag);
+        txtSurname.setEditable(flag);
+        btnBookingForCustomer.setEnabled(flag);
+        btnCancel.setEnabled(flag);
+        btnSave.setEnabled(flag);
+        loading_icon_lbl.setVisible(!flag);
     }
 
     /**
@@ -214,27 +225,12 @@ public class PnlEditUser extends javax.swing.JFrame {
         });
         tableTickets.setRowHeight(24);
         tableTickets.getTableHeader().setReorderingAllowed(false);
-        tableTickets.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                tableTicketsFocusLost(evt);
-            }
-        });
-        tableTickets.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableTicketsMouseClicked(evt);
-            }
-        });
         tableScrollPane.setViewportView(tableTickets);
 
         btnBookingForCustomer.setText("Make Booking For Customer");
         btnBookingForCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnBookingForCustomerMouseClicked(evt);
-            }
-        });
-        btnBookingForCustomer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBookingForCustomerActionPerformed(evt);
             }
         });
 
@@ -278,19 +274,16 @@ public class PnlEditUser extends javax.swing.JFrame {
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGap(117, 117, 117)
                         .addComponent(lblCustomerDetails)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCustomerDetails1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(238, 238, 238)
-                        .addComponent(lblCustomerDetails1))
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(201, 201, 201)
+                        .addGap(190, 190, 190)
                         .addComponent(btnBookingForCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pnlBackgroundLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtEmail, txtForename, txtPostcode, txtSurname});
@@ -302,47 +295,46 @@ public class PnlEditUser extends javax.swing.JFrame {
                 .addComponent(lblCustomerDetails1)
                 .addGap(18, 18, 18)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
+                .addGap(30, 30, 30)
                 .addComponent(btnBookingForCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
+                .addComponent(lblCustomerDetails)
+                .addGap(18, 18, 18)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFName)
+                    .addComponent(txtForename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLName)
+                    .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(lblCustomerDetails)
-                        .addGap(18, 18, 18)
+                        .addComponent(lblAddress)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPostcode)
+                    .addComponent(txtPostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(loading_icon_lbl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblFName)
-                            .addComponent(txtForename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblLName)
-                            .addComponent(txtSurname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblEmail)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addComponent(lblAddress)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblPostcode)
-                            .addComponent(txtPostcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(24, 24, 24)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(loading_icon_lbl, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
-                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btnCancel)
-                                    .addComponent(btnSave))
-                                .addGap(27, 27, 27))))))
+                            .addComponent(btnCancel)
+                            .addComponent(btnSave))
+                        .addGap(27, 27, 27))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -371,24 +363,24 @@ public class PnlEditUser extends javax.swing.JFrame {
         editedUser = true;
     }//GEN-LAST:event_txtAddressKeyTyped
 
-    private void tableTicketsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableTicketsFocusLost
-        //
-
-    }//GEN-LAST:event_tableTicketsFocusLost
-
-    private void tableTicketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableTicketsMouseClicked
-        //
-    }//GEN-LAST:event_tableTicketsMouseClicked
-
-    private void btnBookingForCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingForCustomerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBookingForCustomerActionPerformed
-
     private void btnBookingForCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBookingForCustomerMouseClicked
-       PnlCustomerBooking dialog = new PnlCustomerBooking();
-            dialog.setVisible(true);
-            dialog.setAlwaysOnTop(true);
-            dialog.setUser(user);
+        
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PnlCustomerBooking dialog = new PnlCustomerBooking();
+                dialog.setVisible(true);
+                dialog.setAlwaysOnTop(true);
+                dialog.setUser(user);
+                dialog.setParent(PnlEditUser.this);
+                
+                editable(true);
+            }
+            
+        }, "SavingThread");
+        
+        editable(false);
+        t.start();
     }//GEN-LAST:event_btnBookingForCustomerMouseClicked
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
