@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import wrappers.DesktopWrapper;
 
 /**
@@ -130,6 +131,7 @@ public class PnlVenues extends javax.swing.JPanel {
         btnDeleteArtist = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTextBox = new javax.swing.JTextArea();
+        btnLoadMore = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -252,6 +254,18 @@ public class PnlVenues extends javax.swing.JPanel {
         infoTextBox.setDragEnabled(false);
         jScrollPane1.setViewportView(infoTextBox);
 
+        btnLoadMore.setText("Load More");
+        btnLoadMore.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoadMoreMouseClicked(evt);
+            }
+        });
+        btnLoadMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadMoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -275,8 +289,10 @@ public class PnlVenues extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                        .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,12 +305,17 @@ public class PnlVenues extends javax.swing.JPanel {
                         .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnDeleteArtist, btnLoadMore});
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
@@ -374,10 +395,28 @@ public class PnlVenues extends javax.swing.JPanel {
         newPnl.setAlwaysOnTop(true);
     }//GEN-LAST:event_btnNewArtistActionPerformed
 
+    private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
+        try {
+            allVenues =  DesktopWrapper.getInstance().loadMoreVenues();
+            allVenues =  DesktopWrapper.getInstance().getVenues();
+            tableVenues.setModel(new DefaultTableModel());
+            VenueTableModel venueData = new VenueTableModel(allVenues, allVenues.size());
+            tableVenues.setModel(venueData);
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
+        }
+    }//GEN-LAST:event_btnLoadMoreMouseClicked
+
+    private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLoadMoreActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteArtist;
     private javax.swing.JButton btnEditArtist;
+    private javax.swing.JButton btnLoadMore;
     private javax.swing.JButton btnNewArtist;
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;

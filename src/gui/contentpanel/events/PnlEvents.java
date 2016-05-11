@@ -82,6 +82,7 @@ public class PnlEvents extends javax.swing.JPanel {
         btnEditEvent1 = new javax.swing.JButton();
         lblAddImage = new javax.swing.JLabel();
         lblAddImage1 = new javax.swing.JLabel();
+        btnLoadMore = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -268,6 +269,18 @@ public class PnlEvents extends javax.swing.JPanel {
             }
         });
 
+        btnLoadMore.setText("Load More");
+        btnLoadMore.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoadMoreMouseClicked(evt);
+            }
+        });
+        btnLoadMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadMoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -282,15 +295,18 @@ public class PnlEvents extends javax.swing.JPanel {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblDescriptionRemaining)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel1)
+                        .addGap(96, 96, 96)
+                        .addComponent(lblDescription))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnEditEvent1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNewParentEvent))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel1)
-                        .addGap(96, 96, 96)
-                        .addComponent(lblDescription)))
+                        .addGap(12, 12, 12)
+                        .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -333,7 +349,9 @@ public class PnlEvents extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewParentEvent)
                     .addComponent(btnEditEvent1))
-                .addGap(57, 57, 57))
+                .addGap(1, 1, 1)
+                .addComponent(btnLoadMore)
+                .addGap(27, 27, 27))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,6 +506,25 @@ public class PnlEvents extends javax.swing.JPanel {
                 }
         }
     }//GEN-LAST:event_txtSearchBarActionPerformed
+
+    private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
+        try {
+            allParentEvents =  DesktopWrapper.getInstance().loadMoreParentEvents();
+            allParentEvents =  DesktopWrapper.getInstance().getParentEvents();
+            
+             listParentEventModel.clear();
+            for (IParentEvent event : allParentEvents) {
+                    listParentEventModel.addElement(event.getName());
+                }
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
+        }
+    }//GEN-LAST:event_btnLoadMoreMouseClicked
+
+    private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLoadMoreActionPerformed
     /**
      * Displays a message that fades out after 2 seconds.
      * Use for notifying user.
@@ -524,6 +561,7 @@ public class PnlEvents extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditEvent1;
+    private javax.swing.JButton btnLoadMore;
     private javax.swing.JButton btnNewParentEvent;
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;

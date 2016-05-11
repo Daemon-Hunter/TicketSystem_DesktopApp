@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import people.ICustomer;
 import wrappers.DesktopWrapper;
@@ -113,6 +115,7 @@ public class PnlUsers extends javax.swing.JPanel {
         searchPnlLbl = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTextBox = new javax.swing.JTextArea();
+        btnLoadMore = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -226,6 +229,18 @@ public class PnlUsers extends javax.swing.JPanel {
         infoTextBox.setDragEnabled(false);
         jScrollPane1.setViewportView(infoTextBox);
 
+        btnLoadMore.setText("Load More");
+        btnLoadMore.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoadMoreMouseClicked(evt);
+            }
+        });
+        btnLoadMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadMoreActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -241,6 +256,10 @@ public class PnlUsers extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(376, 376, 376)
+                .addComponent(btnLoadMore)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,7 +272,9 @@ public class PnlUsers extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -317,8 +338,26 @@ public class PnlUsers extends javax.swing.JPanel {
 
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
+    private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
+        try {
+            allUsers =  DesktopWrapper.getInstance().loadMoreCustomers();
+            allUsers =  DesktopWrapper.getInstance().getCustomers();
+            tableUsers.setModel(new DefaultTableModel());
+            UserTableModel userData = new UserTableModel(allUsers, allUsers.size());
+            tableUsers.setModel(userData);
+
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
+        }
+    }//GEN-LAST:event_btnLoadMoreMouseClicked
+
+    private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLoadMoreActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLoadMore;
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JScrollPane jScrollPane1;
