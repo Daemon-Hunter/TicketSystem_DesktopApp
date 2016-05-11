@@ -24,12 +24,12 @@ class GuestBookingTableModel extends DefaultTableModel {
 
     public GuestBookingTableModel(LinkedList<GuestBooking> bookings, int rows) {
         super(rows, 7);
-        GuestBooking currBooking;
+        GuestBooking currBooking;        
         
         for (int i = 0; i < bookings.size(); i++) {
             currBooking = bookings.get(i);
-            String time  = currBooking.getBookingTime().toString().substring(0,10);
-            time+= " - " + currBooking.getBookingTime().toString().substring(10,19);
+            //String time  = currBooking.getBookingTime().toString().substring(0,10);
+           // time+= " - " + currBooking.getBookingTime().toString().substring(10,19);
 
             
             setValueAt(currBooking.getBookingID(), i, 0);
@@ -37,7 +37,7 @@ class GuestBookingTableModel extends DefaultTableModel {
             setValueAt(currBooking.getGuest().getEmail(),i,2);
             setValueAt(currBooking.getGuest().getAddress(),i,3);
             setValueAt(currBooking.getGuest().getPostcode(),i,4);
-            setValueAt(time,i,5);
+            setValueAt("Time",i,5);
             setValueAt(currBooking.getQuantity(),i,6);
         }
     }
