@@ -37,11 +37,12 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     private  List<IParentEvent> allParentEvents = new ArrayList<>();
     private List<IChildEvent> childEvents = new ArrayList<>();
     private List<ITicket> tickets = new ArrayList<>();
+    private List<GuestBooking> guestBookings = new ArrayList<>();
     private ComboBoxModel childEventsModel;
     private DefaultListModel listModel;
     private ComboBoxModel ticketsModel;
     private IGuest guest;
-    
+    private DefaultListModel bookingListModel;
     private PnlBookings parent;
     
     /**
@@ -51,6 +52,7 @@ public class PnlGuestBooking extends javax.swing.JFrame {
         listModel = new DefaultListModel();
         childEventsModel = new DefaultComboBoxModel();
         ticketsModel = new DefaultComboBoxModel();
+        bookingListModel = new DefaultListModel();
         loadParentEvents();
         
         initComponents();
@@ -144,7 +146,7 @@ public class PnlGuestBooking extends javax.swing.JFrame {
         txtAddress = new javax.swing.JTextField();
         txtPostcode = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        lstBookings = new javax.swing.JList<>();
         lblBookings = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -209,6 +211,11 @@ public class PnlGuestBooking extends javax.swing.JFrame {
         jSeparator.setToolTipText("");
 
         btnSave.setText("Save");
+        btnSave.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnSaveMouseClicked(evt);
+            }
+        });
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -253,8 +260,9 @@ public class PnlGuestBooking extends javax.swing.JFrame {
             }
         });
 
-        jList2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(jList2);
+        lstBookings.setModel(bookingListModel);
+        lstBookings.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(lstBookings);
 
         lblBookings.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblBookings.setForeground(new java.awt.Color(255, 255, 255));
@@ -443,7 +451,7 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     private void btnBuyNowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuyNowMouseClicked
 
         boolean guestFlag = false;
-        if (guest == null) {
+        if (guest == null) {        // Check whether a guest has been created
             try {
                 guest = new Guest(txtEmail.getText(), txtAddress.getText(), txtPostcode.getText());
                 guestFlag = true;
@@ -471,17 +479,14 @@ public class PnlGuestBooking extends javax.swing.JFrame {
                         public void run() {
                             try {
                                 IBooking booking = new GuestBooking(ticket, quantity, new Date(), guest);
-                                
-                                // ADD BOOKING TO BOOKINGS LIST.
-                                // A GUEST CAN MAKE AS MANY BOOKINGS AS THEY LIKE. THIS ALL GETS PUT INTO
-                                // A BOOKINGS LINKEDLIST ON THIS PANEL, AND DISPLAYED IN BOOKINGS LIST BOX.
+                                addBooking(booking);
                                 // FINALLY, WHEN DONE ADDING BOOKINGS, YOU CONFIRM THE ORDER WITH THEM,
                                 // AND CREATE AN ORDER OUT OF THE BOOKING OBJECTS IN THE LIST.
                                 // DesktopWrapper.getInstance().makeGuestBookings(guestBookings);
                                 
                                 editable(true);
                             }
-                            catch (IllegalArgumentException ex) {
+                            catch (IllegalArgumentException | IOException ex) {
                                 JOptionPane.showMessageDialog(PnlGuestBooking.this, "Cannot make booking.\n\n" + ex.getMessage());
                             }
                             finally {
@@ -500,52 +505,52 @@ public class PnlGuestBooking extends javax.swing.JFrame {
             }
         }
         
-        if (user != null) {
-            if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty()) {
-
-                ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
-                Integer quantity = (Integer) spnQuantity.getValue();
-
-                String question = "Are you sure you want to book " + quantity.toString() +
-                " " + ticket.getType() + " tickets for " + user.getFirstName() + " " +  user.getLastName();
-
-                if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION) {
-
-                    Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                user.addOrder(DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity));
-                                dispose();
-                                editable(true);
-                            }
-                            catch (IllegalArgumentException ex) {
-                                JOptionPane.showMessageDialog(PnlCustomerBooking.this, "Cannot make booking.\n\n" + ex.getMessage());
-                            }
-                            catch (IOException ex) {
-                                JOptionPane.showMessageDialog(PnlCustomerBooking.this, "There's been an error creating the booking.\n\n"
-                                    + "Please check the Customer Tickets table for confirmation of result.");
-                            }
-                            finally {
-                                parent.populateTable();
-                            }
-                        }
-
-                    }, "OrderThread");
-
-                    editable(false);
-                    t.start();
-                }
-            }
-            else {
-                JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Error : No User Selected. \n\n"
-                + "Please Contact a developer about this issue!");
-            dispose();
-        }
+//        if (user != null) {
+//            if(cmbTickets.getSelectedIndex() != -1 && !tickets.isEmpty()) {
+//
+//                ITicket ticket = tickets.get(cmbTickets.getSelectedIndex());
+//                Integer quantity = (Integer) spnQuantity.getValue();
+//
+//                String question = "Are you sure you want to book " + quantity.toString() +
+//                " " + ticket.getType() + " tickets for " + user.getFirstName() + " " +  user.getLastName();
+//
+//                if(JOptionPane.showConfirmDialog(this,question,"Customer Booking", 0) == JOptionPane.OK_OPTION) {
+//
+//                    Thread t = new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                user.addOrder(DesktopWrapper.getInstance().makeCustomerBooking(user, ticket, quantity));
+//                                dispose();
+//                                editable(true);
+//                            }
+//                            catch (IllegalArgumentException ex) {
+//                                JOptionPane.showMessageDialog(PnlCustomerBooking.this, "Cannot make booking.\n\n" + ex.getMessage());
+//                            }
+//                            catch (IOException ex) {
+//                                JOptionPane.showMessageDialog(PnlCustomerBooking.this, "There's been an error creating the booking.\n\n"
+//                                    + "Please check the Customer Tickets table for confirmation of result.");
+//                            }
+//                            finally {
+//                                parent.populateTable();
+//                            }
+//                        }
+//
+//                    }, "OrderThread");
+//
+//                    editable(false);
+//                    t.start();
+//                }
+//            }
+//            else {
+//                JOptionPane.showMessageDialog(this,"Please select a ticket to buy first");
+//            }
+//        }
+//        else {
+//            JOptionPane.showMessageDialog(this, "Error : No User Selected. \n\n"
+//                + "Please Contact a developer about this issue!");
+//            dispose();
+//        }
     }//GEN-LAST:event_btnBuyNowMouseClicked
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -565,6 +570,42 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     private void txtPostcodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPostcodeKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPostcodeKeyTyped
+
+    private void btnSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveMouseClicked
+
+            try{
+            
+          String question = "Are you sure You wish to make a booking for " + guest.getEmail() +
+                  " for the following tickets \n";
+          
+            for (GuestBooking currBooking : guestBookings) {
+                question += currBooking.getTicket().getChildEvent().getName() + " - " +
+                        currBooking.getTicket().getType() + " - " + currBooking.getQuantity()+ "\n";
+            }         
+          if(JOptionPane.showConfirmDialog(this,question,"Guest Booking", 0) == JOptionPane.OK_OPTION) {
+                DesktopWrapper.getInstance().makeGuestBookings(guestBookings);
+                bookingListModel.clear();
+                dispose();
+                editable(true);
+
+          }
+                      
+        }catch(IOException ex)
+         {
+          JOptionPane.showMessageDialog(PnlGuestBooking.this, "Cannot make an order at this time.\n\n" + ex.getMessage());
+         }         
+        catch(NullPointerException ex)
+        {
+         JOptionPane.showMessageDialog(PnlGuestBooking.this, "Cannot make booking, \n do you have any orders to book?");
+
+        }
+            finally{
+                            parent.populateTable();
+
+            }
+        
+
+    }//GEN-LAST:event_btnSaveMouseClicked
 
     /**
      * @param args the command line arguments
@@ -600,6 +641,13 @@ public class PnlGuestBooking extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void addBooking(IBooking booking) throws IOException 
+    {
+       bookingListModel.addElement(booking.getTicket().getType() + " - " + booking.getQuantity());
+       guestBookings.add((GuestBooking) booking);
+    }
+            
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuyNow;
@@ -607,7 +655,6 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cmbChildEvents;
     private javax.swing.JComboBox<String> cmbTickets;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator;
@@ -621,6 +668,7 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     private javax.swing.JLabel lblTickets;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel loading_icon_lbl;
+    private javax.swing.JList<String> lstBookings;
     private javax.swing.JList<String> lstParentEvents;
     private javax.swing.JPanel pnlBackground;
     private javax.swing.JSpinner spnQuantity;
