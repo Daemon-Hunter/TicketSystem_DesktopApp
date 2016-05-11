@@ -471,7 +471,6 @@ public class PnlEvents extends javax.swing.JPanel {
                     listParentEventModel.addElement(event.getName());
                 }
             } catch (IOException ex) {
-              System.out.println("Nah");
 
                 allParentEvents = originalAllParentEvents;
                 for (IParentEvent event : allParentEvents) {

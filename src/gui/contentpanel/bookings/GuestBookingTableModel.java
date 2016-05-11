@@ -28,7 +28,6 @@ class GuestBookingTableModel extends DefaultTableModel {
     public GuestBookingTableModel(LinkedList<GuestBooking> bookings, int rows) {
         super(rows, 8);
         GuestBooking currBooking;        
-        System.out.println(Integer.toString(rows));
         for (int i = 0; i < bookings.size(); i++) {
             currBooking = bookings.get(i);
            String time  = currBooking.getBookingTime().toString().substring(0,10);

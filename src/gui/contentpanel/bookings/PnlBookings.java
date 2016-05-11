@@ -13,6 +13,7 @@ import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import wrappers.DesktopWrapper;
@@ -24,6 +25,7 @@ import wrappers.DesktopWrapper;
 public class PnlBookings extends javax.swing.JPanel {
 
     private LinkedList<GuestBooking> guestBookings = new LinkedList<>();
+    private LinkedList<GuestBooking> origialBookings = new LinkedList<>();
     private Home parent = null;
 
     /**
@@ -36,7 +38,7 @@ public class PnlBookings extends javax.swing.JPanel {
         initComponents();
         this.parent = parent;
 
-        txtSearchbar.setBorder(new RoundedBorder());
+        txtSearchBar.setBorder(new RoundedBorder());
         populateTable();
 
     }
@@ -49,7 +51,8 @@ public class PnlBookings extends javax.swing.JPanel {
 
     public final void populateGuestTable() {
         try {
-            guestBookings = DesktopWrapper.getInstance().getGuestBookings();
+            guestBookings = (LinkedList<GuestBooking>) DesktopWrapper.getInstance().getGuestBookings();
+            origialBookings = guestBookings;
 
             if (guestBookings.size() > 0) {
 
@@ -77,7 +80,7 @@ public class PnlBookings extends javax.swing.JPanel {
     private void initComponents() {
 
         jDialog1 = new javax.swing.JDialog();
-        txtSearchbar = new javax.swing.JTextField();
+        txtSearchBar = new javax.swing.JTextField();
         tableScrollPane = new javax.swing.JScrollPane();
         tableGuestBookings = new javax.swing.JTable();
         searchPnl = new javax.swing.JPanel();
@@ -97,16 +100,21 @@ public class PnlBookings extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchbar.setText("Search Artists...");
-        txtSearchbar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        txtSearchbar.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtSearchBar.setText("Search Bookings");
+        txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtSearchbarFocusLost(evt);
+                txtSearchBarFocusLost(evt);
             }
         });
-        txtSearchbar.addMouseListener(new java.awt.event.MouseAdapter() {
+        txtSearchBar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtSearchbarMouseClicked(evt);
+                txtSearchBarMouseClicked(evt);
+            }
+        });
+        txtSearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchBarActionPerformed(evt);
             }
         });
 
@@ -188,7 +196,7 @@ public class PnlBookings extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtSearchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50))
@@ -203,7 +211,7 @@ public class PnlBookings extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSearchbar))
+                    .addComponent(txtSearchBar))
                 .addGap(47, 47, 47)
                 .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -212,15 +220,15 @@ public class PnlBookings extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtSearchbarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchbarFocusLost
-        txtSearchbar.setText("Search Artists...");
-    }//GEN-LAST:event_txtSearchbarFocusLost
+    private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
+        txtSearchBar.setText("Search Artists...");
+    }//GEN-LAST:event_txtSearchBarFocusLost
 
-    private void txtSearchbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchbarMouseClicked
-        if (txtSearchbar.getText().contains("Search Artists...")) {
-            txtSearchbar.setText("");
+    private void txtSearchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchBarMouseClicked
+        if (txtSearchBar.getText().contains("Search Artists...")) {
+            txtSearchBar.setText("");
         }
-    }//GEN-LAST:event_txtSearchbarMouseClicked
+    }//GEN-LAST:event_txtSearchBarMouseClicked
 
     private void tableGuestBookingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableGuestBookingsMouseClicked
     }//GEN-LAST:event_tableGuestBookingsMouseClicked
@@ -235,6 +243,33 @@ public class PnlBookings extends javax.swing.JPanel {
         newPnl.setAlwaysOnTop(true);
     }//GEN-LAST:event_btnNewBookingActionPerformed
 
+    private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
+            String textToSearch = txtSearchBar.getText();        
+        if(!textToSearch.equals(""))
+        {
+            try {
+                System.out.println("Change");
+              guestBookings =  (LinkedList<GuestBooking>) DesktopWrapper.getInstance().searchGuestBookings(textToSearch);
+              GuestBookingTableModel model = new GuestBookingTableModel(guestBookings,guestBookings.size());
+              tableGuestBookings.setModel(model);
+            } catch (IOException ex) {
+
+                guestBookings = origialBookings;
+               GuestBookingTableModel model = new GuestBookingTableModel(guestBookings,guestBookings.size());
+              tableGuestBookings.setModel(model);
+
+            }
+        }
+        else
+        {
+                guestBookings = origialBookings;
+               GuestBookingTableModel model = new GuestBookingTableModel(guestBookings,guestBookings.size());
+              tableGuestBookings.setModel(model);
+
+        }
+
+    }//GEN-LAST:event_txtSearchBarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNewBooking;
@@ -243,7 +278,7 @@ public class PnlBookings extends javax.swing.JPanel {
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JTable tableGuestBookings;
     private javax.swing.JScrollPane tableScrollPane;
-    private javax.swing.JTextField txtSearchbar;
+    private javax.swing.JTextField txtSearchBar;
     // End of variables declaration//GEN-END:variables
 
 }

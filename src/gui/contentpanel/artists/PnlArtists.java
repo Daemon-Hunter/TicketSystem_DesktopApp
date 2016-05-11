@@ -374,7 +374,6 @@ public class PnlArtists extends javax.swing.JPanel {
               ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
               tableArtists.setModel(model);
             } catch (IOException ex) {
-              System.out.println("Nah");
 
                 allArtists = originalAllArtists;
                ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
@@ -387,8 +386,6 @@ public class PnlArtists extends javax.swing.JPanel {
                allArtists = originalAllArtists;
                ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
               tableArtists.setModel(model);
-              System.out.println("nope");
-
 
         }
 

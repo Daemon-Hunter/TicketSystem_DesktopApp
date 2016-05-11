@@ -291,35 +291,29 @@ public class PnlUsers extends javax.swing.JPanel {
     }//GEN-LAST:event_tableUsersFocusLost
 
     private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
-//     Once API Method is created
+//
 
+  String textToSearch = txtSearchBar.getText();        
+        if(!textToSearch.equals(""))
+        {
+            try {
+                System.out.println("Change");
+              allUsers =  DesktopWrapper.getInstance().searchCustomers(textToSearch);
+               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+              tableUsers.setModel(model);
+            } catch (IOException ex) {
+                allUsers = originalAllUsers;
+               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+              tableUsers.setModel(model);
 
-//  String textToSearch = txtSearchBar.getText();        
-//        if(!textToSearch.equals(""))
-//        {
-//            try {
-//                System.out.println("Change");
-//              allUsers =  DesktopWrapper.getInstance().searchUsers(textToSearch);
-//               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
-//              tableUsers.setModel(model);
-//            } catch (IOException ex) {
-//              System.out.println("Nah");
-//
-//                allUsers = originalAllUsers;
-//               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
-//              tableUsers.setModel(model);
-//
-//            }
-//        }
-//        else
-//        {
-//
-//               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
-//              tableUsers.setModel(model);
-//              System.out.println("nope");
-//
-//
-//        }
+            }
+        }
+        else
+        {
+
+               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+              tableUsers.setModel(model);
+        }
 
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
