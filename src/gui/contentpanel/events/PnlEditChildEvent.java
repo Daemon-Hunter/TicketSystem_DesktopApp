@@ -16,8 +16,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerDateModel;
@@ -113,7 +111,6 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
         txtVenue = new javax.swing.JTextField();
         btnCancel1 = new javax.swing.JButton();
         lblAddArtist = new javax.swing.JLabel();
-        lblRemoveArtist = new javax.swing.JLabel();
         spnStartTime = new javax.swing.JSpinner();
         spnEndTime = new javax.swing.JSpinner();
         btnSave = new javax.swing.JButton();
@@ -229,16 +226,6 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
             }
         });
 
-        lblRemoveArtist.setForeground(new java.awt.Color(250, 250, 250));
-        lblRemoveArtist.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        lblRemoveArtist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/removeIcon.png"))); // NOI18N
-        lblRemoveArtist.setText(" Remove Artist");
-        lblRemoveArtist.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblRemoveArtistMouseClicked(evt);
-            }
-        });
-
         spnStartTime.setModel(new javax.swing.SpinnerDateModel());
 
         spnEndTime.setModel(new javax.swing.SpinnerDateModel());
@@ -305,14 +292,14 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
                             .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtParentName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                        .addComponent(btnCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtVenue, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtVenue, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSelectVenue)))))
+                                .addComponent(btnSelectVenue))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnCancel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,14 +312,11 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
                                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                                        .addComponent(lblAddArtist)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblRemoveArtist))
+                                    .addComponent(lblAddArtist)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblAddTickets))
-                                .addGap(8, 8, 8))
+                                .addGap(14, 14, 14))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
                                 .addComponent(lblDetailsTitle2)
                                 .addGap(106, 106, 106))))))
@@ -351,16 +335,18 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblRemoveArtist)
-                                    .addComponent(lblAddArtist))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblAddArtist)
+                                .addGap(14, 14, 14)
                                 .addComponent(lblDetailsTitle2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAddTickets)
-                        .addGap(3, 3, 3))
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnSave)
+                                .addComponent(btnCancel1))
+                            .addComponent(lblAddTickets))
+                        .addGap(2, 2, 2))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblDescriptionRemaining)
@@ -392,20 +378,14 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
                                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(spnEndTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblName3))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSave)
-                            .addComponent(btnCancel1))
-                        .addContainerGap())))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+            .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,10 +421,6 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
             dialog.setAlwaysOnTop(true);
     }//GEN-LAST:event_lblAddArtistMouseClicked
 
-    private void lblRemoveArtistMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRemoveArtistMouseClicked
-      // Remove Artist from Lineup Here
-    }//GEN-LAST:event_lblRemoveArtistMouseClicked
-
     private void btnSelectVenueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSelectVenueMouseClicked
         ObjectSelectDialog dialog = new ObjectSelectDialog();
             dialog.setTable(DatabaseTable.VENUE);
@@ -459,64 +435,41 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
         if (result == JOptionPane.OK_OPTION) {
             if(parentEvent !=null)
             {
-                if(childEvent.setName(txtName.getText()))
-                {
-                    if(childEvent.setDescription(txtDescription.getText()))
-                    {
-                        if(childEvent.setVenue(venue))
-                        {
-                            Date startDate = startModel.getDate();
-                            Date endDate = endModel.getDate();
-                            if(startDate.before(endDate))
-                            {
-                                if(childEvent.setStartDateTime(startDate))
-                                {
-                                    if(childEvent.setEndDateTime(endDate))
-                                    {
-                                        try {
-                                            DesktopWrapper.getInstance().updateObject(childEvent, DatabaseTable.CHILD_EVENT);
-                                            dispose();
-                                            parent.displayText("Success! " + childEvent.getName() + " editted!");
+                Date startDate = startModel.getDate();
+                Date endDate = endModel.getDate();
+                
+                if(startDate.before(endDate)) {
+                    childEvent.setStartDateTime(startDate);
+                    childEvent.setEndDateTime(endDate);
+                    
+                    try {
+                        childEvent.setName(txtName.getText());
+                        childEvent.setDescription(txtDescription.getText());
+                        childEvent.setVenue(venue);
 
-                                        } catch (IOException ex) {
-                                            System.out.println("Error writing object to the database. Please try again.");
-                                        } finally {
-                                            parent.refreshParentEventsList();
-                                        }
-                                    }
-                                }else{
-                                    JOptionPane.showMessageDialog(this, "Invalid Start Date, please try again");
-                                }
-                            }else{
-                                JOptionPane.showMessageDialog(this, "Start Date must be before the End Date");
-                            }
-                        
-                        }else{
-                            JOptionPane.showMessageDialog(this,"Invalid venue, please select a venue again");
-                        }
-                        
-                    }else{
-                      JOptionPane.showMessageDialog(this, "Invalid description. Must be between 10 & 100 characters long, "
-                            + "and not contain blacklisted words");
+                        DesktopWrapper.getInstance().updateObject(childEvent, DatabaseTable.CHILD_EVENT);
+                        dispose();
+                        parent.displayText("Success! " + childEvent.getName() + " editted!");
                     }
-                }else{
-                      JOptionPane.showMessageDialog(this, "Invalid name. Must be between 2 & 30 characters, and not "
-                        + "contain any blacklisted words.");
+                    catch (IllegalArgumentException ex) {
+
+                    }
+                    catch (IOException ex) {
+                        System.out.println("Error writing object to the database. Please try again.");
+                    }
+                    finally {
+                        parent.refreshParentEventsList();
+                    }
+                } 
+                else {
+                    JOptionPane.showMessageDialog(this, "Start Date must be before the End Date");
                 }
                 
                 
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "Sorry, events parent hasn't been set."
                         + " Find your nearest developer!");
             }
-            
-            
-            
-            
-            
-            
-            
-            
         }
     }//GEN-LAST:event_btnSaveMouseClicked
 
@@ -599,7 +552,6 @@ public class PnlEditChildEvent extends javax.swing.JFrame {
     private javax.swing.JLabel lblName2;
     private javax.swing.JLabel lblName3;
     private javax.swing.JLabel lblName4;
-    private javax.swing.JLabel lblRemoveArtist;
     private javax.swing.JList<String> lstLineup;
     private javax.swing.JList<String> lstTickets;
     private javax.swing.JPanel pnlBackground;

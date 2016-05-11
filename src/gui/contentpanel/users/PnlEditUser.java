@@ -11,7 +11,6 @@ import gui.contentpanel.bookings.PnlCustomerBooking;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
 import people.ICustomer;
 import people.IUser;
 import wrappers.DesktopWrapper;
@@ -385,29 +384,32 @@ public class PnlEditUser extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         
-        int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
-        
-        if (result == JOptionPane.OK_OPTION) {
-            
-            try {
-                user.setFirstName(txtForename.getText());
-                user.setLastName(txtSurname.getText());
-                user.setEmail(txtEmail.getText());
-                user.setAddress(txtAddress.getText());
-                user.setPostcode(txtPostcode.getText());
-                
-                DesktopWrapper.getInstance().updateObject(user, DatabaseTable.CUSTOMER);
-                parent.populateTable();
-                dispose();
-                parent.displayText("Success! " + user.getFirstName() + " " + user.getLastName() + " editted!");
-            }
-            catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(this, ex.getMessage());
-            } 
-            catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Error updating user in the database. Check resulting list and try again if necissary.");
+        if (editedUser) {
+            int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
+
+            if (result == JOptionPane.OK_OPTION) {
+
+                try {
+                    user.setFirstName(txtForename.getText());
+                    user.setLastName(txtSurname.getText());
+                    user.setEmail(txtEmail.getText());
+                    user.setAddress(txtAddress.getText());
+                    user.setPostcode(txtPostcode.getText());
+
+                    DesktopWrapper.getInstance().updateObject(user, DatabaseTable.CUSTOMER);
+                    parent.populateTable();
+                    dispose();
+                    parent.displayText("Success! " + user.getFirstName() + " " + user.getLastName() + " editted!");
+                }
+                catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                } 
+                catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error updating user in the database. Check resulting list and try again if necissary.");
+                }
             }
         }
+        else dispose();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void txtForenameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtForenameKeyTyped

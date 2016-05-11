@@ -8,12 +8,9 @@ package gui.contentpanel.venues;
 import database.DatabaseTable;
 import utilities.ImageAssist;
 import events.IVenue;
-import events.SocialMedia;
-import events.Venue;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -27,88 +24,90 @@ import wrappers.DesktopWrapper;
  */
 public class PnlEditVenue extends javax.swing.JFrame {
 
-    private IVenue venue;
+    private IVenue venueOrig;
+    private IVenue venueCopy;
     private PnlVenues parent;
     private final int facilLength = 200;
     private final int descLength = 500;
-    
+
     /**
      * Creates new form PnlEditArtist
      */
     public PnlEditVenue() {
         initComponents();
         initHelpDialog();
-        
+
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
     }
-    
+
     public void setVenue(IVenue venue) {
-        this.venue = venue;
+        venueOrig = venue;
+        venueCopy = venueOrig;
         initPanel();
     }
-    
+
     public void setParent(PnlVenues parent) {
         this.parent = parent;
     }
-    
+
     private void initPanel() {
-        txtName.setText(venue.getName());
-        txtDescription.setText(venue.getDescription());
-        txtFacilities.setText(venue.getFacilites());
-        checkBoxAccess.setSelected(venue.getDisabledAccess());
-        txtAddress.setText(venue.getAddress());
-        txtCity.setText(venue.getCity());
-        txtPostcode.setText(venue.getPostcode());
-        txtPhone.setText(venue.getPhoneNumber());
-        txtEmail.setText(venue.getEmail());
-        txtCapacityStanding.setText(Integer.toString(venue.getStandingCapacity()));
-        txtCapacitySeating.setText(Integer.toString(venue.getSeatingCapacity()));
-        txtParking.setText(Integer.toString(venue.getParking()));
-        
-        if (venue.getFacebook() == null) {
+        txtName.setText(venueOrig.getName());
+        txtDescription.setText(venueOrig.getDescription());
+        txtFacilities.setText(venueOrig.getFacilites());
+        checkBoxAccess.setSelected(venueOrig.getDisabledAccess());
+        txtAddress.setText(venueOrig.getAddress());
+        txtCity.setText(venueOrig.getCity());
+        txtPostcode.setText(venueOrig.getPostcode());
+        txtPhone.setText(venueOrig.getPhoneNumber());
+        txtEmail.setText(venueOrig.getEmail());
+        txtCapacityStanding.setText(Integer.toString(venueOrig.getStandingCapacity()));
+        txtCapacitySeating.setText(Integer.toString(venueOrig.getSeatingCapacity()));
+        txtParking.setText(Integer.toString(venueOrig.getParking()));
+
+        if (venueOrig.getFacebook() == null) {
             txtFacebook.setText("https://");
         } else {
-            txtFacebook.setText(venue.getFacebook());
+            txtFacebook.setText(venueOrig.getFacebook());
         }
 
-        if (venue.getTwitter() == null) {
+        if (venueOrig.getTwitter() == null) {
             txtTwitter.setText("https://");
         } else {
-            txtTwitter.setText(venue.getTwitter());
+            txtTwitter.setText(venueOrig.getTwitter());
         }
 
-        if (venue.getInstagram() == null) {
+        if (venueOrig.getInstagram() == null) {
             txtInstagram.setText("https://");
         } else {
-            txtInstagram.setText(venue.getInstagram());
+            txtInstagram.setText(venueOrig.getInstagram());
         }
 
-        if (venue.getSoundcloud() == null) {
+        if (venueOrig.getSoundcloud() == null) {
             txtSoundcloud.setText("https://");
         } else {
-            txtSoundcloud.setText(venue.getSoundcloud());
+            txtSoundcloud.setText(venueOrig.getSoundcloud());
         }
 
-        if (venue.getSpotify() == null) {
+        if (venueOrig.getSpotify() == null) {
             txtSpotify.setText("https://");
         } else {
-            txtSpotify.setText(venue.getSpotify());
+            txtSpotify.setText(venueOrig.getSpotify());
         }
 
-        if (venue.getWebsite() == null) {
+        if (venueOrig.getWebsite() == null) {
             txtWebsite.setText("https://");
         } else {
-            txtWebsite.setText(venue.getWebsite());
+            txtWebsite.setText(venueOrig.getWebsite());
         }
-        
-        lblImage.setIcon(new ImageIcon(venue.getImage(1)));
 
-        lblDescriptionRemaining.setText((descLength - venue.getDescription().length()) + " characters remaining");
-        
-        lblFacilitiesRemaining.setText(facilLength - venue.getFacilites().length() + " characters remaining");
+        lblImage.setIcon(new ImageIcon(venueOrig.getImage(1)));
+
+        lblDescriptionRemaining.setText((descLength - venueOrig.getDescription().length()) + " characters remaining");
+
+        lblFacilitiesRemaining.setText(facilLength - venueOrig.getFacilites().length() + " characters remaining");
     }
-    
+
     private void initHelpDialog() {
         helpImage.setToolTipText("Adding an image deletes the last. Default image given if not supplied.");
         lblAddImage.setToolTipText("add");
@@ -125,9 +124,7 @@ public class PnlEditVenue extends javax.swing.JFrame {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -776,7 +773,7 @@ public class PnlEditVenue extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        
+
         int dialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel?", "Confirm", JOptionPane.OK_CANCEL_OPTION);
         if (dialog == JOptionPane.OK_OPTION) {
             this.dispose();
@@ -797,22 +794,21 @@ public class PnlEditVenue extends javax.swing.JFrame {
         // Create filter so only image files are shown in dialog
         FileNameExtensionFilter imgFilter = new FileNameExtensionFilter(
                 "Image files", ImageIO.getReaderFileSuffixes());
-        
+
         final JFileChooser fc = new JFileChooser();
         fc.setFileFilter(imgFilter);
-        
+
         int returnedValue = fc.showOpenDialog(this);
-        
+
         if (returnedValue == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            
+
             try {
                 // Read the selected image, and create 5 scaled images from this.
                 BufferedImage img = ImageIO.read(file);
-                venue.setImages(ImageAssist.duplicate(img));
-                lblImage.setIcon(new ImageIcon(venue.getImage(1)));
-            }
-            catch (IOException ex) {
+                venueCopy.setImages(ImageAssist.duplicate(img));
+                lblImage.setIcon(new ImageIcon(venueCopy.getImage(1)));
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem reading the file you selected,"
                         + " please try again.");
             }
@@ -820,18 +816,18 @@ public class PnlEditVenue extends javax.swing.JFrame {
     }//GEN-LAST:event_lblAddImageMouseClicked
 
     private void lblRemoveImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRemoveImageMouseClicked
-        
+
         int dialog = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this image?", "Confirm", JOptionPane.OK_CANCEL_OPTION);
         if (dialog == JOptionPane.OK_OPTION) {
-            
-            for (int i = 0; i < venue.getImages().size(); i++) {
-                venue.removeImage(i);
+
+            for (int i = 0; i < venueCopy.getImages().size(); i++) {
+                venueCopy.removeImage(i);
             }
-            
+
             try {
-                venue.setImages(ImageAssist.createDefaults());
-                lblImage.setIcon(new ImageIcon(venue.getImage(1)));
-                
+                venueCopy.setImages(ImageAssist.createDefaults());
+                lblImage.setIcon(new ImageIcon(venueCopy.getImage(1)));
+
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
                         + " please try again.");
@@ -840,20 +836,20 @@ public class PnlEditVenue extends javax.swing.JFrame {
     }//GEN-LAST:event_lblRemoveImageMouseClicked
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", 
+        int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.",
                 "Save Artist", JOptionPane.OK_CANCEL_OPTION);
-        
+
         if (result == JOptionPane.OK_OPTION) {
-            
+
             try {
                 Integer capStanding = Integer.parseInt(txtCapacityStanding.getText());
-                
+
                 try {
                     Integer capSeating = Integer.parseInt(txtCapacitySeating.getText());
-                    
+
                     try {
                         Integer capParking = Integer.parseInt(txtParking.getText());
-                        
+
                         // Variables for Venue object
                         String name = txtName.getText();
                         String desc = txtDescription.getText();
@@ -865,88 +861,77 @@ public class PnlEditVenue extends javax.swing.JFrame {
                         String email = txtEmail.getText();
 
                         Boolean access = checkBoxAccess.isSelected();
-                        
+
                         // Variables for SocialMedia object
-                        String facebook   = null;
-                        String twitter    = null;
-                        String instagram  = null;
+                        String facebook = null;
+                        String twitter = null;
+                        String instagram = null;
                         String soundcloud = null;
-                        String spotify    = null;
-                        String website    = null;
+                        String spotify = null;
+                        String website = null;
 
                         // Get input string if the user has made a change
-                        if (!txtFacebook.getText().equals("https://")) 
-                        {
+                        if (!txtFacebook.getText().equals("https://")) {
                             facebook = txtFacebook.getText();
                         }
-                        if (!txtTwitter.getText().equals("https://")) 
-                        {
+                        if (!txtTwitter.getText().equals("https://")) {
                             twitter = txtTwitter.getText();
                         }
-                        if (!txtInstagram.getText().equals("https://")) 
-                        {
+                        if (!txtInstagram.getText().equals("https://")) {
                             instagram = txtInstagram.getText();
                         }
-                        if (!txtSoundcloud.getText().equals("https://")) 
-                        {
+                        if (!txtSoundcloud.getText().equals("https://")) {
                             soundcloud = txtSoundcloud.getText();
                         }
-                        if (!txtSpotify.getText().equals("https://")) 
-                        {
+                        if (!txtSpotify.getText().equals("https://")) {
                             spotify = txtSpotify.getText();
                         }
-                        if (!txtWebsite.getText().equals("https://")) 
-                        {
+                        if (!txtWebsite.getText().equals("https://")) {
                             website = txtWebsite.getText();
                         }
 
-                        try 
-                        {
-                            venue.setName(name);
-                            venue.setDescription(desc);
-                            venue.setSeatingCapacity(capSeating);
-                            venue.setStandingCapacity(capStanding);
-                            venue.setParking(capParking);
-                            venue.setDisabledAccess(access);
-                            venue.setFacilites(facil);
-                            venue.setEmail(email);
-                            venue.setAddress(addr);
-                            venue.setCity(city);
-                            venue.setPostcode(pCode);
-                            venue.setPhoneNumber(pNo);
-                            
-                            venue.setFacebook(facebook);
-                            venue.setTwitter(twitter);
-                            venue.setInstagram(instagram);
-                            venue.setSoundcloud(soundcloud);
-                            venue.setWebsite(website);
-                            venue.setSpotify(spotify);
-                            
-                            DesktopWrapper.getInstance().updateObject(venue, DatabaseTable.VENUE);
+                        try {
+                            venueCopy.setName(name);
+                            venueCopy.setDescription(desc);
+                            venueCopy.setSeatingCapacity(capSeating);
+                            venueCopy.setStandingCapacity(capStanding);
+                            venueCopy.setParking(capParking);
+                            venueCopy.setDisabledAccess(access);
+                            venueCopy.setFacilites(facil);
+                            venueCopy.setEmail(email);
+                            venueCopy.setAddress(addr);
+                            venueCopy.setCity(city);
+                            venueCopy.setPostcode(pCode);
+                            venueCopy.setPhoneNumber(pNo);
 
-                            parent.populateTable();
+                            venueCopy.setFacebook(facebook);
+                            venueCopy.setTwitter(twitter);
+                            venueCopy.setInstagram(instagram);
+                            venueCopy.setSoundcloud(soundcloud);
+                            venueCopy.setWebsite(website);
+                            venueCopy.setSpotify(spotify);
+                            
+                            DesktopWrapper.getInstance().removeVenue(venueOrig);
+
+                            parent.addVenue((IVenue) DesktopWrapper.getInstance().updateObject(venueCopy, DatabaseTable.VENUE));
+                            
                             dispose();
-                            parent.displayText("Success! " + venue.getName() + " updated!");
-                        }
-                        catch (IllegalArgumentException ex) 
-                        {
+                            parent.displayText("Success! " + venueCopy.getName() + " updated!");
+                        } 
+                        catch (IllegalArgumentException ex) {
                             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                         } 
-                        catch (IOException ex) 
-                        {
+                        catch (IOException ex) {
                             JOptionPane.showMessageDialog(this, "There was a problem connecting to the server, please try again.");
                             parent.populateTable();
                         }
-                    }
-                    catch (NumberFormatException ex) {
+                    } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(this, "Parking capacity needs to be an integer value.");
                     }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Seating capacity needs to be an integer value.");
                 }
-                catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Standing capacity needs to be an integer value.");
-                }
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Standing capacity needs to be an integer value.");
             }
         }

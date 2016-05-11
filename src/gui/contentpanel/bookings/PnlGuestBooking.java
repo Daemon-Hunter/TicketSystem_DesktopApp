@@ -77,6 +77,7 @@ public class PnlGuestBooking extends javax.swing.JFrame {
     
     private void loadParentEvents() {
         try {
+            //DesktopWrapper.getInstance().g  
              allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
            for (IParentEvent currEvent : allParentEvents)
             {

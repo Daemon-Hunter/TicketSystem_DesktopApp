@@ -376,9 +376,7 @@ public class PnlNewChildEvent extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+            .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,7 +432,7 @@ public class PnlNewChildEvent extends javax.swing.JFrame {
                         }
                     }
                     else {
-                        JOptionPane.showMessageDialog(this, "Events end time needs to be after the start time! Fool!");
+                        JOptionPane.showMessageDialog(this, "Events end time needs to be after the start time... You fool!");
                     }
                 }
                 else {

@@ -9,14 +9,10 @@ import database.DatabaseTable;
 import utilities.ImageAssist;
 import events.IChildEvent;
 import events.IParentEvent;
-import events.SocialMedia;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -50,6 +46,16 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
         this.event = event;
         populateChildEvents();
         initPanel();
+    }
+    
+    private void populateChildEvents() {
+        try {
+            List<IChildEvent> childEvents = event.getChildEvents();
+            EventTableModel childEventsModel = new EventTableModel(childEvents, childEvents.size());
+            tableChildEvents.setModel(childEventsModel);
+        } catch (IOException ex) {
+            Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setParent(PnlEvents parent) {
@@ -143,7 +149,6 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
         lblDetailsTitle = new javax.swing.JLabel();
         btnCancel = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         lblAddImage = new javax.swing.JLabel();
         lblRemoveImage = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -277,18 +282,6 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
-            }
-        });
-
-        btnDelete.setBackground(new java.awt.Color(132, 0, 0));
-        btnDelete.setForeground(new java.awt.Color(251, 251, 251));
-        btnDelete.setText("Delete");
-        btnDelete.setMaximumSize(new java.awt.Dimension(90, 29));
-        btnDelete.setMinimumSize(new java.awt.Dimension(90, 29));
-        btnDelete.setPreferredSize(new java.awt.Dimension(90, 29));
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
             }
         });
 
@@ -445,8 +438,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
                                 .addGap(65, 65, 65)
                                 .addComponent(helpImage))))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -529,8 +521,7 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnCancel)
-                        .addComponent(btnSave)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSave))
                     .addComponent(lblName7))
                 .addGap(7, 7, 7))
         );
@@ -599,34 +590,15 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
             for (int i = 0; i < event.getImages().size(); i++) {
                 event.removeImage(i);
             }
-
-            Random r = new Random();
-            String filename = "src/images/defaults/defaultImage" + r.nextInt(7) + ".gif";
-
+            
             try {
-                BufferedImage img = ImageIO.read(new File(filename));
-                event.setImages(ImageAssist.duplicate(img));
-
+                event.setImages(ImageAssist.createDefaults());
                 lblImage.setIcon(new ImageIcon(event.getImage(1)));
-
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "There was a problem setting a default image,"
-                        + " please try again.");
+                JOptionPane.showMessageDialog(this, "There was an error creating the default images. Please try again.");
             }
         }
     }//GEN-LAST:event_lblRemoveImageMouseClicked
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this artist?\n\n"
-                + "This will stop the artist showing up in future search results.", "Delete Artist", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            // ADD CODE TO REMOVE FROM DATABASE? -> HIDE FROM RESULTS (DATABASE TAG - HIDDEN?)
-            // Didn't want to delete from database for
-            // booking history / integrity
-            dispose();
-            parent.displayText("Event deleted");
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         int result = JOptionPane.showConfirmDialog(this, "Are you ready to save? Changes will immediately become live.", "Save Artist", JOptionPane.OK_CANCEL_OPTION);
@@ -720,7 +692,6 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel helpDescription;
     private javax.swing.JLabel helpImage;
@@ -757,15 +728,4 @@ public class PnlEditParentEvent extends javax.swing.JFrame {
     private javax.swing.JTextField txtTwitter;
     private javax.swing.JTextField txtWebsite;
     // End of variables declaration//GEN-END:variables
-
-    private void populateChildEvents() {
-        try {
-            List<IChildEvent> childEvents = event.getChildEvents();
-            EventTableModel childEventsModel = new EventTableModel(childEvents, childEvents.size());
-            tableChildEvents.setModel(childEventsModel);
-        } catch (IOException ex) {
-            Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
 }

@@ -471,61 +471,58 @@ public class PnlNewParentEvent extends javax.swing.JFrame {
 
         String name = txtName.getText();
         String desc = txtDescription.getText();
-        
-        String facebook   = null;
-        String twitter    = null;
-        String instagram  = null;
+
+        String facebook = null;
+        String twitter = null;
+        String instagram = null;
         String soundcloud = null;
-        String spotify    = null;
-        String website    = null;
+        String spotify = null;
+        String website = null;
 
-        if (!txtFacebook.getText().equals("https://"))
+        if (!txtFacebook.getText().equals("https://")) {
             facebook = txtFacebook.getText();
+        }
 
-        if (!txtTwitter.getText().equals("https://"))
+        if (!txtTwitter.getText().equals("https://")) {
             twitter = txtTwitter.getText();
+        }
 
-        if (!txtInstagram.getText().equals("https://"))
+        if (!txtInstagram.getText().equals("https://")) {
             instagram = txtInstagram.getText();
+        }
 
-        if (!txtSoundcloud.getText().equals("https://"))
+        if (!txtSoundcloud.getText().equals("https://")) {
             soundcloud = txtSoundcloud.getText();
+        }
 
-        if (!txtSpotify.getText().equals("https://"))
+        if (!txtSpotify.getText().equals("https://")) {
             spotify = txtSpotify.getText();
+        }
 
-        if (!txtWebsite.getText().equals("https://"))
+        if (!txtWebsite.getText().equals("https://")) {
             website = txtWebsite.getText();
+        }
 
         // social.setImages(images);
-
-        try 
-        {
+        try {
             SocialMedia social = new SocialMedia(images, facebook, twitter, instagram, soundcloud, website, spotify);
             DesktopWrapper.getInstance().createNewObject(social, DatabaseTable.SOCIAL_MEDIA);
 
-            try 
-            {
+            try {
                 IParentEvent event = new ParentEvent(social.getSocialId(), name, desc);
                 event.setSocialMedia(social);
                 DesktopWrapper.getInstance().createNewObject(event, DatabaseTable.PARENT_EVENT);
                 dispose();
                 parent.displayText("Succss! " + event.getName() + " added!");
                 parent.refreshParentEventsList();
-            } 
-
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 System.out.println("Error writing object to the database. Please try again.");
-            }
-            catch (IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage());
             }
-        }
-
-        catch (IOException ex) {
+        } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error writing object to the database. Please try again.");
-        } 
-        catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }//GEN-LAST:event_btnSaveActionPerformed

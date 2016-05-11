@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import wrappers.DesktopWrapper;
 
@@ -26,8 +27,8 @@ import wrappers.DesktopWrapper;
 public class PnlVenues extends javax.swing.JPanel {
     
     private Home parent = null;
-    private List<IVenue> allVenues;
     private List<IVenue> originalAllVenues;
+    private List<IVenue> allVenues;
     private IVenue currVenue;
 
 
@@ -48,9 +49,8 @@ public class PnlVenues extends javax.swing.JPanel {
     public final void populateTable() {
   
         try {
-            allVenues = DesktopWrapper.getInstance().refreshVenues();
+            allVenues = DesktopWrapper.getInstance().getVenues();
             originalAllVenues = allVenues;
-
             
             if(allVenues.size() > 0) {
                 VenueTableModel venueData = new VenueTableModel(allVenues, allVenues.size());
@@ -60,6 +60,11 @@ public class PnlVenues extends javax.swing.JPanel {
         catch (IllegalArgumentException | IOException ex) {
             Logger.getLogger(PnlVenues.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void addVenue(IVenue venue) {
+        DesktopWrapper.getInstance().addVenue(venue);
+        populateTable();
     }
     
     public void setParent(Home parent) {
