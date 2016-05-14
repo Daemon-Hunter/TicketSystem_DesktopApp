@@ -387,7 +387,6 @@ public class PnlArtists extends javax.swing.JPanel {
         if(!textToSearch.equals(""))
         {
             try {
-                System.out.println("Change");
               allArtists =  DesktopWrapper.getInstance().searchArtists(textToSearch);
               ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
               tableArtists.setModel(model);

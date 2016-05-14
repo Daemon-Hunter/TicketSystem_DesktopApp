@@ -51,13 +51,13 @@ public class PnlUsers extends javax.swing.JPanel {
   
         try {
             allUsers = DesktopWrapper.getInstance().getCustomers();
+            originalAllUsers = allUsers;
             if(allUsers.size() > 0)
             {
             TableModel userData = new UserTableModel(allUsers, allUsers.size());
             tableUsers.setModel(userData);
             }
         } catch (IllegalArgumentException | IOException ex) {
-            Logger.getLogger(PnlUsers.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -314,7 +314,7 @@ public class PnlUsers extends javax.swing.JPanel {
     private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
 //
 
-  String textToSearch = txtSearchBar.getText();        
+  String textToSearch = txtSearchBar.getText(); 
         if(!textToSearch.equals(""))
         {
             try {
@@ -331,8 +331,8 @@ public class PnlUsers extends javax.swing.JPanel {
         }
         else
         {
-
-               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+              allUsers = originalAllUsers;
+              UserTableModel model = new UserTableModel(allUsers,allUsers.size());
               tableUsers.setModel(model);
         }
 

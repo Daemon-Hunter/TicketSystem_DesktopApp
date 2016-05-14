@@ -35,7 +35,7 @@ public class UserTicketModel extends DefaultTableModel{
             try {
                 IBooking currBooking = bookings.get(i);
                 ITicket currTicket = currBooking.getTicket();
-               
+
                 NumberFormat formatter = NumberFormat.getCurrencyInstance();
                 String price = formatter.format(currTicket.getPrice());
                 String amountPaid = formatter.format(currTicket.getPrice() * currBooking.getQuantity());
