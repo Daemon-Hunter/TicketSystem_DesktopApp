@@ -6,7 +6,7 @@
 package gui.contentpanel.users;
 
 import people.IUser;
-import gui.Home;
+import gui.MainJFrame;
 import gui.RoundedBorder;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -28,7 +28,7 @@ import wrappers.DesktopWrapper;
  */
 public class PnlUsers extends javax.swing.JPanel {
     
-    private Home parent = null;
+    private MainJFrame parent = null;
     private List<ICustomer> allUsers;
     private List<ICustomer> originalAllUsers;
     private IUser currUser;
@@ -38,7 +38,7 @@ public class PnlUsers extends javax.swing.JPanel {
      * Creates new User panel
      * @param parent
      */
-    public PnlUsers(Home parent) {
+    public PnlUsers(MainJFrame parent) {
         
         initComponents();
         this.parent = parent;
@@ -94,7 +94,7 @@ public class PnlUsers extends javax.swing.JPanel {
         t.start();
     }
     
-    public void setParent(Home parent) {
+    public void setParent(MainJFrame parent) {
         this.parent = parent;
     }
 

@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
  */
 public class PnlSidebar extends javax.swing.JPanel {
 
-    private Home parent = null;
+    private MainJFrame parent = null;
     /**
      * Creates new form PnlSidebar
      */
@@ -28,7 +28,7 @@ public class PnlSidebar extends javax.swing.JPanel {
         lblHome.setIcon(icon);
     }
     
-    public void setParent(Home parent) {
+    public void setParent(MainJFrame parent) {
         this.parent = parent;
     }
     

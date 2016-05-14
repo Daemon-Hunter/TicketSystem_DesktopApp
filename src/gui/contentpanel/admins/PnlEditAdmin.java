@@ -6,8 +6,9 @@
 package gui.contentpanel.admins;
 
 import database.DatabaseTable;
-import gui.Home;
+import gui.MainJFrame;
 import gui.LoginPanel;
+import gui.contentpanel.PnlHome;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -20,14 +21,14 @@ import wrappers.DesktopWrapper;
  */
 public class PnlEditAdmin extends javax.swing.JFrame {
 
-    private static PnlAdmins parent;
-    private static IAdmin    editingAdmin;
+    private static PnlHome parent;
+    private static IAdmin  editingAdmin;
     /**
      * Creates new form PnlEditAdmin
      * @param parent
      * @param admin
      */
-    public PnlEditAdmin(PnlAdmins parent, IAdmin admin) {
+    public PnlEditAdmin(PnlHome parent, IAdmin admin) {
         initComponents();
         
         PnlEditAdmin.parent = parent;
@@ -266,8 +267,8 @@ public class PnlEditAdmin extends javax.swing.JFrame {
                                 DesktopWrapper.getInstance().updateObject(editingAdmin, DatabaseTable.ADMIN);
                                 
                                 PnlEditAdmin.this.dispose();
-                                parent.populateTable();
-                                parent.displayText("Password for " + editingAdmin.getEmail() + " updated!");
+                                parent.populateAdminTable();
+                                //parent.displayText("Password for " + editingAdmin.getEmail() + " updated!");
                                 done();
                                 
                             } else {

@@ -7,7 +7,6 @@ package gui;
 
 import gui.contentpanel.artists.PnlArtists;
 import gui.contentpanel.*;
-import gui.contentpanel.admins.PnlAdmins;
 import gui.contentpanel.bookings.PnlBookings;
 import gui.contentpanel.events.PnlEvents;
 import gui.contentpanel.users.PnlUsers;
@@ -27,7 +26,7 @@ import javax.swing.JPanel;
  * @author 10512691
  * @author 10467841
  */
-public class Home extends javax.swing.JFrame {
+public class MainJFrame extends javax.swing.JFrame {
     
     private Pages page = null;
     private CardLayout cards = null;
@@ -36,7 +35,7 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public Home() {
+    public MainJFrame() {
         initComponents();
         initSidebar();
         initContent();
@@ -116,7 +115,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(pnlSidebar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlContent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
+                    .addComponent(pnlContent, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 565, Short.MAX_VALUE))
                 .addGap(0, 20, Short.MAX_VALUE))
         );
 
@@ -191,7 +190,6 @@ public class Home extends javax.swing.JFrame {
         JPanel artists = new PnlArtists(this);
         JPanel venues = new PnlVenues(this);
         JPanel events = new PnlEvents(this);
-        JPanel admins = new PnlAdmins(this);
         
         // Sets the size of the content panels to match the 'container' panel
         home.setMinimumSize(pnlContent.getSize());
@@ -200,7 +198,6 @@ public class Home extends javax.swing.JFrame {
         bookings.setMinimumSize(pnlContent.getSize());
         venues.setMinimumSize(pnlContent.getSize());
         events.setMinimumSize(pnlContent.getSize());
-        admins.setMinimumSize(pnlContent.getSize());
         
         
         // Add the panels to the 'container' panel, with specified indexes
@@ -210,7 +207,6 @@ public class Home extends javax.swing.JFrame {
         pnlContent.add(bookings,Pages.BOOKINGS.toString());
         pnlContent.add(venues,Pages.VENUES.toString());
         pnlContent.add(events,Pages.EVENTS.toString());
-        pnlContent.add(admins, Pages.ADMINS.toString());
         
         cards = (CardLayout)(pnlContent.getLayout());
         
@@ -235,20 +231,21 @@ public class Home extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                new MainJFrame().setVisible(true);
             }
         });
     }

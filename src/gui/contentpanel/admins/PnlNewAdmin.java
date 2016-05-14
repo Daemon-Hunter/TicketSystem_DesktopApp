@@ -6,9 +6,8 @@
 package gui.contentpanel.admins;
 
 import database.DatabaseTable;
+import gui.contentpanel.PnlHome;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import people.Admin;
@@ -21,13 +20,13 @@ import wrappers.DesktopWrapper;
  */
 public class PnlNewAdmin extends javax.swing.JFrame {
 
-    private static PnlAdmins parent;
+    private static PnlHome parent;
     
     /**
      * Creates new form PnlNewAdminNew
      * @param parent
      */
-    public PnlNewAdmin(PnlAdmins parent) {
+    public PnlNewAdmin(PnlHome parent) {
         
         initComponents();
         PnlNewAdmin.parent = parent;
@@ -66,8 +65,8 @@ public class PnlNewAdmin extends javax.swing.JFrame {
                     admin = (IAdmin) DesktopWrapper.getInstance().createNewObject(admin, DatabaseTable.ADMIN);
                     DesktopWrapper.getInstance().addAdmin(admin);
                     dispose();
-                    parent.populateTable();
-                    parent.displayText("Success! Admin account created for: " + admin.getEmail());
+                    parent.populateAdminTable();
+                    //parent.displayText("Success! Admin account created for: " + admin.getEmail());
                     done();
                 } 
                 catch (IOException ex) {
@@ -152,14 +151,12 @@ public class PnlNewAdmin extends javax.swing.JFrame {
         lblPasswordReEnter.setForeground(new java.awt.Color(255, 255, 255));
         lblPasswordReEnter.setText("Re-Enter:");
 
-        txtPasswordCheck.setText("password");
         txtPasswordCheck.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtPasswordCheckMousePressed(evt);
             }
         });
 
-        txtPassword.setText("password");
         txtPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 txtPasswordMousePressed(evt);

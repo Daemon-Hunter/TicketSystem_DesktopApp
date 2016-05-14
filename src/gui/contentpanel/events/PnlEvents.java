@@ -7,7 +7,7 @@ package gui.contentpanel.events;
 
 import events.IChildEvent;
 import events.IParentEvent;
-import gui.Home;
+import gui.MainJFrame;
 import gui.RoundedBorder;
 import gui.contentpanel.artists.ArtistTableModel;
 import java.awt.Color;
@@ -28,7 +28,7 @@ import wrappers.DesktopWrapper;
  */
 public class PnlEvents extends javax.swing.JPanel {
     
-    private Home parent = null;
+    private MainJFrame parent = null;
     List<IParentEvent> allParentEvents;
     List<IParentEvent> originalAllParentEvents;
     private DefaultListModel listParentEventModel;
@@ -40,7 +40,7 @@ public class PnlEvents extends javax.swing.JPanel {
      * Creates new Artist panel
      * @param parent
      */
-    public PnlEvents(Home parent) {
+    public PnlEvents(MainJFrame parent) {
         listParentEventModel = new DefaultListModel();
         initComponents();
         this.parent = parent;
@@ -49,7 +49,7 @@ public class PnlEvents extends javax.swing.JPanel {
     }
     
     
-    public void setParent(Home parent) {
+    public void setParent(MainJFrame parent) {
         this.parent = parent;
     }
 

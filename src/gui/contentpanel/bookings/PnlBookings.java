@@ -8,7 +8,7 @@ package gui.contentpanel.bookings;
 import bookings.GuestBooking;
 import bookings.IBooking;
 import gui.contentpanel.artists.ArtistTableModel;
-import gui.Home;
+import gui.MainJFrame;
 import gui.RoundedBorder;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,14 +27,14 @@ public class PnlBookings extends javax.swing.JPanel {
 
     private LinkedList<GuestBooking> guestBookings = new LinkedList<>();
     private LinkedList<GuestBooking> origialBookings = new LinkedList<>();
-    private Home parent = null;
+    private MainJFrame parent = null;
 
     /**
      * Creates new Artist panel
      *
      * @param parent
      */
-    public PnlBookings(Home parent) {
+    public PnlBookings(MainJFrame parent) {
 
         initComponents();
         this.parent = parent;
@@ -67,7 +67,7 @@ public class PnlBookings extends javax.swing.JPanel {
         }
     }
 
-    public void setParent(Home parent) {
+    public void setParent(MainJFrame parent) {
         this.parent = parent;
     }
 

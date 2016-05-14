@@ -13,7 +13,7 @@ import people.IAdmin;
  *
  * @author 10512691
  */
-class AdminTableModel extends DefaultTableModel {
+public class AdminTableModel extends DefaultTableModel {
     
     private final String header = "Email";
     

@@ -6,7 +6,7 @@
 package gui.contentpanel.artists;
 
 import events.IArtist;
-import gui.Home;
+import gui.MainJFrame;
 import gui.RoundedBorder;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,7 +29,7 @@ import wrappers.DesktopWrapper;
  */
 public class PnlArtists extends javax.swing.JPanel {
     
-    private Home parent = null;
+    private MainJFrame parent = null;
     
     private List<IArtist> allArtists;
     private List<IArtist> originalAllArtists;
@@ -39,7 +39,7 @@ public class PnlArtists extends javax.swing.JPanel {
      * Creates new Artist panel
      * @param parent
      */
-    public PnlArtists(Home parent) {
+    public PnlArtists(MainJFrame parent) {
         this.parent = parent;
         
         initComponents();

@@ -5,7 +5,7 @@
  */
 package gui.contentpanel.venues;
 import events.IVenue;
-import gui.Home;
+import gui.MainJFrame;
 import gui.RoundedBorder;
 import gui.contentpanel.artists.ArtistTableModel;
 import java.awt.Color;
@@ -27,7 +27,7 @@ import wrappers.DesktopWrapper;
  */
 public class PnlVenues extends javax.swing.JPanel {
     
-    private Home parent = null;
+    private MainJFrame parent = null;
     private List<IVenue> originalAllVenues;
     private List<IVenue> allVenues;
     private IVenue currVenue;
@@ -37,7 +37,7 @@ public class PnlVenues extends javax.swing.JPanel {
      * Creates new User panel
      * @param parent
      */
-    public PnlVenues(Home parent) {
+    public PnlVenues(MainJFrame parent) {
         
         initComponents();
         initButtons();
@@ -68,7 +68,7 @@ public class PnlVenues extends javax.swing.JPanel {
         populateTable();
     }
     
-    public void setParent(Home parent) {
+    public void setParent(MainJFrame parent) {
         this.parent = parent;
     }
     
