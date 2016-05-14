@@ -124,15 +124,21 @@ public class PnlEditAdmin extends javax.swing.JFrame {
 
         helpNewPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/helpIconNew.png"))); // NOI18N
 
+        txtNewPassword.setBackground(new java.awt.Color(51, 51, 51));
+
         loading_icon_lbl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loading_icon.gif"))); // NOI18N
 
         lblOldPassword.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblOldPassword.setForeground(new java.awt.Color(255, 255, 255));
         lblOldPassword.setText("<html>Old <br>Password:</html>");
 
+        txtOldPassword.setBackground(new java.awt.Color(51, 51, 51));
+
         lblPasswordReEnter1.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         lblPasswordReEnter1.setForeground(new java.awt.Color(255, 255, 255));
         lblPasswordReEnter1.setText("Re-Enter:");
+
+        txtNewPasswordCheck.setBackground(new java.awt.Color(51, 51, 51));
 
         helpOldPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/helpIconNew.png"))); // NOI18N
 

@@ -65,6 +65,7 @@ public class LoginPanel extends javax.swing.JFrame {
                 }
                 catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(LoginPanel.this, ex.getMessage());
+                    ex.printStackTrace();
                     done();
                 }
                 return "";
@@ -145,6 +146,7 @@ public class LoginPanel extends javax.swing.JFrame {
         txtUsernameError.setFont(new java.awt.Font("Lucida Grande", 0, 15)); // NOI18N
         txtUsernameError.setForeground(new java.awt.Color(255, 51, 102));
 
+        txtPassword.setBackground(new java.awt.Color(251, 251, 251));
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);

@@ -5,6 +5,8 @@
  */
 package gui.contentpanel;
 
+import bookings.IBooking;
+import events.IChildEvent;
 import gui.MainJFrame;
 import gui.contentpanel.admins.AdminTableModel;
 import gui.contentpanel.admins.PnlEditAdmin;
@@ -13,7 +15,12 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
@@ -35,10 +42,33 @@ public class PnlHome extends javax.swing.JPanel {
      */
     public PnlHome(MainJFrame parent) {
         initComponents();
-        
         this.parent = parent;
+        initPanel();
+    }
+    
+    private void initPanel() {
+        lblWelcome.setText("Welcome " + DesktopWrapper.getInstance().getCurrentAdmin().getEmail() + ",");
         lblLoadingIcon.setVisible(false);
         populateAdminTable();
+        
+        try {
+            List<IBooking> monthlyBookings = DesktopWrapper.getInstance().getThisMonthsSales();
+            lblSales.setText(Integer.toString(monthlyBookings.size()));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error getting this months bookings from the database.");
+            lblSales.setText("0");
+        }
+        
+        try {
+            List<IChildEvent> events = DesktopWrapper.getInstance().getSoldOutEvents();
+            DefaultListModel model = new DefaultListModel();
+            for (IChildEvent e : events) {
+                model.addElement(e.getName() + " at " + e.getVenue().getName());
+            }
+            listSoldOut.setModel(model);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Error getting this months bookings from the database.");
+        }
     }
     
     public final void populateAdminTable() {
@@ -102,19 +132,10 @@ public class PnlHome extends javax.swing.JPanel {
         pnlActiveTitle = new javax.swing.JPanel();
         lblActiveTitle = new javax.swing.JLabel();
         lblActive = new javax.swing.JLabel();
-        pnlNewEventsBackground = new javax.swing.JPanel();
-        pnlNewEventsTitle = new javax.swing.JPanel();
-        lblNewEventsTitle = new javax.swing.JLabel();
-        lblNewEvent1 = new javax.swing.JLabel();
-        lblNewEvent2 = new javax.swing.JLabel();
-        lblNewEvent3 = new javax.swing.JLabel();
-        lblNewEvent4 = new javax.swing.JLabel();
-        lblNewEvent5 = new javax.swing.JLabel();
         pnlSalesBackground2 = new javax.swing.JPanel();
         pnlSalesTitle2 = new javax.swing.JPanel();
         lblSalesTitle1 = new javax.swing.JLabel();
-        lblSales2 = new javax.swing.JLabel();
-        pnlAdminSettings = new javax.swing.JPanel();
+        lblSales = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         iconAdminSettings = new javax.swing.JLabel();
         lblAdminSettings = new javax.swing.JLabel();
@@ -126,6 +147,12 @@ public class PnlHome extends javax.swing.JPanel {
         lblLoadingIcon = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTextBox = new javax.swing.JTextArea();
+        lblWelcome = new javax.swing.JLabel();
+        lblWhatsBeenOn = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listSoldOut = new javax.swing.JList<>();
+        pnlActiveTitle2 = new javax.swing.JPanel();
+        lblSoldOutEvents = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(873, 32767));
         setMinimumSize(new java.awt.Dimension(873, 0));
@@ -181,91 +208,12 @@ public class PnlHome extends javax.swing.JPanel {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        pnlNewEventsBackground.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 28, 53), 1, true));
-
-        pnlNewEventsTitle.setBackground(new java.awt.Color(153, 153, 153));
-
-        lblNewEventsTitle.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblNewEventsTitle.setText("New Events");
-
-        javax.swing.GroupLayout pnlNewEventsTitleLayout = new javax.swing.GroupLayout(pnlNewEventsTitle);
-        pnlNewEventsTitle.setLayout(pnlNewEventsTitleLayout);
-        pnlNewEventsTitleLayout.setHorizontalGroup(
-            pnlNewEventsTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNewEventsTitleLayout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(lblNewEventsTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlNewEventsTitleLayout.setVerticalGroup(
-            pnlNewEventsTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNewEventsTitleLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblNewEventsTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        lblNewEvent1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblNewEvent1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/one.png"))); // NOI18N
-        lblNewEvent1.setText("Dub Clash");
-
-        lblNewEvent2.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblNewEvent2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/two.png"))); // NOI18N
-        lblNewEvent2.setText("Download Festival");
-
-        lblNewEvent3.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblNewEvent3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/three.png"))); // NOI18N
-        lblNewEvent3.setText("Micheal McIntyre Presents");
-
-        lblNewEvent4.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblNewEvent4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/four.png"))); // NOI18N
-        lblNewEvent4.setText("Nass Festival");
-
-        lblNewEvent5.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblNewEvent5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/five.png"))); // NOI18N
-        lblNewEvent5.setText("Summer Solstice");
-
-        javax.swing.GroupLayout pnlNewEventsBackgroundLayout = new javax.swing.GroupLayout(pnlNewEventsBackground);
-        pnlNewEventsBackground.setLayout(pnlNewEventsBackgroundLayout);
-        pnlNewEventsBackgroundLayout.setHorizontalGroup(
-            pnlNewEventsBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlNewEventsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlNewEventsBackgroundLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(pnlNewEventsBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNewEvent3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlNewEventsBackgroundLayout.createSequentialGroup()
-                        .addGroup(pnlNewEventsBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNewEvent5)
-                            .addComponent(lblNewEvent4)
-                            .addComponent(lblNewEvent1)
-                            .addComponent(lblNewEvent2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        pnlNewEventsBackgroundLayout.setVerticalGroup(
-            pnlNewEventsBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNewEventsBackgroundLayout.createSequentialGroup()
-                .addComponent(pnlNewEventsTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblNewEvent1)
-                .addGap(18, 18, 18)
-                .addComponent(lblNewEvent2)
-                .addGap(18, 18, 18)
-                .addComponent(lblNewEvent3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(lblNewEvent4)
-                .addGap(18, 18, 18)
-                .addComponent(lblNewEvent5)
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-
         pnlSalesBackground2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 28, 53), 1, true));
 
         pnlSalesTitle2.setBackground(new java.awt.Color(153, 153, 153));
 
         lblSalesTitle1.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
-        lblSalesTitle1.setText("Today's Sales");
+        lblSalesTitle1.setText("Monthly Sales");
 
         javax.swing.GroupLayout pnlSalesTitle2Layout = new javax.swing.GroupLayout(pnlSalesTitle2);
         pnlSalesTitle2.setLayout(pnlSalesTitle2Layout);
@@ -284,10 +232,10 @@ public class PnlHome extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lblSales2.setFont(new java.awt.Font("Helvetica Neue", 1, 36)); // NOI18N
-        lblSales2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSales2.setText("0");
-        lblSales2.setToolTipText("");
+        lblSales.setFont(new java.awt.Font("Helvetica Neue", 1, 36)); // NOI18N
+        lblSales.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblSales.setText("0");
+        lblSales.setToolTipText("");
 
         javax.swing.GroupLayout pnlSalesBackground2Layout = new javax.swing.GroupLayout(pnlSalesBackground2);
         pnlSalesBackground2.setLayout(pnlSalesBackground2Layout);
@@ -296,7 +244,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addComponent(pnlSalesTitle2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlSalesBackground2Layout.createSequentialGroup()
                 .addGap(61, 61, 61)
-                .addComponent(lblSales2)
+                .addComponent(lblSales)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlSalesBackground2Layout.setVerticalGroup(
@@ -304,26 +252,8 @@ public class PnlHome extends javax.swing.JPanel {
             .addGroup(pnlSalesBackground2Layout.createSequentialGroup()
                 .addComponent(pnlSalesTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblSales2)
+                .addComponent(lblSales)
                 .addContainerGap())
-        );
-
-        pnlAdminSettings.setBackground(new java.awt.Color(51, 51, 51));
-        pnlAdminSettings.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pnlAdminSettingsMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlAdminSettingsLayout = new javax.swing.GroupLayout(pnlAdminSettings);
-        pnlAdminSettings.setLayout(pnlAdminSettingsLayout);
-        pnlAdminSettingsLayout.setHorizontalGroup(
-            pnlAdminSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 144, Short.MAX_VALUE)
-        );
-        pnlAdminSettingsLayout.setVerticalGroup(
-            pnlAdminSettingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 104, Short.MAX_VALUE)
         );
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -352,11 +282,6 @@ public class PnlHome extends javax.swing.JPanel {
         });
         tableAdmins.setRowHeight(24);
         tableAdmins.getTableHeader().setReorderingAllowed(false);
-        tableAdmins.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                tableAdminsFocusLost(evt);
-            }
-        });
         tableAdmins.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableAdminsMouseClicked(evt);
@@ -402,6 +327,43 @@ public class PnlHome extends javax.swing.JPanel {
         infoTextBox.setDragEnabled(false);
         jScrollPane1.setViewportView(infoTextBox);
 
+        lblWelcome.setFont(new java.awt.Font("Lucida Grande", 0, 20)); // NOI18N
+        lblWelcome.setForeground(new java.awt.Color(251, 251, 251));
+        lblWelcome.setText("Welcome,");
+
+        lblWhatsBeenOn.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        lblWhatsBeenOn.setForeground(new java.awt.Color(251, 251, 251));
+        lblWhatsBeenOn.setText("This is what's been going on since you left...");
+
+        listSoldOut.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(listSoldOut);
+
+        pnlActiveTitle2.setBackground(new java.awt.Color(153, 153, 153));
+
+        lblSoldOutEvents.setFont(new java.awt.Font("Helvetica Neue", 0, 14)); // NOI18N
+        lblSoldOutEvents.setText("Sold Out Events");
+
+        javax.swing.GroupLayout pnlActiveTitle2Layout = new javax.swing.GroupLayout(pnlActiveTitle2);
+        pnlActiveTitle2.setLayout(pnlActiveTitle2Layout);
+        pnlActiveTitle2Layout.setHorizontalGroup(
+            pnlActiveTitle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlActiveTitle2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblSoldOutEvents)
+                .addGap(77, 77, 77))
+        );
+        pnlActiveTitle2Layout.setVerticalGroup(
+            pnlActiveTitle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlActiveTitle2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSoldOutEvents)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
         pnlBackgroundLayout.setHorizontalGroup(
@@ -409,54 +371,64 @@ public class PnlHome extends javax.swing.JPanel {
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
-                                .addComponent(pnlSalesBackground2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                                .addComponent(pnlActiveBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(pnlNewEventsBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGap(61, 61, 61)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblWelcome)
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addComponent(pnlSalesBackground2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addComponent(pnlActiveBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(lblWhatsBeenOn))
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                            .addComponent(pnlActiveTitle2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
+                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGap(81, 81, 81)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlBackgroundLayout.createSequentialGroup()
                                 .addGap(67, 67, 67)
-                                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBackgroundLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addGap(128, 128, 128)
                                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(btnNewAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(bntLoadMore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnEditAdmin))
-                                .addGap(65, 65, 65)))
-                        .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblLoadingIcon)
-                            .addComponent(pnlAdminSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(801, 801, 801))
+                                .addGap(48, 48, 48)
+                                .addComponent(lblLoadingIcon))))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGap(233, 233, 233)
                         .addComponent(lblAdminSettings)
                         .addGap(18, 18, 18)
-                        .addComponent(iconAdminSettings)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(iconAdminSettings)))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         pnlBackgroundLayout.setVerticalGroup(
             pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1)
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                .addGap(114, 114, 114)
+                .addGap(26, 26, 26)
+                .addComponent(lblWelcome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblWhatsBeenOn)
+                .addGap(35, 35, 35)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pnlSalesBackground2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlActiveBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(pnlNewEventsBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(pnlActiveTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(9, Short.MAX_VALUE))
             .addGroup(pnlBackgroundLayout.createSequentialGroup()
@@ -467,11 +439,7 @@ public class PnlHome extends javax.swing.JPanel {
                         .addGap(20, 20, 20)
                         .addComponent(lblAdminSettings)))
                 .addGap(18, 18, 18)
-                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addComponent(pnlAdminSettings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblLoadingIcon, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -488,7 +456,9 @@ public class PnlHome extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, 890, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,10 +470,6 @@ public class PnlHome extends javax.swing.JPanel {
         parent.sidebar.deselectAll();
         parent.setPage(Pages.ADMINS);
     }//GEN-LAST:event_pnlAdminSettingsMouseClicked
-
-    private void tableAdminsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tableAdminsFocusLost
-
-    }//GEN-LAST:event_tableAdminsFocusLost
 
     private void tableAdminsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAdminsMouseClicked
         // User can double click to open 'Edit' dialog.
@@ -577,25 +543,22 @@ public class PnlHome extends javax.swing.JPanel {
     private javax.swing.JLabel iconAdminSettings;
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblActive;
     private javax.swing.JLabel lblActiveTitle;
     private javax.swing.JLabel lblAdminSettings;
     private javax.swing.JLabel lblLoadingIcon;
-    private javax.swing.JLabel lblNewEvent1;
-    private javax.swing.JLabel lblNewEvent2;
-    private javax.swing.JLabel lblNewEvent3;
-    private javax.swing.JLabel lblNewEvent4;
-    private javax.swing.JLabel lblNewEvent5;
-    private javax.swing.JLabel lblNewEventsTitle;
-    private javax.swing.JLabel lblSales2;
+    private javax.swing.JLabel lblSales;
     private javax.swing.JLabel lblSalesTitle1;
+    private javax.swing.JLabel lblSoldOutEvents;
+    private javax.swing.JLabel lblWelcome;
+    private javax.swing.JLabel lblWhatsBeenOn;
+    private javax.swing.JList<String> listSoldOut;
     private javax.swing.JPanel pnlActiveBackground;
     private javax.swing.JPanel pnlActiveTitle;
-    private javax.swing.JPanel pnlAdminSettings;
+    private javax.swing.JPanel pnlActiveTitle2;
     private javax.swing.JPanel pnlBackground;
-    private javax.swing.JPanel pnlNewEventsBackground;
-    private javax.swing.JPanel pnlNewEventsTitle;
     private javax.swing.JPanel pnlSalesBackground2;
     private javax.swing.JPanel pnlSalesTitle2;
     private javax.swing.JTable tableAdmins;
