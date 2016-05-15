@@ -105,7 +105,7 @@
                   </Group>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="searchPnl" max="32767" attributes="0"/>
-                      <Component id="txtSearchBar" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="txtSearchBar" min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -134,7 +134,7 @@
   <SubComponents>
     <Component class="javax.swing.JTextField" name="txtSearchBar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Search Events"/>
+        <Property name="text" type="java.lang.String" value="Search Events..."/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
             <BevelBorder/>

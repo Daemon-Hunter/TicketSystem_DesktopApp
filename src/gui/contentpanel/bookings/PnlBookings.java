@@ -102,7 +102,7 @@ public class PnlBookings extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(51, 51, 51));
 
-        txtSearchBar.setText("Search Bookings");
+        txtSearchBar.setText("Search Bookings...");
         txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -240,11 +240,11 @@ public class PnlBookings extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
-        txtSearchBar.setText("Search Artists...");
+        txtSearchBar.setText("Search Bookings...");
     }//GEN-LAST:event_txtSearchBarFocusLost
 
     private void txtSearchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchBarMouseClicked
-        if (txtSearchBar.getText().contains("Search Artists...")) {
+        if (txtSearchBar.getText().contains("Search Bookings...")) {
             txtSearchBar.setText("");
         }
     }//GEN-LAST:event_txtSearchBarMouseClicked
