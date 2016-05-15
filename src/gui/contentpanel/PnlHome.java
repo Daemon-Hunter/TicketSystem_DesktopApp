@@ -6,22 +6,22 @@
 package gui.contentpanel;
 
 import bookings.IBooking;
+import classes.CustomListBox;
 import events.IChildEvent;
 import gui.MainJFrame;
 import gui.contentpanel.admins.AdminTableModel;
 import gui.contentpanel.admins.PnlEditAdmin;
 import gui.contentpanel.admins.PnlNewAdmin;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import people.IAdmin;
@@ -61,11 +61,19 @@ public class PnlHome extends javax.swing.JPanel {
         
         try {
             List<IChildEvent> events = DesktopWrapper.getInstance().getSoldOutEvents();
-            DefaultListModel model = new DefaultListModel();
+            DefaultListModel eventModel = new DefaultListModel();
+            DefaultListModel venueModel = new DefaultListModel();
             for (IChildEvent e : events) {
-                model.addElement(e.getName() + " at " + e.getVenue().getName());
+                eventModel.addElement(e.getName());
+                venueModel.addElement(e.getVenue().getName());
             }
-            listSoldOut.setModel(model);
+            
+            listSoldOutEvent.setCellRenderer(new CustomListBox());
+            listSoldOutVenue.setCellRenderer(new CustomListBox());
+            
+            listSoldOutEvent.setModel(eventModel);
+            listSoldOutVenue.setModel(venueModel);
+            
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Error getting this months bookings from the database.");
         }
@@ -150,9 +158,11 @@ public class PnlHome extends javax.swing.JPanel {
         lblWelcome = new javax.swing.JLabel();
         lblWhatsBeenOn = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listSoldOut = new javax.swing.JList<>();
+        listSoldOutEvent = new javax.swing.JList<>();
         pnlActiveTitle2 = new javax.swing.JPanel();
         lblSoldOutEvents = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        listSoldOutVenue = new javax.swing.JList<>();
 
         setMaximumSize(new java.awt.Dimension(873, 32767));
         setMinimumSize(new java.awt.Dimension(873, 0));
@@ -243,7 +253,7 @@ public class PnlHome extends javax.swing.JPanel {
             pnlSalesBackground2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlSalesTitle2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlSalesBackground2Layout.createSequentialGroup()
-                .addGap(61, 61, 61)
+                .addGap(55, 55, 55)
                 .addComponent(lblSales)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -251,9 +261,9 @@ public class PnlHome extends javax.swing.JPanel {
             pnlSalesBackground2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSalesBackground2Layout.createSequentialGroup()
                 .addComponent(pnlSalesTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSales)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -335,12 +345,12 @@ public class PnlHome extends javax.swing.JPanel {
         lblWhatsBeenOn.setForeground(new java.awt.Color(251, 251, 251));
         lblWhatsBeenOn.setText("This is what's been going on since you left...");
 
-        listSoldOut.setModel(new javax.swing.AbstractListModel<String>() {
+        listSoldOutEvent.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(listSoldOut);
+        jScrollPane2.setViewportView(listSoldOutEvent);
 
         pnlActiveTitle2.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -354,7 +364,7 @@ public class PnlHome extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlActiveTitle2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblSoldOutEvents)
-                .addGap(77, 77, 77))
+                .addGap(92, 92, 92))
         );
         pnlActiveTitle2Layout.setVerticalGroup(
             pnlActiveTitle2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,6 +373,13 @@ public class PnlHome extends javax.swing.JPanel {
                 .addComponent(lblSoldOutEvents)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        listSoldOutVenue.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(listSoldOutVenue);
 
         javax.swing.GroupLayout pnlBackgroundLayout = new javax.swing.GroupLayout(pnlBackground);
         pnlBackground.setLayout(pnlBackgroundLayout);
@@ -385,10 +402,13 @@ public class PnlHome extends javax.swing.JPanel {
                         .addGap(62, 62, 62)
                         .addComponent(lblWhatsBeenOn))
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
+                        .addGap(72, 72, 72)
                         .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
-                            .addComponent(pnlActiveTitle2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(pnlActiveTitle2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlBackgroundLayout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlBackgroundLayout.createSequentialGroup()
                         .addGap(81, 81, 81)
@@ -421,13 +441,15 @@ public class PnlHome extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblWhatsBeenOn)
                 .addGap(35, 35, 35)
-                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlSalesBackground2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlActiveBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlActiveBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlSalesBackground2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(60, 60, 60)
                 .addComponent(pnlActiveTitle2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(9, Short.MAX_VALUE))
@@ -467,8 +489,7 @@ public class PnlHome extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pnlAdminSettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pnlAdminSettingsMouseClicked
-        parent.sidebar.deselectAll();
-        parent.setPage(Pages.ADMINS);
+        
     }//GEN-LAST:event_pnlAdminSettingsMouseClicked
 
     private void tableAdminsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAdminsMouseClicked
@@ -544,6 +565,7 @@ public class PnlHome extends javax.swing.JPanel {
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblActive;
     private javax.swing.JLabel lblActiveTitle;
@@ -554,7 +576,8 @@ public class PnlHome extends javax.swing.JPanel {
     private javax.swing.JLabel lblSoldOutEvents;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JLabel lblWhatsBeenOn;
-    private javax.swing.JList<String> listSoldOut;
+    private javax.swing.JList<String> listSoldOutEvent;
+    private javax.swing.JList<String> listSoldOutVenue;
     private javax.swing.JPanel pnlActiveBackground;
     private javax.swing.JPanel pnlActiveTitle;
     private javax.swing.JPanel pnlActiveTitle2;
