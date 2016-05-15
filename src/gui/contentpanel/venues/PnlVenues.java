@@ -319,11 +319,11 @@ public class PnlVenues extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchBarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchBarFocusLost
-        txtSearchBar.setText("Search Customers...");
+        txtSearchBar.setText("Search Venues...");
     }//GEN-LAST:event_txtSearchBarFocusLost
 
     private void txtSearchBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSearchBarMouseClicked
-        if (txtSearchBar.getText().contains("Search Customers...")) {
+        if (txtSearchBar.getText().contains("Search Venues...")) {
             txtSearchBar.setText("");
         }
     }//GEN-LAST:event_txtSearchBarMouseClicked
