@@ -9,7 +9,6 @@ import events.IChildEvent;
 import events.IParentEvent;
 import gui.MainJFrame;
 import gui.RoundedBorder;
-import gui.contentpanel.artists.ArtistTableModel;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import wrappers.DesktopWrapper;
 
@@ -45,7 +45,15 @@ public class PnlEvents extends javax.swing.JPanel {
         initComponents();
         this.parent = parent;
         txtSearchBar.setBorder(new RoundedBorder());
-        refreshParentEventsList();       
+        refreshParentEventsList();     
+        lblLoadingIcon.setVisible(false);
+    }
+    
+    private void editable(boolean flag) {
+        lblLoadingIcon.setVisible(!flag);
+        btnEditEvent1.setEnabled(flag);
+        btnLoadMore.setEnabled(flag);
+        btnNewParentEvent.setEnabled(flag);
     }
     
     
@@ -80,6 +88,7 @@ public class PnlEvents extends javax.swing.JPanel {
         btnEditEvent1 = new javax.swing.JButton();
         lblAddImage1 = new javax.swing.JLabel();
         btnLoadMore = new javax.swing.JButton();
+        lblLoadingIcon = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -266,6 +275,8 @@ public class PnlEvents extends javax.swing.JPanel {
             }
         });
 
+        lblLoadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loading_icon.gif"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -297,14 +308,16 @@ public class PnlEvents extends javax.swing.JPanel {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(48, 48, 48)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblLoadingIcon))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,9 +332,9 @@ public class PnlEvents extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                             .addComponent(jScrollPane2)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txtSearchBar, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(searchPnl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNewParentEvent)
@@ -330,13 +343,13 @@ public class PnlEvents extends javax.swing.JPanel {
                 .addGap(33, 33, 33)
                 .addComponent(lblAddImage1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))))
+                        .addGap(93, 93, 93)
+                        .addComponent(lblLoadingIcon))
+                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -374,7 +387,6 @@ public class PnlEvents extends javax.swing.JPanel {
             listParentEvents.setSelectedIndex(-1);
             currParentEvent = null;
             currChildEvent = null;
-
        }
        
        
@@ -384,13 +396,7 @@ public class PnlEvents extends javax.swing.JPanel {
     }//GEN-LAST:event_tableChildEventsFocusLost
 
     private void txtDescriptionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescriptionKeyTyped
-        // Allow user to type if the description length is < 500
-//        if (descLength - txtDescription.getText().length() >= 0) {
-//            lblDescriptionRemaining.setText((descLength - txtDescription.getText().length()) + " characters remaining");
-//        } else {
-//            // else remove any additional characters
-//            txtDescription.setText(txtDescription.getText().substring(0, txtDescription.getText().length() - 1));
-//        }
+
     }//GEN-LAST:event_txtDescriptionKeyTyped
 
     private void listParentEventsValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listParentEventsValueChanged
@@ -461,27 +467,45 @@ public class PnlEvents extends javax.swing.JPanel {
         }
         else
         {
-                listParentEventModel.clear();
-                allParentEvents = originalAllParentEvents;
-                for (IParentEvent event : allParentEvents) {
-                    listParentEventModel.addElement(event.getName());
-                }
+            listParentEventModel.clear();
+            allParentEvents = originalAllParentEvents;
+            for (IParentEvent event : allParentEvents) {
+                listParentEventModel.addElement(event.getName());
+            }
         }
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
     private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
-        try {
-            allParentEvents =  DesktopWrapper.getInstance().loadMoreParentEvents();
-            allParentEvents =  DesktopWrapper.getInstance().getParentEvents();
-            
-             listParentEventModel.clear();
-            for (IParentEvent event : allParentEvents) {
-                    listParentEventModel.addElement(event.getName());
-                }
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                try {
+                    allParentEvents =  DesktopWrapper.getInstance().loadMoreParentEvents();
+                    allParentEvents =  DesktopWrapper.getInstance().getParentEvents();
 
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Unable To Load More Events");
-        }
+                     listParentEventModel.clear();
+                    for (IParentEvent event : allParentEvents) {
+                            listParentEventModel.addElement(event.getName());
+                    }
+                    done();
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(PnlEvents.this, "Unable To Load More Events");
+                    done();
+                }
+                return "";
+            }
+            
+            @Override
+            protected void done() {
+                editable(true);
+            }
+        };
+        
+        editable(false);
+        worker.execute();
+        
     }//GEN-LAST:event_btnLoadMoreMouseClicked
 
     private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
@@ -533,6 +557,7 @@ public class PnlEvents extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblAddImage1;
     private javax.swing.JLabel lblDescription;
+    private javax.swing.JLabel lblLoadingIcon;
     private javax.swing.JList<String> listParentEvents;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
@@ -543,36 +568,72 @@ public class PnlEvents extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void refreshParentEventsList() {
-        EventTableModel childEventsModel = new EventTableModel();
-        tableChildEvents.setModel(childEventsModel);
-        listParentEventModel.clear();
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                EventTableModel childEventsModel = new EventTableModel();
+                tableChildEvents.setModel(childEventsModel);
+                listParentEventModel.clear();
 
-        try {
-             allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
-             originalAllParentEvents = allParentEvents;
-           for (IParentEvent currEvent : allParentEvents)
-            {
-                listParentEventModel.addElement(currEvent.getName());
+                try {
+                     allParentEvents = DesktopWrapper.getInstance().refreshParentEvents();
+                     originalAllParentEvents = allParentEvents;
+                   for (IParentEvent currEvent : allParentEvents)
+                    {
+                        listParentEventModel.addElement(currEvent.getName());
+                    }
+                   done();
+
+                } catch (IOException ex) {
+                    listParentEventModel.addElement("No Events Found");
+                    done();
+                }
+                
+                return "";
             }
-    
-        } catch (IOException ex) {
-         listParentEventModel.addElement("No Events Found");
-        }
+            
+            @Override
+            protected void done() {
+                editable(true);
+            }
+            
+        };
+        editable(false);
+        worker.execute();
     }
 
     private void populateChildEvents() {
-     if(listParentEvents.getSelectedIndex() != -1)
-     {
-        IParentEvent currParentEvent = allParentEvents.get(listParentEvents.getSelectedIndex());
-        txtDescription.setText(currParentEvent.getDescription());
-        try {
-            currParentEvents_ChildEvents = currParentEvent.getChildEvents();
-            EventTableModel childEventsModel = new EventTableModel(currParentEvents_ChildEvents, currParentEvents_ChildEvents.size());
-            tableChildEvents.setModel(childEventsModel);
-        } catch (IOException ex) {
-            Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
+        if(listParentEvents.getSelectedIndex() != -1) {
+        
+            SwingWorker worker = new SwingWorker() {
+                @Override
+                protected Object doInBackground() throws Exception {
+
+                    IParentEvent currParentEvent = allParentEvents.get(listParentEvents.getSelectedIndex());
+                    txtDescription.setText(currParentEvent.getDescription());
+
+                    try {
+                        currParentEvents_ChildEvents = currParentEvent.getChildEvents();
+                        EventTableModel childEventsModel = new EventTableModel(currParentEvents_ChildEvents, currParentEvents_ChildEvents.size());
+                        tableChildEvents.setModel(childEventsModel);
+                        done();
+
+                    } catch (IOException ex) {
+                        Logger.getLogger(PnlEvents.class.getName()).log(Level.SEVERE, null, ex);
+                        done();
+                    }
+                    return "";
+                }
+
+                @Override
+                protected void done() {
+                    editable(true);
+                }
+            };
+            editable(false);
+            worker.execute();
         }
-     }
 }
     
 

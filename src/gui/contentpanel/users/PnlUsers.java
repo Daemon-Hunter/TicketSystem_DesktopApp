@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -43,22 +44,49 @@ public class PnlUsers extends javax.swing.JPanel {
         initComponents();
         this.parent = parent;
         
+        lblLoadingIcon.setVisible(false);
         txtSearchBar.setBorder(new RoundedBorder());
         populateTable();
     }
     
+    private void editable(boolean flag) {
+        lblLoadingIcon.setVisible(!flag);
+        btnLoadMore.setEnabled(flag);
+        tableScrollPane.setEnabled(flag);
+        tableUsers.setEnabled(flag);
+        txtSearchBar.setEditable(flag);
+    }
+    
     public final void populateTable() {
-  
-        try {
-            allUsers = DesktopWrapper.getInstance().getCustomers();
-            originalAllUsers = allUsers;
-            if(allUsers.size() > 0)
-            {
-            TableModel userData = new UserTableModel(allUsers, allUsers.size());
-            tableUsers.setModel(userData);
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                try {
+                    allUsers = DesktopWrapper.getInstance().getCustomers();
+                    originalAllUsers = allUsers;
+                    if(allUsers.size() > 0) {
+                        TableModel userData = new UserTableModel(allUsers, allUsers.size());
+                        tableUsers.setModel(userData);
+                    }
+                    done();
+                    
+                } catch (IllegalArgumentException | IOException ex) {
+                    JOptionPane.showMessageDialog(PnlUsers.this, ex.getMessage());
+                    done();
+                }
+                
+                return "";
             }
-        } catch (IllegalArgumentException | IOException ex) {
-        }
+            
+            @Override
+            protected void done() {
+                editable(true);
+            }
+        };
+  
+        editable(false);
+        worker.execute();
     }
     
     /**
@@ -116,6 +144,7 @@ public class PnlUsers extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTextBox = new javax.swing.JTextArea();
         btnLoadMore = new javax.swing.JButton();
+        lblLoadingIcon = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -132,6 +161,7 @@ public class PnlUsers extends javax.swing.JPanel {
 
         txtSearchBar.setText("Search Customers...");
         txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtSearchBar.setPreferredSize(new java.awt.Dimension(131, 30));
         txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtSearchBarFocusLost(evt);
@@ -201,10 +231,10 @@ public class PnlUsers extends javax.swing.JPanel {
         searchPnl.setLayout(searchPnlLayout);
         searchPnlLayout.setHorizontalGroup(
             searchPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(searchPnlLayout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchPnlLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(searchPnlLbl)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         searchPnlLayout.setVerticalGroup(
             searchPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,40 +271,50 @@ public class PnlUsers extends javax.swing.JPanel {
             }
         });
 
+        lblLoadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loading_icon.gif"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(50, 50, 50))
+                .addContainerGap(109, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
             .addGroup(layout.createSequentialGroup()
-                .addGap(376, 376, 376)
-                .addComponent(btnLoadMore)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(300, 300, 300)
+                        .addComponent(btnLoadMore)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblLoadingIcon))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtSearchBar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblLoadingIcon))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -312,43 +352,71 @@ public class PnlUsers extends javax.swing.JPanel {
     }//GEN-LAST:event_tableUsersFocusLost
 
     private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
-//
 
-  String textToSearch = txtSearchBar.getText(); 
-        if(!textToSearch.equals(""))
-        {
-            try {
-                System.out.println("Change");
-              allUsers =  DesktopWrapper.getInstance().searchCustomers(textToSearch);
-               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
-              tableUsers.setModel(model);
-            } catch (IOException ex) {
-                allUsers = originalAllUsers;
-               UserTableModel model = new UserTableModel(allUsers,allUsers.size());
-              tableUsers.setModel(model);
-
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                String textToSearch = txtSearchBar.getText(); 
+                if (!textToSearch.equals("")) {
+                    try {
+                        System.out.println("Change");
+                        allUsers =  DesktopWrapper.getInstance().searchCustomers(textToSearch);
+                        done();
+                    } 
+                    catch (IOException ex) {
+                        allUsers = originalAllUsers;
+                        done();
+                    }
+                }
+                else {
+                    allUsers = originalAllUsers;
+                    done();
+                }
+                return "";
             }
-        }
-        else
-        {
-              allUsers = originalAllUsers;
-              UserTableModel model = new UserTableModel(allUsers,allUsers.size());
-              tableUsers.setModel(model);
-        }
+            
+            @Override
+            protected void done() {
+                UserTableModel model = new UserTableModel(allUsers,allUsers.size());
+                tableUsers.setModel(model);
+                editable(true);
+            }
+        };
+        editable(false);
+        worker.execute();
 
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
     private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
-        try {
-            allUsers =  DesktopWrapper.getInstance().loadMoreCustomers();
-            allUsers =  DesktopWrapper.getInstance().getCustomers();
-            tableUsers.setModel(new DefaultTableModel());
-            UserTableModel userData = new UserTableModel(allUsers, allUsers.size());
-            tableUsers.setModel(userData);
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                try {
+                    allUsers =  DesktopWrapper.getInstance().loadMoreCustomers();
+                    allUsers =  DesktopWrapper.getInstance().getCustomers();
+                    tableUsers.setModel(new DefaultTableModel());
+                    UserTableModel userData = new UserTableModel(allUsers, allUsers.size());
+                    tableUsers.setModel(userData);
+                    done();
 
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
-        }
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(PnlUsers.this, "Unable To Load More Users");
+                    done();
+                }
+                
+                return "";
+            }
+            
+            @Override
+            protected void done() {
+                editable(true);
+            }
+        };
+        
+        editable(false);
+        worker.execute();
+        
     }//GEN-LAST:event_btnLoadMoreMouseClicked
 
     private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
@@ -361,6 +429,7 @@ public class PnlUsers extends javax.swing.JPanel {
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblLoadingIcon;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JScrollPane tableScrollPane;
