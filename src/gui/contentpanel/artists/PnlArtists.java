@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -46,29 +47,56 @@ public class PnlArtists extends javax.swing.JPanel {
         initButtons();
         populateTable();
         
+        lblLoadingIcon.setVisible(false);
         txtSearchBar.setBorder(new RoundedBorder());
     }
     
     private void initButtons() {
         btnNewArtist.setMaximumSize(new Dimension(75, 29));
-        btnDeleteArtist.setMaximumSize(new Dimension(75, 29));
         btnEditArtist.setMaximumSize(new Dimension(75, 29));
     }
     
+    private void editable(boolean flag) {
+        lblLoadingIcon.setVisible(!flag);
+        btnEditArtist.setEnabled(flag);
+        btnLoadMore.setEnabled(flag);
+        btnNewArtist.setEnabled(flag);
+        tableArtists.setEnabled(flag);
+        tableScrollPane.setEnabled(flag);
+    }
+    
     public void populateTable() {
-        try {
-            allArtists = new ArrayList (DesktopWrapper.getInstance().refreshArtists());
-            originalAllArtists = allArtists;
-            if (allArtists.size() > 0) {
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                try {
+                    allArtists = new ArrayList (DesktopWrapper.getInstance().refreshArtists());
+                    originalAllArtists = allArtists;
+                    if (allArtists.size() > 0) {
 
-                // Creates a table model
-                TableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
+                        // Creates a table model
+                        TableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
 
-                tableArtists.setModel(artistData);
+                        tableArtists.setModel(artistData);
+                        done();
+                    }
+                } catch (IOException e) {
+                    originalAllArtists = new ArrayList<>();
+                    done();
+                }
+                
+                return "";
             }
-        } catch (IOException e) {
-            originalAllArtists = new ArrayList<>();
-        }
+            
+            @Override
+            protected void done() {
+                editable(true);
+            }
+        };
+        
+        editable(false);
+        worker.execute();
     }
     
     /**
@@ -121,10 +149,10 @@ public class PnlArtists extends javax.swing.JPanel {
         searchPnlLbl = new javax.swing.JLabel();
         btnNewArtist = new javax.swing.JButton();
         btnEditArtist = new javax.swing.JButton();
-        btnDeleteArtist = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         infoTextBox = new javax.swing.JTextArea();
         btnLoadMore = new javax.swing.JButton();
+        lblLoadingIcon = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -142,6 +170,7 @@ public class PnlArtists extends javax.swing.JPanel {
         txtSearchBar.setText("Search Artists...");
         txtSearchBar.setAutoscrolls(false);
         txtSearchBar.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        txtSearchBar.setPreferredSize(new java.awt.Dimension(105, 30));
         txtSearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtSearchBarFocusLost(evt);
@@ -240,11 +269,6 @@ public class PnlArtists extends javax.swing.JPanel {
             }
         });
 
-        btnDeleteArtist.setText("Delete");
-        btnDeleteArtist.setMaximumSize(new java.awt.Dimension(75, 29));
-        btnDeleteArtist.setMinimumSize(new java.awt.Dimension(75, 29));
-        btnDeleteArtist.setPreferredSize(new java.awt.Dimension(75, 29));
-
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -272,51 +296,60 @@ public class PnlArtists extends javax.swing.JPanel {
             }
         });
 
+        lblLoadingIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loading_icon.gif"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 778, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(228, 228, 228)
+                        .addGap(227, 227, 227)
                         .addComponent(btnNewArtist)
                         .addGap(18, 18, 18)
                         .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLoadMore)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblLoadingIcon))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(10, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNewArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDeleteArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(txtSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(18, 18, 18)
+                            .addComponent(searchPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tableScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNewArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEditArtist, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLoadMore, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12))
+                    .addComponent(lblLoadingIcon, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -383,43 +416,74 @@ public class PnlArtists extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSearchBarKeyTyped
 
     private void txtSearchBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchBarActionPerformed
-        String textToSearch = txtSearchBar.getText();        
-        if(!textToSearch.equals(""))
-        {
-            try {
-              allArtists =  DesktopWrapper.getInstance().searchArtists(textToSearch);
-              ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
-              tableArtists.setModel(model);
-            } catch (IOException ex) {
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                String textToSearch = txtSearchBar.getText();        
+                if (!textToSearch.equals("")) {
+                    try {
+                        allArtists =  DesktopWrapper.getInstance().searchArtists(textToSearch);
+                        done();
+                    } 
+                    catch (IOException ex) {
+                        allArtists = originalAllArtists;
+                        done();
 
-                allArtists = originalAllArtists;
-               ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
-              tableArtists.setModel(model);
-
+                    }
+                }
+                else {
+                    allArtists = originalAllArtists;
+                    done();
+                }
+                
+                return "";
             }
-        }
-        else
-        {
-               allArtists = originalAllArtists;
-               ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
-              tableArtists.setModel(model);
-
-        }
-
+            
+            @Override
+            protected void done() {
+                ArtistTableModel model = new ArtistTableModel(allArtists,allArtists.size());
+                tableArtists.setModel(model);
+                editable(true);
+            }
+            
+        };
+        
+        editable(false);
+        worker.execute();
     }//GEN-LAST:event_txtSearchBarActionPerformed
 
     private void btnLoadMoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadMoreMouseClicked
-        System.out.println("Clicked");
-        try {
-            allArtists = DesktopWrapper.getInstance().loadMoreArtists();
-            allArtists = DesktopWrapper.getInstance().getArtists();
-            tableArtists.setModel(new DefaultTableModel());
-            ArtistTableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
-            tableArtists.setModel(artistData);
+        
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                try {
+                    allArtists = DesktopWrapper.getInstance().loadMoreArtists();
+                    allArtists = DesktopWrapper.getInstance().getArtists();
+                    tableArtists.setModel(new DefaultTableModel());
+                    ArtistTableModel artistData = new ArtistTableModel(allArtists, allArtists.size());
+                    tableArtists.setModel(artistData);
+                    done();
 
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Unable To Load More Admins");
-        }
+                } 
+                catch (IOException ex) {
+                    JOptionPane.showMessageDialog(PnlArtists.this, "Unable To Load More Artists");
+                    done();
+                }
+                
+                return "";
+            }
+            
+            @Override
+            protected void done() {
+                editable(true);
+            }
+        };
+        
+        editable(false);
+        worker.execute();
+        
     }//GEN-LAST:event_btnLoadMoreMouseClicked
 
     private void btnLoadMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadMoreActionPerformed
@@ -427,16 +491,13 @@ public class PnlArtists extends javax.swing.JPanel {
     }//GEN-LAST:event_btnLoadMoreActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bntLoadMore;
-    private javax.swing.JButton bntLoadMore1;
-    private javax.swing.JButton bntLoadMore2;
-    private javax.swing.JButton btnDeleteArtist;
     private javax.swing.JButton btnEditArtist;
     private javax.swing.JButton btnLoadMore;
     private javax.swing.JButton btnNewArtist;
     private javax.swing.JTextArea infoTextBox;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblLoadingIcon;
     private javax.swing.JPanel searchPnl;
     private javax.swing.JLabel searchPnlLbl;
     private javax.swing.JTable tableArtists;
