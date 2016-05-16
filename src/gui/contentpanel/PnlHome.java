@@ -7,6 +7,7 @@ package gui.contentpanel;
 
 import bookings.IBooking;
 import classes.CustomListBox;
+import classes.SwingInterop;
 import events.IChildEvent;
 import gui.MainJFrame;
 import gui.contentpanel.admins.AdminTableModel;
@@ -68,7 +69,6 @@ public class PnlHome extends javax.swing.JPanel {
                     noSales += booking.getQuantity();
                 }
             }
-            // Set the Daily Sales label.
             lblDailySales.setText(Integer.toString(noSales));
             
         } catch (IOException ex) {
